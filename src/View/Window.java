@@ -1,9 +1,8 @@
 package View;
 
 public class Window {
-//testssashhaaaa  	 aa
-	private void canvas()
+
+	public Window(String titre)
 	{
-		//dfghjk
 	}
 }
