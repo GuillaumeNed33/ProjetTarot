@@ -48,10 +48,10 @@ public class Game {
 		type.changeToExcuse();
 		cards.add(new Card(type, new CardValue(0)));	
 		
-		/*for(Card e : cards)
+		for(Card e : cards)
 		{
 			System.out.println(e.getType().toString() + ", " + e.getValue().getVal());
-		}*/
+		}
 	}
 
 	public void initGame()
