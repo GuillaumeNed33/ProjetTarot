@@ -15,12 +15,22 @@ public class Game {
 	
 	public Game()
 	{
-		//CardType type = new CardType();
+		CardType type = new CardType();
 		
 		for(int i=1; i<=NBCARDS; i++)
 		{
+			if(i == 56)
+			{
+				type.changeToAtout();
+			}
 			
-			//Card c = new Card();
+			if(i%14 == 0 && type.BasicType())
+			{
+				type.changeBasics();
+			}
+
+			Card c = new Card(type, new CardValue());
+			cards.add(c);
 		}
 		
 		initGame();
