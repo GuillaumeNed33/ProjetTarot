@@ -18,8 +18,10 @@ public class App {
 	}
 
 	public static void main(String[] args) {
-		App a = new App();
-		a.run();
+		/*App a = new App();
+		a.run();*/
+		
+		Game test = new Game();
 	}
 
 }

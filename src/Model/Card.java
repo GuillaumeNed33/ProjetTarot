@@ -9,4 +9,14 @@ public class Card {
 		type = c;
 		value = val;
 	}
+	
+	public CardType getType()
+	{
+		return this.type;
+	}
+	
+	public CardValue getValue()
+	{
+		return value;
+	}
 }
