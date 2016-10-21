@@ -2,6 +2,8 @@ package Model;
 
 import java.util.List;
 
+import Model.CardType.Basics;
+
 public class Game {
 	
 	final int NBPLAYER = 4;
@@ -13,6 +15,14 @@ public class Game {
 	
 	public Game()
 	{
+		//CardType type = new CardType();
+		
+		for(int i=1; i<=NBCARDS; i++)
+		{
+			
+			//Card c = new Card();
+		}
+		
 		initGame();
 	}
 	
