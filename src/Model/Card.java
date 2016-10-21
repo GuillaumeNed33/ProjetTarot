@@ -7,7 +7,7 @@ public class Card {
 	public Card(CardType c, CardValue val)
 	{
 		type = c;
-		value = val;
+		value = val; 
 	}
 	
 	public CardType getType()
