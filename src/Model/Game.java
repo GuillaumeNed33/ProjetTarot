@@ -57,14 +57,9 @@ public class Game {
 	public void initGame()
 	{
 		players = new ArrayList<Player>();		
-		Player j1 = new Player();
-		Player j2 = new Player();
-		Player j3 = new Player();
-		Player j4 = new Player();
-		players.add(j1);
-		players.add(j2);
-		players.add(j3);
-		players.add(j4);
+		for(int i=0;i<4;i++) {
+			players.add(new Player());
+		}
 		distribCard();
 	}
 
