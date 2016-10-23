@@ -28,10 +28,8 @@ public class Game {
 		for(int i=1; i<NBCARDS; i++)
 		{
 			CardType copy = new CardType(type);
-			
 			cards.add(new Card(copy, new CardValue(val)));
 			val++;
-
 			if(i == 56)
 			{
 				type.changeToAtout();
@@ -44,7 +42,6 @@ public class Game {
 				type.changeBasics();
 			}			
 		}
-
 		type.changeToExcuse();
 		cards.add(new Card(type, new CardValue(0)));	
 		
