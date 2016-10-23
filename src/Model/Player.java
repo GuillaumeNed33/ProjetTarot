@@ -1,5 +1,5 @@
 package Model;
 
 public class Player {
-	private Hand handGame; 
+	private Hand handGame;  
 }
