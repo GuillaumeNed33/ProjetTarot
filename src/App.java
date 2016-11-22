@@ -1,26 +1,29 @@
+import Controler.Controller;
 import Model.Game;
 import View.Window;
 
 public class App {
 
-	private static Game game;
-	private static Window win;
+	private Game game;
+	private Window win;
+	private Controller control;
 	
 	public App()
 	{
 		game = new Game();
-		win = new Window("Tarot NEDELEC NORMAND S3C");
+		win = new Window();
+		control = new Controller(game, win);
+		game.setController(control);
+		win.setController(control);
+		
 	}
 	
-	public void run()
+	public void run(String[] args)
 	{
-		
+		win.run(args);
 	}
 
 	public static void main(String[] args) {
-		new App();
-		win.run(args);
-		//Game test = new Game();
+		new App().run(args);;
 	}
-
 }

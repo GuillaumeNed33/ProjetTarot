@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import Controler.Controller;
 import Model.CardType;
 
 public class Game {
@@ -11,6 +12,7 @@ public class Game {
 	final int NBPLAYER = 4;
 	final int NBCARDS = 78;
 
+	Controller control;
 	private List<Player> players;
 	private List<Card> cards;
 	private Chien chien;
@@ -20,9 +22,16 @@ public class Game {
 	public Game()
 	{
 		generateCards();
-		initGame();
+		//initGame();
 	}
 
+	
+	public void setController(Controller c)
+	{
+		control = c;
+	}
+	
+	
 	private void generateCards() {
 		cards = new ArrayList<Card>();
 		CardType type = new CardType();
@@ -89,14 +98,14 @@ public class Game {
 			}
 		}
 
-		/*i=1;
+		i=1;
 		for(Player p : players)
 		{
 			System.out.println("J" + i + " : " + p.getHand().size());
 			i++;
 		}
 
-		System.out.println("Chien : " + chien.size());*/
+		System.out.println("Chien : " + chien.size());
 	}
 
 	public void nextStep()
