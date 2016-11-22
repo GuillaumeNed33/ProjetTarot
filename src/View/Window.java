@@ -7,6 +7,8 @@ import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -17,6 +19,8 @@ public class Window extends Application {
 	private Controller control;
 	private Scene scene;
 	private Group root;
+	Image image;
+	ImageView carte;
 
 
 	public Window() {
@@ -55,17 +59,14 @@ public class Window extends Application {
 	{
 		root = new Group();
 		scene = new Scene(root, 1000, 750, Color.RED);
-		Button btn = new Button();
-		btn.setLayoutX(350);
-		btn.setLayoutY(350);
-		btn.setPrefSize(250, 100);
-		btn.setText("playing");
-		btn.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent event) {
-				System.out.println("Hello world");
-			}
-		});
-		root.getChildren().add(btn);
+		image = new Image("file:./ressources/dos_carte.jpg");
+		carte = new ImageView();
+		carte.setImage(image);
+		root.getChildren().add(carte);
+		primaryStage.sizeToScene();
+		root.setScaleX(100);
+		root.setScaleY(100);
+
 	}
 
 	public void run(String[] args) {
