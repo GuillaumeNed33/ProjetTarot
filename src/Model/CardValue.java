@@ -6,16 +6,14 @@ public class CardValue {
 		AS, DEUX, TROIS, QUATRE, CINQ, SIX, SEPT, HUIT, NEUF, DIX, VALET, CAVALIER, DAME, ROI;
 	}
 
-	//private Value [] tab = new Value[14];
+	// private Value [] tab = new Value[14];
 	private int value = 0;
-	
-	public CardValue(int i)
-	{
+
+	public CardValue(int i) {
 		value = i;
 	}
-	
-	public int getVal()
-	{
+
+	public int getVal() {
 		return value;
 	}
 

@@ -17,99 +17,91 @@ public class Game {
 	private List<Card> cards;
 	private Chien chien;
 	private Team laPrise;
-	private Team laGarde;	
+	private Team laGarde;
 
-	public Game()
-	{
+	public Game() {
 		generateCards();
-		//initGame();
+		initGame();
 	}
 
-	
-	public void setController(Controller c)
-	{
+	public void setController(Controller c) {
 		control = c;
 	}
-	
-	
+
 	private void generateCards() {
 		cards = new ArrayList<Card>();
 		CardType type = new CardType();
 		int val = 1;
-
-		for(int i=1; i<NBCARDS; i++)
-		{
+		for (int i = 1; i < NBCARDS; i++) {
 			CardType copy = new CardType(type);
 			cards.add(new Card(copy, new CardValue(val)));
 			val++;
-			if(i == 56)
-			{
+			if (i == 56) {
 				type.changeToAtout();
-				val=1;
+				val = 1;
 			}
 
-			if(i%14 == 0 && type.BasicType())
-			{
+			if (i % 14 == 0 && type.BasicType()) {
 				val = 1;
 				type.changeBasics();
-			}			
+			}
 		}
 		type.changeToExcuse();
-		cards.add(new Card(type, new CardValue(0)));	
+		cards.add(new Card(type, new CardValue(0)));
 
-		/*for(Card e : cards)
-		{
-			System.out.println(e.getType().toString() + ", " + e.getValue().getVal());
-		}*/
+		/*
+		 * for(Card e : cards) { System.out.println(e.getType().toString() +
+		 * ", " + e.getValue().getVal()); }
+		 */
 	}
 
-	public void initGame()
-	{
-		players = new ArrayList<Player>();		
-		for(int i=0;i<4;i++) {
+	public void initGame() {
+		players = new ArrayList<Player>();
+		for (int i = 0; i < 4; i++) {
 			players.add(new Player());
 		}
 		distribCard();
 	}
 
-	public void distribCard()
-	{
+	public void distribCard() {
 		chien = new Chien();
-
-		int i = 0;
-		while(!cards.isEmpty())
-		{
-			Random r = new Random();
-			int index = 0 + r.nextInt(cards.size() - 0);
-			if(i>3)
-			{
-				if(chien.size()<6)
-				{
-					chien.addCard(cards.get(index));
-					cards.remove(index);
+		int id_player = 0;
+		Random r = new Random();
+		while (!cards.isEmpty()) {
+			int card = r.nextInt(cards.size());
+			if (r.nextDouble() < 0.5 && chien.size() < 6) {
+				chien.addCard(cards.get(card));
+			} else {
+				Player p = players.get(id_player);
+				for (int i = 0; i < 3; i++) {
+					p.getHand().addCard(cards.get(card));
+					cards.remove(card);
+					if (cards.size() > 0) {
+						card = r.nextInt(cards.size());
+					}
 				}
-				i=0;	
-			}
-			else
-			{
-				players.get(i).getHand().addCard(cards.get(index));
-				cards.remove(index);
-				i++;
+				id_player = (id_player + 1) % players.size();
 			}
 		}
-
-		i=1;
-		for(Player p : players)
-		{
-			System.out.println("J" + i + " : " + p.getHand().size());
-			i++;
-		}
-
-		System.out.println("Chien : " + chien.size());
 	}
 
-	public void nextStep()
-	{
+	public void nextStep() {
+
+	}
+
+	public void displayCardGame() {
+
+		System.out.println("------------------ AFFICHAGE CARTE ------------------");
+		System.out.println("Le Chien : ");
+		for (Card c : chien.getCards()) {
+			System.out.println(c.getValue().getVal() + " " + c.getType().toString());
+		}
+		for (int i = 0; i < players.size(); i++) {
+			System.out.println("Le joueur " + i + " : ");
+			for (Card c : players.get(i).getHand().getGame()) {
+				System.out.println(c.getValue().getVal() + " " + c.getType().toString());
+			}
+		}
 
 	}
 }

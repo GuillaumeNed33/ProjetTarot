@@ -20,4 +20,7 @@ public class Chien {
 	{
 		return cards.size();
 	}
+	public List<Card> getCards() {
+		return cards;
+	}
 }
