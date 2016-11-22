@@ -1,7 +1,6 @@
 package View;
 
 import javafx.application.Application;
-import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -10,14 +9,14 @@ import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import javafx.stage.Stage;
-
-public class Window extends Application{
+public class Window extends Application {
 
 	private String title;
-	
-	public Window(String titre)
-	{
+
+	public Window() {
+		title = "";
+	}
+	public Window(String titre) {
 		title = titre;
 	}
 
@@ -25,39 +24,23 @@ public class Window extends Application{
 	public void start(Stage primaryStage) throws Exception {
 		primaryStage.setTitle(title);
 		Group root = new Group();
+		Scene scene = new Scene(root, 300, 250, Color.LIGHTGREEN);
+		Button btn = new Button();
+		btn.setLayoutX(100);
+		btn.setLayoutY(80);
+		btn.setText("Hello World");
+		btn.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				System.out.println("Hello World");
+			}
+		});
+		root.getChildren().add(btn);
+		primaryStage.setScene(scene);
+		primaryStage.show();
 
-        Scene scene = new Scene(root, 300, 250, Color.LIGHTGREEN);
+	}
 
-        Button btn = new Button();
-
-        btn.setLayoutX(100);
-
-        btn.setLayoutY(80);
-
-        btn.setText("Hello World");
-
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-
-
-            public void handle(ActionEvent event) {
-
-                System.out.println("Hello World");
-
-            }
-
-        });
-
-        root.getChildren().add(btn);        
-
-        primaryStage.setScene(scene);
-
-        primaryStage.show();
-
-    }
-	
-	
-	public void run(String[] args)
-	{
-		launch(Window.class, args);
+	public void run(String[] args) {
+		launch(args);
 	}
 }
