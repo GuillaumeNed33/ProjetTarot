@@ -3,8 +3,8 @@ import View.Window;
 
 public class App {
 
-	private Game game;
-	private Window win;
+	private static Game game;
+	private static Window win;
 	
 	public App()
 	{
@@ -18,10 +18,9 @@ public class App {
 	}
 
 	public static void main(String[] args) {
-		/*App a = new App();
-		a.run();*/
-		
-		Game test = new Game();
+		new App();
+		win.run(args);
+		//Game test = new Game();
 	}
 
 }
