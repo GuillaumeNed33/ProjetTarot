@@ -1,6 +1,14 @@
 package View;
 
 import javafx.application.Application;
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 import javafx.stage.Stage;
 
@@ -14,13 +22,42 @@ public class Window extends Application{
 	}
 
 	@Override
-	public void start(Stage fenetre) throws Exception {
-		fenetre.setTitle(title);
-		fenetre.show(); 
-	}
+	public void start(Stage primaryStage) throws Exception {
+		primaryStage.setTitle(title);
+		Group root = new Group();
+
+        Scene scene = new Scene(root, 300, 250, Color.LIGHTGREEN);
+
+        Button btn = new Button();
+
+        btn.setLayoutX(100);
+
+        btn.setLayoutY(80);
+
+        btn.setText("Hello World");
+
+        btn.setOnAction(new EventHandler<ActionEvent>() {
+
+
+            public void handle(ActionEvent event) {
+
+                System.out.println("Hello World");
+
+            }
+
+        });
+
+        root.getChildren().add(btn);        
+
+        primaryStage.setScene(scene);
+
+        primaryStage.show();
+
+    }
+	
 	
 	public void run(String[] args)
 	{
-		launch(args);
+		launch(Window.class, args);
 	}
 }
