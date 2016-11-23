@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 public class Menu extends Scene {
 
 	private Window mother;
-	public Menu(Group root, Window mother)
+	public Menu(Group root, Window mother, Stage fenetre)
 	{
 		super(root, 1000, 750, Color.GREEN);
 		this.mother = mother;
@@ -22,7 +22,7 @@ public class Menu extends Scene {
 		btn.setText("LET'S PLAY TAROT !");
 		btn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				mother.changeToGameView();
+				mother.changeToGameView(fenetre);
 			}
 		});
 		root.getChildren().add(btn);
