@@ -49,10 +49,6 @@ public class Game {
 		type.changeToExcuse();
 		cards.add(new Card(type, new CardValue(0)));
 
-		/*
-		 * for(Card e : cards) { System.out.println(e.getType().toString() +
-		 * ", " + e.getValue().getVal()); }
-		 */
 	}
 
 	public void initGame() {
@@ -61,6 +57,19 @@ public class Game {
 			players.add(new Player());
 		}
 		distribCard();
+		testPetitSec();
+	}
+
+	private boolean testPetitSec() {
+		for(Player p : players) {
+			for(Card c : p.getHand().getGame()) {
+				if((c.getType().getSpecials() == CardType.Specials.ATOUT && c.getValue().getVal() != 1) ||
+						c.getType().getSpecials() == CardType.Specials.EXCUSE) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	public void distribCard() {
@@ -81,7 +90,6 @@ public class Game {
 					}
 				}
 				id_player = (id_player + 1) % players.size();
-				//test
 			}
 		}
 	}

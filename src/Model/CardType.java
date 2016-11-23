@@ -19,11 +19,11 @@ public class CardType {
 		s = type.getSpecials();
 	}
 
-	private Specials getSpecials() {
+	public Specials getSpecials() {
 		return s;
 	}
 
-	private Basics getBasics() {
+	public Basics getBasics() {
 		return b;
 	}
 
