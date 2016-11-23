@@ -9,19 +9,17 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class Window extends Application {
 
-	private String title;
-	private Controller control;
-	private Scene scene;
-	private Group root;
+	protected String title;
+	protected Controller control;
+	protected Scene scene;
+	protected Group root;
 	Image image;
 	ImageView carte;
-
 
 	public Window() {
 		title = "Tarot NEDELEC NORMAND S3C";
@@ -29,16 +27,11 @@ public class Window extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		primaryStage.setTitle(title);	
+		Menu menu = new Menu(primaryStage);
+		menu.run();
 		
-		primaryStage.setTitle(title);			
-		menu(primaryStage);				
-		primaryStage.setScene(scene);
-		primaryStage.show();
-	}
-
-	public void menu(Stage primaryStage)
-	{
-		root = new Group();
+		/*root = new Group();
 		scene = new Scene(root, 1000, 750, Color.GREEN);
 		Button btn = new Button();
 		btn.setLayoutX(350);
@@ -47,30 +40,16 @@ public class Window extends Application {
 		btn.setText("LET'S PLAY TAROT !");
 		btn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				game(primaryStage);
-				primaryStage.setScene(scene);
-				primaryStage.show();
+				//GameView game = new GameView(primaryStage, Mainargs);
 			}
 		});
 		root.getChildren().add(btn);
+		primaryStage.setScene(scene);
+		primaryStage.show();*/
 	}
 
-	public void game(Stage primaryStage)
-	{
-		root = new Group();
-		scene = new Scene(root, 1000, 750, Color.RED);
-		image = new Image("file:./ressources/dos_carte.jpg");
-		carte = new ImageView();
-		carte.setImage(image);
-		root.getChildren().add(carte);
-		primaryStage.sizeToScene();
-		root.setScaleX(100);
-		root.setScaleY(100);
-
-	}
-
-	public void run(String[] args) {
-		launch(args);
+	public void run() {
+		launch();
 	}
 
 	public void setController(Controller c)

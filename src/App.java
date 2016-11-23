@@ -18,12 +18,12 @@ public class App {
 		
 	}
 	
-	public void run(String[] args)
+	public void run()
 	{
-		win.run(args);
+		win.run();
 	}
 
 	public static void main(String[] args) {
-		new App().run(args);
+		new App().run();
 	}
 }
