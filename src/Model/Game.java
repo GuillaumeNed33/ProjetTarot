@@ -81,6 +81,7 @@ public class Game {
 					}
 				}
 				id_player = (id_player + 1) % players.size();
+				//test
 			}
 		}
 	}
