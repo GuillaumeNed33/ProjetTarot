@@ -20,7 +20,7 @@ public class Window extends Application {
 	protected Group root;
 	Image image;
 	ImageView carte;
-
+	
 	public Window() {
 		title = "Tarot NEDELEC NORMAND S3C";
 	}
@@ -28,24 +28,9 @@ public class Window extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		primaryStage.setTitle(title);	
-		Menu menu = new Menu(primaryStage);
-		menu.run();
-		
-		/*root = new Group();
-		scene = new Scene(root, 1000, 750, Color.GREEN);
-		Button btn = new Button();
-		btn.setLayoutX(350);
-		btn.setLayoutY(350);
-		btn.setPrefSize(250, 100);
-		btn.setText("LET'S PLAY TAROT !");
-		btn.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent event) {
-				//GameView game = new GameView(primaryStage, Mainargs);
-			}
-		});
-		root.getChildren().add(btn);
-		primaryStage.setScene(scene);
-		primaryStage.show();*/
+		root = new Group();
+		primaryStage.setScene(new Menu(root,this));
+		primaryStage.show();
 	}
 
 	public void run() {
@@ -55,5 +40,10 @@ public class Window extends Application {
 	public void setController(Controller c)
 	{
 		control =c;
+	}
+
+	public void changeToGameView() {
+		System.out.println("Ici je suis dans la merde en fait MDR !! ");
+		System.out.println("Faut faire un truc avec le primary stage je pense.");
 	}
 }

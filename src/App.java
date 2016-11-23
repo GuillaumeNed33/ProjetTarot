@@ -1,5 +1,6 @@
 import Controler.Controller;
 import Model.Game;
+import View.Menu;
 import View.Window;
 
 public class App {
