@@ -21,7 +21,7 @@ public class Game {
 
 	public Game() {
 		generateCards();
-		initGame();
+		//initGame();
 	}
 
 	public void setController(Controller c) {
@@ -56,13 +56,25 @@ public class Game {
 		for (int i = 0; i < 4; i++) {
 			players.add(new Player());
 		}
+		distribCard();
+		while(testPetitSec())
+		{
+			cards.removeAll(cards);
+			System.out.println("PETIT SEC ! Taille apres suppression : " + cards.size());
+			generateCards();
+			distribCard();
+		}
+		displayCardGame();
 	}
 
 	private boolean testPetitSec() {
-		for (Player p : players) {
-			for (Card c : p.getHand().getGame()) {
-				if ((c.getType().getSpecials() == CardType.Specials.ATOUT && c.getValue().getVal() != 1)
-						|| c.getType().getSpecials() == CardType.Specials.EXCUSE) {
+
+		for(Player p : players) 
+		{
+			for(Card c : p.getHand().getGame())
+			{
+				if((c.getType().getSpecials() == CardType.Specials.ATOUT && c.getValue().getVal() != 1) ||
+						c.getType().getSpecials() == CardType.Specials.EXCUSE) {
 					return false;
 				}
 			}
@@ -74,16 +86,23 @@ public class Game {
 		chien = new Chien();
 		int id_player = 0;
 		Random r = new Random();
+		boolean firstCard = true;
 		while (!cards.isEmpty()) {
 			int card = r.nextInt(cards.size());
-			if (r.nextDouble() < 0.5 && chien.size() < 6) {
+			if (r.nextDouble() < 0.5 && chien.size() < 6 && !firstCard) {
 				chien.addCard(cards.get(card));
-			} else {
+				cards.remove(card);
+			} 
+			else {
+				if(firstCard)
+					firstCard=false;
 				Player p = players.get(id_player);
-				for (int i = 0; i < 3; i++) {
+				for (int i = 0; i < 3; i++)
+				{
 					p.getHand().addCard(cards.get(card));
 					cards.remove(card);
-					if (cards.size() > 0) {
+					if (cards.size() > 0)
+					{
 						card = r.nextInt(cards.size());
 					}
 				}
@@ -105,7 +124,7 @@ public class Game {
 			System.out.println(c.getValue().getVal() + " " + c.getType().toString());
 		}
 		for (int i = 0; i < players.size(); i++) {
-			System.out.println("Le joueur " + i + " : ");
+			System.out.println("\nLe joueur " + i + " : ");
 			for (Card c : players.get(i).getHand().getGame()) {
 				System.out.println(c.getValue().getVal() + " " + c.getType().toString());
 			}

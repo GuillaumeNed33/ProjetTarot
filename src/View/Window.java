@@ -1,6 +1,7 @@
 package View;
 
 import Controler.Controller;
+import Model.Game;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -49,6 +50,9 @@ public class Window extends Application {
 	
 	private void StartGame(Group root, Scene scene) {
 		root.getChildren().clear();
+		//control.startGame();
+		Game g = new Game();
+		g.initGame();
 		scene.setFill(Color.RED);
 		
         Card_View carte = new Card_View();
