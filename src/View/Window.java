@@ -2,6 +2,7 @@ package View;
 
 import Controler.Controller;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -13,8 +14,7 @@ import javafx.stage.Stage;
 public class Window extends Application {
 
 	protected String title;
-	protected Controller control;
-
+	protected Controller c;
 	boolean menu = true;
 	
 	public Window() {
@@ -56,17 +56,17 @@ public class Window extends Application {
         carte.setY(50);
         
         Button btn = new Button();
-		btn.setLayoutX(350);
-		btn.setLayoutY(350);
-		btn.setPrefSize(250, 100);
-		btn.setText("Change cote");
+		btn.setLayoutY(scene.getHeight()/2);
+		btn.setLayoutX(scene.getWidth()/2);
+		btn.setPrefSize(100, 100);
+		btn.setText("Distribuer");
+
 		btn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				carte.flip().play();
 		        carte.identify("2Coeur.jpg");
 			}
 		});
-        
         root.getChildren().addAll(carte.getNodes());
         root.getChildren().add(btn);
 	}
@@ -77,6 +77,6 @@ public class Window extends Application {
 
 	public void setController(Controller c)
 	{
-		control =c;
+		this.c =c;
 	}
 }

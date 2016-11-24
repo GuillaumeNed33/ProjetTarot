@@ -56,15 +56,13 @@ public class Game {
 		for (int i = 0; i < 4; i++) {
 			players.add(new Player());
 		}
-		distribCard();
-		testPetitSec();
 	}
 
 	private boolean testPetitSec() {
-		for(Player p : players) {
-			for(Card c : p.getHand().getGame()) {
-				if((c.getType().getSpecials() == CardType.Specials.ATOUT && c.getValue().getVal() != 1) ||
-						c.getType().getSpecials() == CardType.Specials.EXCUSE) {
+		for (Player p : players) {
+			for (Card c : p.getHand().getGame()) {
+				if ((c.getType().getSpecials() == CardType.Specials.ATOUT && c.getValue().getVal() != 1)
+						|| c.getType().getSpecials() == CardType.Specials.EXCUSE) {
 					return false;
 				}
 			}
@@ -92,6 +90,7 @@ public class Game {
 				id_player = (id_player + 1) % players.size();
 			}
 		}
+		testPetitSec();
 	}
 
 	public void nextStep() {

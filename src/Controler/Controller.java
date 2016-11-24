@@ -14,6 +14,8 @@ public class Controller {
 	}
 
 	public void startGame() {
+		System.out.println("Je lance le jeu");
 		game.initGame();
 	}
+
 }
