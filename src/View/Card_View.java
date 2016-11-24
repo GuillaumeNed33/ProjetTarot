@@ -9,12 +9,18 @@ import javafx.animation.Transition;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.shape.*;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
+import javafx.util.Pair;
 
 public class Card_View {
 
+	private Double speed_X;
+	private Double speed_Y;
+	private Double objX;
+	private Double objY;
+	
+	
 	private Image image_front;
 	private static Image image_back = new Image("file:./ressources/cards/cache.jpg"); 
 	private ImageView card_back = new ImageView();	
@@ -25,8 +31,13 @@ public class Card_View {
 
 	public Card_View() {
 		//image_front = new Image("file:./ressources/cards/"+fichier+".jpg"); 
-		//ImageView card_front = new ImageView();	
+		//ImageView card_front = new ImageView();
+		
+		speed_X=2.;
+		speed_Y=2.;
 		card_back.setImage(image_back);
+		card_back.setX(10);
+		card_back.setY(30);
 		//card_front.setImage(image_front);
 
 	}
@@ -61,6 +72,15 @@ public class Card_View {
 		card_front.setImage(image_front);
 	}
 
+	public void move() {
+		Double next_pos_X=card_back.getX()+speed_X;
+		Double next_pos_Y=card_back.getY()+speed_Y;
+		if(next_pos_X < objX)
+			card_back.setX(next_pos_X);
+		if(next_pos_Y < objY)
+			card_back.setY(next_pos_Y);
+	}
+	
 	public Transition flip() {
 		final RotateTransition rotateOutFront = new RotateTransition(Duration.millis(halfFlipDuration), card_front); 
 	    rotateOutFront.setInterpolator(Interpolator.LINEAR); 
@@ -75,5 +95,10 @@ public class Card_View {
 	    rotateInBack.setToAngle(0); 
 	    //
 	    return new SequentialTransition(rotateOutFront, rotateInBack); 
+	}
+
+	public void setObjective(Pair<Double, Double> obj) {
+		objX=obj.getKey();
+		objY=obj.getValue();
 	}
 }
