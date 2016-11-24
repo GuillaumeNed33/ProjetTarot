@@ -7,10 +7,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 public class Window extends Application {
@@ -65,8 +62,8 @@ public class Window extends Application {
 		btn.setText("Change cote");
 		btn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
+				carte.flip().play();
 		        carte.identify("2Coeur.jpg");
-				carte.flip().play();;
 			}
 		});
         
@@ -81,10 +78,5 @@ public class Window extends Application {
 	public void setController(Controller c)
 	{
 		control =c;
-	}
-
-	public void changeToGameView(Stage primaryStage) {
-		/*System.out.println("Ici je suis dans la merde en fait MDR !! ");
-		System.out.println("Faut faire un truc avec le primary stage je pense.");*/
 	}
 }
