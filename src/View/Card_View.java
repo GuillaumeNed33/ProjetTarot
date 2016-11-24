@@ -19,6 +19,7 @@ public class Card_View {
 	private Double speed_Y;
 	private Double objX;
 	private Double objY;
+	boolean arrived;
 	
 	
 	private Image image_front;
@@ -32,9 +33,7 @@ public class Card_View {
 	public Card_View() {
 		//image_front = new Image("file:./ressources/cards/"+fichier+".jpg"); 
 		//ImageView card_front = new ImageView();
-		
-		speed_X=2.;
-		speed_Y=2.;
+		arrived = false;
 		card_back.setImage(image_back);
 		card_back.setX(10);
 		card_back.setY(30);
@@ -75,10 +74,13 @@ public class Card_View {
 	public void move() {
 		Double next_pos_X=card_back.getX()+speed_X;
 		Double next_pos_Y=card_back.getY()+speed_Y;
-		if(next_pos_X < objX)
+		if(Math.abs(next_pos_X - objX) > Math.abs(speed_X))
 			card_back.setX(next_pos_X);
-		if(next_pos_Y < objY)
+		if(Math.abs(next_pos_Y - objY) > Math.abs(speed_Y))
 			card_back.setY(next_pos_Y);
+		if(Math.abs(next_pos_X - objX) <= Math.abs(speed_X) && Math.abs(next_pos_Y - objY) <= Math.abs(speed_Y)) {
+			arrived = true;
+		}
 	}
 	
 	public Transition flip() {
@@ -99,6 +101,18 @@ public class Card_View {
 
 	public void setObjective(Pair<Double, Double> obj) {
 		objX=obj.getKey();
+		if(objX > card_back.getX())
+			speed_X=5.;
+		else 
+			speed_X=-5.;
 		objY=obj.getValue();
+		if(objY > card_back.getY())
+			speed_Y=5.;
+		else 
+			speed_Y=-5.;
+	}
+	
+	public boolean isArrived() {
+		return arrived;
 	}
 }

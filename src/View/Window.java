@@ -77,7 +77,10 @@ public class Window extends Application {
 			@Override
             public void handle(long now) {
 				for (Card_View cV : cards) {
-					cV.move();
+					if(cV.isArrived() == false) {
+						cV.move();
+						return;
+					}
 				}
 			}
 		};
