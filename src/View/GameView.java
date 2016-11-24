@@ -8,22 +8,10 @@ import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-public class GameView extends Scene {
+public class GameView {
 
-	public GameView(Group root, Stage fenetre)
+	public GameView(Group root, Scene scene)
 	{
-		super(root, 1000, 750, Color.RED);
-		Button btn = new Button();
-		btn.setLayoutX(350);
-		btn.setLayoutY(350);
-		btn.setPrefSize(250, 100);
-		btn.setText("en Jeu");
-		btn.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent event) {
-				//GameView game = new GameView(primaryStage, Mainargs);
-			}
-		});
-		root.getChildren().add(btn);
 	}
 
 
