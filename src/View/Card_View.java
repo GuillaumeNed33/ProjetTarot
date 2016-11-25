@@ -102,14 +102,14 @@ public class Card_View {
 	public void setObjective(Pair<Double, Double> obj) {
 		objX=obj.getKey();
 		if(objX > card_back.getX())
-			speed_X=5.;
+			speed_X=8.;
 		else 
-			speed_X=-5.;
+			speed_X=-8.;
 		objY=obj.getValue();
 		if(objY > card_back.getY())
-			speed_Y=5.;
+			speed_Y=8.;
 		else 
-			speed_Y=-5.;
+			speed_Y=-8.;
 	}
 	
 	public boolean isArrived() {

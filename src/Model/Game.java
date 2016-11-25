@@ -109,7 +109,7 @@ public class Game {
 				id_player = (id_player + 1) % players.size();
 			}
 		}
-		testPetitSec();
+		//testPetitSec();
 	}
 
 	public void nextStep() {

@@ -20,7 +20,8 @@ public class Window extends Application {
 	protected Controller c;
 	private AnimationTimer loop_G;
 	private Vector<Pair<Double,Double>> players_place;
-	boolean menu = true;
+	private Pair<Double,Double> chien_place;
+//	boolean menu = true;
 	
 	public Window() {
 		title = "Tarot NEDELEC NORMAND S3C";
@@ -31,8 +32,9 @@ public class Window extends Application {
 	private void initPlayerPlace() {
 		players_place.add(new Pair<Double,Double>(500.,0.));
 		players_place.add(new Pair<Double,Double>(0.,350.));
-		players_place.add(new Pair<Double,Double>(500.,1000.));
-		players_place.add(new Pair<Double,Double>(700.,350.));
+		players_place.add(new Pair<Double,Double>(850.,450.));
+		players_place.add(new Pair<Double,Double>(350.,550.));
+		chien_place = new Pair<Double,Double>(350.,550.);
 	}
 
 	@Override
@@ -58,7 +60,9 @@ public class Window extends Application {
 				StartGame(root, scene);
 			}
 		});
-		root.getChildren().add(btn);		
+		root.getChildren().add(btn);	
+		StartGame(root, scene);
+
 	}
 	
 	private void StartGame(Group root, Scene scene) {
