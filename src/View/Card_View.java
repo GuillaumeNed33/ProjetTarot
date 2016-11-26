@@ -1,4 +1,5 @@
 package View;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -14,48 +15,54 @@ import javafx.util.Duration;
 import javafx.util.Pair;
 
 public class Card_View {
+	/// Constantes
+	final static int H_CARD = 85;
+	final static int W_CARD = 48;
+	final static Double START_X = 10.;
+	final static Double START_Y = 30.;
+	final static Double SPEED = 10.;
 
 	private Double speed_X;
 	private Double speed_Y;
 	private Double objX;
 	private Double objY;
 	boolean arrived;
-	
-	
+
 	private Image image_front;
-	private static Image image_back = new Image("file:./ressources/cards/cache.jpg"); 
-	private ImageView card_back = new ImageView();	
-	private ImageView card_front = new ImageView();	
+	private static Image image_back = new Image("file:./ressources/cards/cache.jpg");
+	private ImageView card_back = new ImageView();
+	private ImageView card_front = new ImageView();
 	static long halfFlipDuration = 1000;
 
-
-
-	public Card_View() {
-		//image_front = new Image("file:./ressources/cards/"+fichier+".jpg"); 
-		//ImageView card_front = new ImageView();
+	public Card_View(int i) {
+		image_front = new Image("file:./ressources/cards/"+i+".jpg");
 		arrived = false;
 		card_back.setImage(image_back);
-		card_back.setX(10);
-		card_back.setY(30);
-		//card_front.setImage(image_front);
+		card_back.setFitWidth(W_CARD);
+		card_back.setFitHeight(H_CARD);
+		card_back.setX(START_X);
+		card_back.setY(START_Y);
+		card_front.setImage(image_front);
+		card_front.setFitWidth(W_CARD);
+		card_front.setFitHeight(H_CARD);
+		card_front.setX(START_X);
+		card_front.setY(START_Y);
 
 	}
 
-	public void setX(int val)
-	{
-		card_back.setX(val);
-		card_front.setX(val);
+	public void setX(Double x) {
+		card_back.setX(x);
+		card_front.setX(x);
 
 	}
-	public void setY(int val)
-	{
-		card_back.setY(val);
-		card_front.setY(val);
+
+	public void setY(Double y) {
+		card_back.setY(y);
+		card_front.setY(y);
 		card_back.setCache(true);
 	}
 
-	public Collection<Node> getNodes()
-	{
+	public Collection<Node> getNodes() {
 		ArrayList<Node> al = new ArrayList<>();
 		al.add(card_front);
 		al.add(card_back);
@@ -67,51 +74,61 @@ public class Card_View {
 	}
 
 	public void identify(String file) {
-		image_front = new Image("file:./ressources/cards/"+file); 
+		image_front = new Image("file:./ressources/cards/" + file);
 		card_front.setImage(image_front);
 	}
 
 	public void move() {
-		Double next_pos_X=card_back.getX()+speed_X;
-		Double next_pos_Y=card_back.getY()+speed_Y;
-		if(Math.abs(next_pos_X - objX) > Math.abs(speed_X))
+		Double next_pos_X = card_back.getX() + speed_X;
+		Double next_pos_Y = card_back.getY() + speed_Y;
+		if (Math.abs(next_pos_X - objX) > Math.abs(speed_X))
 			card_back.setX(next_pos_X);
-		if(Math.abs(next_pos_Y - objY) > Math.abs(speed_Y))
+		if (Math.abs(next_pos_Y - objY) > Math.abs(speed_Y))
 			card_back.setY(next_pos_Y);
-		if(Math.abs(next_pos_X - objX) <= Math.abs(speed_X) && Math.abs(next_pos_Y - objY) <= Math.abs(speed_Y)) {
+		if (Math.abs(next_pos_X - objX) <= Math.abs(speed_X) && Math.abs(next_pos_Y - objY) <= Math.abs(speed_Y)) {
+			this.setX(objX);
+			this.setY(objY);
 			arrived = true;
 		}
 	}
-	
+
 	public Transition flip() {
-		final RotateTransition rotateOutFront = new RotateTransition(Duration.millis(halfFlipDuration), card_front); 
-	    rotateOutFront.setInterpolator(Interpolator.LINEAR); 
-	    rotateOutFront.setAxis(Rotate.Y_AXIS); 
-	    rotateOutFront.setFromAngle(0); 
-	    rotateOutFront.setToAngle(90); 
-	    // 
-	    final RotateTransition rotateInBack = new RotateTransition(Duration.millis(halfFlipDuration), card_back); 
-	    rotateInBack.setInterpolator(Interpolator.LINEAR); 
-	    rotateInBack.setAxis(Rotate.Y_AXIS); 
-	    rotateInBack.setFromAngle(-90); 
-	    rotateInBack.setToAngle(0); 
-	    //
-	    return new SequentialTransition(rotateOutFront, rotateInBack); 
+		final RotateTransition rotateOutFront = new RotateTransition(Duration.millis(halfFlipDuration), card_back);
+		rotateOutFront.setInterpolator(Interpolator.LINEAR);
+		rotateOutFront.setAxis(Rotate.Y_AXIS);
+		rotateOutFront.setFromAngle(0);
+		rotateOutFront.setToAngle(90);
+		//
+		final RotateTransition rotateInBack = new RotateTransition(Duration.millis(halfFlipDuration), card_front);
+		rotateInBack.setInterpolator(Interpolator.LINEAR);
+		rotateInBack.setAxis(Rotate.Y_AXIS);
+		rotateInBack.setFromAngle(-90);
+		rotateInBack.setToAngle(0);
+		//
+		return new SequentialTransition(rotateOutFront, rotateInBack);
 	}
 
 	public void setObjective(Pair<Double, Double> obj) {
-		objX=obj.getKey();
-		if(objX > card_back.getX())
-			speed_X=8.;
-		else 
-			speed_X=-8.;
-		objY=obj.getValue();
-		if(objY > card_back.getY())
-			speed_Y=8.;
-		else 
-			speed_Y=-8.;
+		Double pos_X = card_back.getX();
+		Double pos_Y = card_back.getY();
+		objX = obj.getKey();
+		objY = obj.getValue();
+		Double dist_X = Math.sqrt(Math.pow(pos_X, 2) + Math.pow(objX, 2));
+		Double dist_Y = Math.sqrt(Math.pow(pos_Y, 2) + Math.pow(objY, 2));
+
+		if (objX > pos_X)
+			speed_X = SPEED;
+		else
+			speed_X = -SPEED;
+		if (objY > pos_Y)
+			speed_Y = (dist_Y / dist_X) * SPEED;
+		else if (objY < pos_Y)
+			speed_Y = (dist_Y / dist_X) * -SPEED;
+		else
+			speed_Y = 0.;
+
 	}
-	
+
 	public boolean isArrived() {
 		return arrived;
 	}
