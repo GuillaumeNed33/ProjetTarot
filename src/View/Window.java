@@ -66,32 +66,62 @@ public class Window extends Application {
 
 	}
 
-	private void animeDistribBasic(Vector<Card_View> cards)
-	{
-		int id_player = 0;
-		int nb_carte = 0;
-		for (int i = 0; i < 72; i++) {
-			if (id_player == 0) {
-				Card_View carte = new Card_View(nb_carte + 1);
-				Double X = player_place.getKey() + ((nb_carte % 9) * (Card_View.W_CARD + 10));
-				Double Y = player_place.getValue();
-				if (nb_carte > 8) {
-					Y += Card_View.H_CARD + 10;
-				}
+	private void StartGame(Group root, Scene scene) {
+		root.getChildren().clear();
+		scene.setFill(Color.RED);
 
-				carte.setObjective(new Pair<Double, Double>(X, Y));
-				cards.add(carte);
-				nb_carte++;
+		Vector<Card_View> cards = new Vector<Card_View>();
+		Vector<Card_View> chienCards = new Vector<Card_View>();
+		Vector<Card_View> playerCards = new Vector<Card_View>();
+		Vector<Card_View> visibleCards = new Vector<Card_View>();
+
+		animeDistrib(cards, chienCards, playerCards);
+
+		visibleCards.addAll(chienCards);
+		visibleCards.addAll(playerCards);
+
+		Button btn = new Button();
+		btn.setLayoutX(400);
+		btn.setLayoutY(670);
+		btn.setPrefSize(150, 30);
+		btn.setText("Look your cards");
+		btn.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+
+				
+				Integer	i=1;
+				for(Card_View cV : visibleCards) {
+					cV.identify(i.toString()+".jpg");
+					i = (i + 1) % 20;
+				}
+				lookCard(playerCards);
+				lookCard(chienCards);
 			}
-			id_player = (id_player + 1) % 4;
+		});
+		for (Card_View cV : cards) {
+			root.getChildren().addAll(cV.getNodes());
 		}
+		root.getChildren().add(btn);
+
+		loop_G = new AnimationTimer() {
+			@Override
+			public void handle(long now) {
+				for (Card_View cV : cards) {
+					if (cV.isArrived() == false) {
+						cV.move();
+						return;
+					}
+				}
+			}
+		};
+		loop_G.start();
 	}
 
-	private void animeDistribBasic2(Vector<Card_View> cards)
+	private void animeDistrib(Vector<Card_View> cards, Vector<Card_View> chienCards, Vector<Card_View> playerCards)
 	{
 		int id_player = 0;
 		int nb_carte = 0;
-		int chienCards = 0;
+		int nbChienCards = 0;
 
 		for (int i = 0; i < 78; i++)
 		{
@@ -113,6 +143,8 @@ public class Window extends Application {
 					}
 					carte.setObjective(new Pair<Double, Double>(X,Y));
 					cards.add(carte);
+					playerCards.add(carte);
+
 					nb_carte++;
 					i++;
 				}
@@ -158,67 +190,27 @@ public class Window extends Application {
 				i--;
 				break;
 			case 2:
-				if(chienCards <6)
+				if(nbChienCards <6)
 				{
 					carte = new Card_View();
-					X = chien_place.getKey() + (chienCards * (Card_View.W_CARD + 10));
+					X = chien_place.getKey() + (nbChienCards * (Card_View.W_CARD + 10));
 					Y = chien_place.getValue();
 					carte.setObjective(new Pair<Double, Double>(X,Y));
+					chienCards.add(carte);
 					cards.add(carte);
-					chienCards++;
+					nbChienCards++;
 				}
 				else
 					i--;
 				break;
-				
+
 			default:
 				break;
 			}
 			id_player = (id_player + 1) % 5;
 		}
 	}
-
-	private void StartGame(Group root, Scene scene) {
-		root.getChildren().clear();
-		scene.setFill(Color.RED);
-
-		Vector<Card_View> cards = new Vector<Card_View>();
-		animeDistribBasic2(cards);
-
-		Button btn = new Button();
-		btn.setLayoutX(400);
-		btn.setLayoutY(670);
-		btn.setPrefSize(150, 30);
-		btn.setText("Look your cards");
-		btn.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent event) {
-
-				/*for(Card_View cV : cards) {
-					//Identification des cartes a faire ici
-					cV.flip().play();
-				}*/
-				lookCard(cards);
-			}
-		});
-		for (Card_View cV : cards) {
-			root.getChildren().addAll(cV.getNodes());
-		}
-		root.getChildren().add(btn);
-
-		loop_G = new AnimationTimer() {
-			@Override
-			public void handle(long now) {
-				for (Card_View cV : cards) {
-					if (cV.isArrived() == false) {
-						cV.move();
-						return;
-					}
-				}
-			}
-		};
-		loop_G.start();
-	}
-
+	
 	protected void lookCard(Vector<Card_View> cards) {
 		SequentialTransition master = new SequentialTransition();
 		for (Card_View cV : cards) {

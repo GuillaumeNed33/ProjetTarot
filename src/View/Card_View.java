@@ -58,6 +58,7 @@ public class Card_View {
 		card_back.setFitHeight(H_CARD);
 		card_back.setX(START_X);
 		card_back.setY(START_Y);
+		
 		//card_front.setImage(image_front);
 		//card_front.setFitWidth(W_CARD);
 		//card_front.setFitHeight(H_CARD);
@@ -92,6 +93,8 @@ public class Card_View {
 	public void identify(String file) {
 		image_front = new Image("file:./ressources/cards/" + file);
 		card_front.setImage(image_front);
+		card_front.setFitWidth(W_CARD);
+		card_front.setFitHeight(H_CARD);
 	}
 
 	public void move() {
