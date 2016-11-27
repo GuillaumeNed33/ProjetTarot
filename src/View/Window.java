@@ -4,6 +4,7 @@ import java.util.Vector;
 
 import Controler.Controller;
 import javafx.animation.AnimationTimer;
+import javafx.animation.SequentialTransition;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -110,9 +111,11 @@ public class Window extends Application {
 	}
 
 	protected void lookCard(Vector<Card_View> cards) {
+		SequentialTransition master = new SequentialTransition();
 		for (Card_View cV : cards) {
-			cV.flip().play();
+			master.getChildren().add(cV.flip());
 		}
+		master.play();
 	}
 
 	public void run() {
