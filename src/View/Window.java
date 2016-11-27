@@ -66,14 +66,14 @@ public class Window extends Application {
 		int nb_carte = 0;
 		for (int i = 0; i < 72; i++) {
 			if (id_player == 0) {
-				Card_View carte = new Card_View(nb_carte+1);
-				Double X = player_place.getKey() + ((nb_carte%9) * (Card_View.W_CARD + 10));
+				Card_View carte = new Card_View(nb_carte + 1);
+				Double X = player_place.getKey() + ((nb_carte % 9) * (Card_View.W_CARD + 10));
 				Double Y = player_place.getValue();
 				if (nb_carte > 8) {
 					Y += Card_View.H_CARD + 10;
 				}
 
-				carte.setObjective(new Pair<Double, Double>(X,Y));
+				carte.setObjective(new Pair<Double, Double>(X, Y));
 				cards.add(carte);
 				nb_carte++;
 			}
@@ -86,16 +86,14 @@ public class Window extends Application {
 		btn.setText("Look your cards");
 		btn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				for(Card_View cV : cards) {
-					cV.flip().play();
-				}
+				lookCard(cards);
 			}
 		});
 		for (Card_View cV : cards) {
 			root.getChildren().addAll(cV.getNodes());
 		}
 		root.getChildren().add(btn);
-		
+
 		loop_G = new AnimationTimer() {
 			@Override
 			public void handle(long now) {
@@ -108,7 +106,13 @@ public class Window extends Application {
 			}
 		};
 		loop_G.start();
-		
+
+	}
+
+	protected void lookCard(Vector<Card_View> cards) {
+		for (Card_View cV : cards) {
+			cV.flip().play();
+		}
 	}
 
 	public void run() {

@@ -32,7 +32,7 @@ public class Card_View {
 	private static Image image_back = new Image("file:./ressources/cards/cache.jpg");
 	private ImageView card_back = new ImageView();
 	private ImageView card_front = new ImageView();
-	static long halfFlipDuration = 1000;
+	static long halfFlipDuration = 100;
 
 	public Card_View(int i) {
 		image_front = new Image("file:./ressources/cards/"+i+".jpg");
