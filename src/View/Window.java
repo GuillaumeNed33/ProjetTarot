@@ -35,7 +35,7 @@ public class Window extends Application {
 		player_place3 = new Pair<Double, Double>(460., -200.);
 		player_place4 = new Pair<Double, Double>(1200., 300.);
 
-		chien_place = new Pair<Double, Double>(500., 30.);
+		chien_place = new Pair<Double, Double>(525., 30.);
 	}
 
 	@Override
@@ -91,13 +91,13 @@ public class Window extends Application {
 	{
 		int id_player = 0;
 		int nb_carte = 0;
+		int chienCards = 0;
 
 		for (int i = 0; i < 78; i++)
 		{
 			Card_View carte = new Card_View();
 			Double X =0.;
 			Double Y = 0.;
-			int chienCards = 0;
 
 			switch(id_player) {
 			case 0:
@@ -160,12 +160,12 @@ public class Window extends Application {
 			case 2:
 				if(chienCards <6)
 				{
-					chienCards++;
 					carte = new Card_View();
-					X = chien_place.getKey() + (chienCards * Card_View.W_CARD) + 30;
+					X = chien_place.getKey() + (chienCards * (Card_View.W_CARD + 10));
 					Y = chien_place.getValue();
 					carte.setObjective(new Pair<Double, Double>(X,Y));
 					cards.add(carte);
+					chienCards++;
 				}
 				else
 					i--;
