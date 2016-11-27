@@ -4,6 +4,7 @@ import java.util.Vector;
 
 import Controler.Controller;
 import javafx.animation.AnimationTimer;
+import javafx.animation.SequentialTransition;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -71,14 +72,14 @@ public class Window extends Application {
 		int nb_carte = 0;
 		for (int i = 0; i < 72; i++) {
 			if (id_player == 0) {
-				Card_View carte = new Card_View(nb_carte+1);
-				Double X = player_place.getKey() + ((nb_carte%9) * (Card_View.W_CARD + 10));
+				Card_View carte = new Card_View(nb_carte + 1);
+				Double X = player_place.getKey() + ((nb_carte % 9) * (Card_View.W_CARD + 10));
 				Double Y = player_place.getValue();
 				if (nb_carte > 8) {
 					Y += Card_View.H_CARD + 10;
 				}
 
-				carte.setObjective(new Pair<Double, Double>(X,Y));
+				carte.setObjective(new Pair<Double, Double>(X, Y));
 				cards.add(carte);
 				nb_carte++;
 			}
@@ -191,10 +192,12 @@ public class Window extends Application {
 		btn.setText("Look your cards");
 		btn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				for(Card_View cV : cards) {
+
+				/*for(Card_View cV : cards) {
 					//Identification des cartes a faire ici
 					cV.flip().play();
-				}
+				}*/
+				lookCard(cards);
 			}
 		});
 		for (Card_View cV : cards) {
@@ -214,6 +217,14 @@ public class Window extends Application {
 			}
 		};
 		loop_G.start();
+	}
+
+	protected void lookCard(Vector<Card_View> cards) {
+		SequentialTransition master = new SequentialTransition();
+		for (Card_View cV : cards) {
+			master.getChildren().add(cV.flip());
+		}
+		master.play();
 	}
 
 	public void run() {
