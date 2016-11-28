@@ -2,12 +2,13 @@ package Model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 import java.util.Random;
 
 import Controler.Controller;
 import Model.CardType;
 
-public class Game {
+public class Game extends Observable{
 
 	final int NBPLAYER = 4;
 	final int NBCARDS = 78;
@@ -64,7 +65,7 @@ public class Game {
 			generateCards();
 			distribCard();
 		}
-		displayCardGame();
+		//displayCardGame();
 	}
 
 	private boolean testPetitSec() {
@@ -100,12 +101,17 @@ public class Game {
 				for (int i = 0; i < 3; i++)
 				{
 					p.getHand().addCard(cards.get(card));
+					if(id_player == 0) {
+						setChanged();
+						notifyObservers(cards.get(card));
+					}
 					cards.remove(card);
 					if (cards.size() > 0)
 					{
 						card = r.nextInt(cards.size());
 					}
 				}
+				
 				id_player = (id_player + 1) % players.size();
 			}
 		}
@@ -131,4 +137,5 @@ public class Game {
 		}
 
 	}
+	
 }

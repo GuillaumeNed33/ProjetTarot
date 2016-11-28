@@ -11,6 +11,7 @@ public class Controller {
 	{
 		game = g;
 		win = w;
+		game.addObserver(win);
 	}
 
 	public void startGame() {

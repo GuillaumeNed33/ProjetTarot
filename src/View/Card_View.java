@@ -27,6 +27,7 @@ public class Card_View {
 	private Double objX;
 	private Double objY;
 	boolean arrived;
+	boolean value_set;
 
 	private Image image_front;
 	private static Image image_back = new Image("file:./ressources/cards/cache.jpg");
@@ -34,9 +35,9 @@ public class Card_View {
 	private ImageView card_front = new ImageView();
 	static long halfFlipDuration = 100;
 
-	public Card_View(int i) {
-		image_front = new Image("file:./ressources/cards/"+i+".jpg");
+	public Card_View() {
 		arrived = false;
+		value_set=false;
 		card_back.setImage(image_back);
 		card_back.setFitWidth(W_CARD);
 		card_back.setFitHeight(H_CARD);
@@ -69,13 +70,19 @@ public class Card_View {
 		return al;
 	}
 
-	public Node getcard() {
+	public Node getBackCard() {
 		return card_back;
+	}
+	
+	public Node getFrontCard() {
+		return card_front;
 	}
 
 	public void identify(String file) {
 		image_front = new Image("file:./ressources/cards/" + file);
 		card_front.setImage(image_front);
+		System.out.println(file);
+		value_set = true;
 	}
 
 	public void move() {
@@ -131,5 +138,8 @@ public class Card_View {
 
 	public boolean isArrived() {
 		return arrived;
+	}
+	public boolean isValueSet() {
+		return value_set;
 	}
 }

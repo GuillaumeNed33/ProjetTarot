@@ -1,11 +1,17 @@
 package View;
 
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Vector;
 
 import Controler.Controller;
+import Model.Card;
+import Model.Game;
 import javafx.animation.AnimationTimer;
 import javafx.animation.SequentialTransition;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -15,19 +21,21 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
-public class Window extends Application {
+public class Window extends Application implements Observer {
 
 	protected String title;
 	protected Controller c;
 	private AnimationTimer loop_G;
+	private Vector<Card_View> my_cards;
 	private Pair<Double, Double> player_place;
 	private Pair<Double, Double> chien_place;
-	// boolean menu = true;
+	private Data data;
 
 	public Window() {
 		title = "Tarot NEDELEC NORMAND S3C";
 		player_place = new Pair<Double, Double>(100., 450.);
 		chien_place = new Pair<Double, Double>(350., 550.);
+		data = new Data();
 	}
 
 	@Override
@@ -59,15 +67,16 @@ public class Window extends Application {
 	}
 
 	private void StartGame(Group root, Scene scene) {
+
 		root.getChildren().clear();
 		scene.setFill(Color.RED);
 
-		Vector<Card_View> cards = new Vector<Card_View>();
+		my_cards = new Vector<Card_View>();
 		int id_player = 0;
 		int nb_carte = 0;
 		for (int i = 0; i < 72; i++) {
 			if (id_player == 0) {
-				Card_View carte = new Card_View(nb_carte + 1);
+				Card_View carte = new Card_View();
 				Double X = player_place.getKey() + ((nb_carte % 9) * (Card_View.W_CARD + 10));
 				Double Y = player_place.getValue();
 				if (nb_carte > 8) {
@@ -75,7 +84,7 @@ public class Window extends Application {
 				}
 
 				carte.setObjective(new Pair<Double, Double>(X, Y));
-				cards.add(carte);
+				my_cards.add(carte);
 				nb_carte++;
 			}
 			id_player = (id_player + 1) % 4;
@@ -87,18 +96,18 @@ public class Window extends Application {
 		btn.setText("Look your cards");
 		btn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				lookCard(cards);
+				lookCard(root);
 			}
 		});
-		for (Card_View cV : cards) {
-			root.getChildren().addAll(cV.getNodes());
+		for (Card_View cV : my_cards) {
+			root.getChildren().add(cV.getBackCard());
 		}
 		root.getChildren().add(btn);
 
 		loop_G = new AnimationTimer() {
 			@Override
 			public void handle(long now) {
-				for (Card_View cV : cards) {
+				for (Card_View cV : my_cards) {
 					if (cV.isArrived() == false) {
 						cV.move();
 						return;
@@ -107,13 +116,17 @@ public class Window extends Application {
 			}
 		};
 		loop_G.start();
+		Game m_tmp = new Game();
+		m_tmp.addObserver(this);
+		m_tmp.initGame();
 
 	}
 
-	protected void lookCard(Vector<Card_View> cards) {
+	protected void lookCard(Group root) {
 		SequentialTransition master = new SequentialTransition();
-		for (Card_View cV : cards) {
+		for (Card_View cV : my_cards) {
 			master.getChildren().add(cV.flip());
+			root.getChildren().add(cV.getFrontCard());
 		}
 		master.play();
 	}
@@ -128,5 +141,21 @@ public class Window extends Application {
 
 	public void distribAnim() {
 
+	}
+
+	@Override
+	public void update(Observable o, Object ob) {
+		if (o instanceof Game) {
+			if (ob instanceof Card) {
+				Card n_card = (Card) ob;
+				for (Card_View c : my_cards) {
+					if (!c.isValueSet()) {
+						System.out.println("CC");
+						c.identify(data.getImage(n_card.getType(), n_card.getValue()));
+						return;
+					}
+				}
+			}
+		}
 	}
 }
