@@ -18,9 +18,9 @@ public class Card_View {
 	/// Constantes
 	final static int H_CARD = 85;
 	final static int W_CARD = 48;
-	final static Double START_X = 10.;
-	final static Double START_Y = 30.;
-	final static Double SPEED = 10.;
+	final static Double START_X = 460.;
+	final static Double START_Y = 200.;
+	final static Double SPEED = 100.;
 
 	private Double speed_X;
 	private Double speed_Y;
@@ -43,14 +43,8 @@ public class Card_View {
 		card_back.setFitHeight(H_CARD);
 		card_back.setX(START_X);
 		card_back.setY(START_Y);
-		card_front.setImage(image_front);
-		card_front.setFitWidth(W_CARD);
-		card_front.setFitHeight(H_CARD);
-		card_front.setX(START_X);
-		card_front.setY(START_Y);
 
 	}
-
 	public void setX(Double x) {
 		card_back.setX(x);
 		card_front.setX(x);
@@ -81,6 +75,8 @@ public class Card_View {
 	public void identify(String file) {
 		image_front = new Image("file:./ressources/cards/" + file);
 		card_front.setImage(image_front);
+		card_front.setFitWidth(W_CARD);
+		card_front.setFitHeight(H_CARD);
 		System.out.println(file);
 		value_set = true;
 	}
