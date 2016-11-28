@@ -1,17 +1,19 @@
 package Model;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 public class Hand {
-	private List<Card> playerGame;
+	private LinkedList<Card> playerGame;
 	
 	public Hand()
 	{
-		playerGame = new ArrayList<Card>();
+		playerGame = new LinkedList<Card>();
 	}
 	
-	public List<Card> getGame()
+	public LinkedList<Card> getGame()
 	{
 		return playerGame;
 	}

@@ -102,8 +102,7 @@ public class Game extends Observable{
 				{
 					p.getHand().addCard(cards.get(card));
 					if(id_player == 0) {
-						setChanged();
-						notifyObservers(cards.get(card));
+						
 					}
 					cards.remove(card);
 					if (cards.size() > 0)
@@ -115,6 +114,10 @@ public class Game extends Observable{
 				id_player = (id_player + 1) % players.size();
 			}
 		}
+		setChanged();
+		notifyObservers(players.get(0));
+		setChanged();
+		notifyObservers(chien);
 		//testPetitSec();
 	}
 
