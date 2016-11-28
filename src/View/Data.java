@@ -52,7 +52,7 @@ public class Data {
 				default:
 					switch (state) {
 					case IMAGE:
-						System.out.println(line);
+						//System.out.println(line);
 						path_images.put(Integer.parseInt(line.split(":")[0]), line.split(":")[1]);
 						break;
 					case SOUND:

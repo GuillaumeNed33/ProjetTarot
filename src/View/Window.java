@@ -89,7 +89,7 @@ public class Window extends Application implements Observer {
 
 		Button btn = new Button();
 		btn.setLayoutX(400);
-		btn.setLayoutY(600);
+		btn.setLayoutY(660);
 		btn.setPrefSize(150, 30);
 		btn.setText("Look your cards");
 		btn.setOnAction(new EventHandler<ActionEvent>() {
@@ -121,7 +121,7 @@ public class Window extends Application implements Observer {
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
-				c.startGame();
+				//c.startGame();
 			}
 			
 		});
@@ -255,8 +255,8 @@ public class Window extends Application implements Observer {
 						Card n_card = (Card) ob;
 						for (Card_View c : playerCards) {
 							if (!c.isValueSet()) {
-								System.out.println(n_card.getType().toString() + n_card.getValue().getVal());
-								System.out.println(data.getImage(n_card.getType(), n_card.getValue()));
+								//System.out.println(n_card.getType().toString() + n_card.getValue().getVal());
+								//System.out.println(data.getImage(n_card.getType(), n_card.getValue()));
 								c.identify(data.getImage(n_card.getType(), n_card.getValue()));
 								return;
 							}
