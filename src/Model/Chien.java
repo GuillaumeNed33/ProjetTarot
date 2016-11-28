@@ -2,13 +2,14 @@ package Model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.LinkedList;
 
 public class Chien {
-	private List<Card> cards;
+	private LinkedList<Card> cards;
 	
 	public Chien()
 	{
-		cards = new ArrayList<Card>();
+		cards = new LinkedList<Card>();
 	}
 	
 	public void addCard(Card c)
@@ -20,7 +21,7 @@ public class Chien {
 	{
 		return cards.size();
 	}
-	public List<Card> getCards() {
+	public LinkedList<Card> getCards() {
 		return cards;
 	}
 }

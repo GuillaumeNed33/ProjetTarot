@@ -6,7 +6,9 @@ import java.util.Vector;
 
 import Controler.Controller;
 import Model.Card;
+import Model.Chien;
 import Model.Game;
+import Model.Player;
 import javafx.animation.AnimationTimer;
 import javafx.animation.SequentialTransition;
 import javafx.application.Application;
@@ -27,6 +29,7 @@ public class Window extends Application implements Observer {
 	protected Controller c;
 	private AnimationTimer loop_G;
 	private Vector<Card_View> playerCards;
+	private Vector<Card_View> chienCards;
 	private Pair<Double, Double> player_place;
 	private Pair<Double, Double> player_place2;
 	private Pair<Double, Double> player_place3;
@@ -70,7 +73,6 @@ public class Window extends Application implements Observer {
 			}
 		});
 		root.getChildren().add(btn);
-		StartGame(root, scene);
 
 	}
 
@@ -79,13 +81,9 @@ public class Window extends Application implements Observer {
 		root.getChildren().clear();
 		scene.setFill(Color.RED);
 		Vector<Card_View> cards = new Vector<Card_View>();
-		Vector<Card_View> chienCards = new Vector<Card_View>();
-		 playerCards = new Vector<Card_View>();
-		Vector<Card_View> visibleCards = new Vector<Card_View>();
-		animeDistrib(cards, chienCards, playerCards);
-
-		visibleCards.addAll(chienCards);
-		visibleCards.addAll(playerCards);
+		chienCards = new Vector<Card_View>();
+		playerCards = new Vector<Card_View>();
+		animeDistrib(cards);
 
 		Button btn = new Button();
 		btn.setLayoutX(400);
@@ -94,7 +92,6 @@ public class Window extends Application implements Observer {
 		btn.setText("Look your cards");
 		btn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				Integer	i=1;
 				lookCard(playerCards);
 				lookCard(chienCards);
 			}
@@ -116,22 +113,26 @@ public class Window extends Application implements Observer {
 			}
 		};
 		loop_G.start();
+		/*
 		Platform.runLater(new Runnable() {
-
 			@Override
 			public void run() {
+<<<<<<< HEAD
 				// TODO Auto-generated method stub
 				//c.startGame();
+=======
+				c.startGame();
+>>>>>>> branch 'master' of https://gitlab-ce.iut.u-bordeaux.fr/bnormand001/ProjetPOOJava.git
 			}
 			
-		});
+		});*/
 		Game m_tmp = new Game();
 		m_tmp.addObserver(this);
 		m_tmp.initGame();
 	}
 
 
-	private void animeDistrib(Vector<Card_View> cards, Vector<Card_View> chienCards, Vector<Card_View> playerCards)
+	private void animeDistrib(Vector<Card_View> cards)
 	{
 		int id_player = 0;
 		int nb_carte = 0;
@@ -241,24 +242,34 @@ public class Window extends Application implements Observer {
 		this.c = c;
 	}
 
-	public void distribAnim() {
-
-	}
 
 	@Override
 	public void update(Observable o, Object ob) {
 		if (o instanceof Game) {
-			if (ob instanceof Card) {
+			if (ob instanceof Player) {
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
-						Card n_card = (Card) ob;
-						for (Card_View c : playerCards) {
-							if (!c.isValueSet()) {
-								//System.out.println(n_card.getType().toString() + n_card.getValue().getVal());
-								//System.out.println(data.getImage(n_card.getType(), n_card.getValue()));
-								c.identify(data.getImage(n_card.getType(), n_card.getValue()));
-								return;
+						for(Card c : ((Player) ob).getHand().getGame()) {
+							for (Card_View cV : playerCards) {
+								if (!cV.isValueSet()) {
+									cV.identify(data.getImage(c.getType(), c.getValue()));
+									break;
+								}
+							}
+						}
+					}
+				});
+			} else if (ob instanceof Chien) {
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						for(Card c : ((Chien) ob).getCards()) {
+							for (Card_View cV : chienCards) {
+								if (!cV.isValueSet()) {
+									cV.identify(data.getImage(c.getType(), c.getValue()));
+									break;
+								}
 							}
 						}
 					}
