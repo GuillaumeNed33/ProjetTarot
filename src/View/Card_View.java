@@ -77,7 +77,6 @@ public class Card_View {
 		card_front.setImage(image_front);
 		card_front.setFitWidth(W_CARD);
 		card_front.setFitHeight(H_CARD);
-		System.out.println(file);
 		value_set = true;
 	}
 

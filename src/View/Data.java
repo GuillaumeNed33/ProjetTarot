@@ -11,19 +11,22 @@ import Model.CardType;
 import Model.CardValue;
 
 public class Data {
-	final String path_file = "file:./images.txt";
+	final String path_file = "./ressources/link.csv";
 	final int MAX_ATOUT = 21;
 	final int MAX_BASIC = 14;
-	private HashMap<Integer, String> path_images;
-	private Vector<String> texts;
-	private Vector<String> path_sounds;
+	private HashMap<Integer, String> path_images = new HashMap<Integer, String>();
+	private Vector<String> texts = new Vector<String>();
+	private Vector<String> path_sounds = new Vector<String>();
 
-	//Excuse = 0
-	//Atout = 1 to 21
-	//Trefle = 22 to 35 (As to Roi)
-	//Pique = 36 to 49 
-	//Carreau = 50 to 63
-	//Coeur = 64 to 77
+	// Excuse = 0
+	// Atout = 1 to 21
+	// Trefle = 22 to 35 (As to Roi)
+	// Pique = 36 to 49
+	// Carreau = 50 to 63
+	// Coeur = 64 to 77
+	Data() {
+		take_info();
+	}
 	private enum Read_State {
 		IMAGE, TEXT, SOUND
 	}
@@ -49,6 +52,7 @@ public class Data {
 				default:
 					switch (state) {
 					case IMAGE:
+						System.out.println(line);
 						path_images.put(Integer.parseInt(line.split(":")[0]), line.split(":")[1]);
 						break;
 					case SOUND:
@@ -62,11 +66,12 @@ public class Data {
 					}
 					break;
 				}
-
+				line = br.readLine();
 			}
 			br.close();
 		} catch (Exception e) {
 			System.out.println(e.toString());
+			
 		}
 	}
 
@@ -79,28 +84,30 @@ public class Data {
 	}
 
 	public String getImage(CardType type, CardValue value) {
-		
-		switch (type.getBasics()) {
-		case CARREAUX:
-			return path_images.get(MAX_ATOUT+(3*MAX_BASIC)+value.getVal());
-		case COEUR:
-			return path_images.get(MAX_ATOUT+(4*MAX_BASIC)+value.getVal());
-		case PIQUE:
-			return path_images.get(MAX_ATOUT+(2*MAX_BASIC)+value.getVal());
-		case TREFLE:
-			return path_images.get(MAX_ATOUT+value.getVal());
-		default:
-			break;
+		if (type.getBasics() != null) {
+			switch (type.getBasics()) {
+			case CARREAUX:
+				return path_images.get(MAX_ATOUT + (2 * MAX_BASIC) + value.getVal());
+			case COEUR:
+				return path_images.get(MAX_ATOUT + (3 * MAX_BASIC) + value.getVal());
+			case PIQUE:
+				return path_images.get(MAX_ATOUT + (1 * MAX_BASIC) + value.getVal());
+			case TREFLE:
+				return path_images.get(MAX_ATOUT + value.getVal());
+			default:
+				break;
 
-		}
-		switch (type.getSpecials()) {
-		case ATOUT:
-			return path_images.get(value.getVal());
-		case EXCUSE:
-			return path_images.get(0);
-		default:
-			break;
+			}
+		} else {
+			switch (type.getSpecials()) {
+			case ATOUT:
+				return path_images.get(value.getVal());
+			case EXCUSE:
+				return path_images.get(0);
+			default:
+				break;
 
+			}
 		}
 		return null;
 	}

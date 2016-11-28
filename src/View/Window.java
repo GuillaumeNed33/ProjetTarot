@@ -116,6 +116,15 @@ public class Window extends Application implements Observer {
 			}
 		};
 		loop_G.start();
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				c.startGame();
+			}
+			
+		});
 		Game m_tmp = new Game();
 		m_tmp.addObserver(this);
 		m_tmp.initGame();
@@ -240,14 +249,20 @@ public class Window extends Application implements Observer {
 	public void update(Observable o, Object ob) {
 		if (o instanceof Game) {
 			if (ob instanceof Card) {
-				Card n_card = (Card) ob;
-				for (Card_View c : playerCards) {
-					if (!c.isValueSet()) {
-						System.out.println("CC");
-						c.identify(data.getImage(n_card.getType(), n_card.getValue()));
-						return;
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						Card n_card = (Card) ob;
+						for (Card_View c : playerCards) {
+							if (!c.isValueSet()) {
+								System.out.println(n_card.getType().toString() + n_card.getValue().getVal());
+								System.out.println(data.getImage(n_card.getType(), n_card.getValue()));
+								c.identify(data.getImage(n_card.getType(), n_card.getValue()));
+								return;
+							}
+						}
 					}
-				}
+				});
 			}
 		}
 	}
