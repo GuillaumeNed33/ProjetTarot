@@ -2,8 +2,12 @@ package View;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Observable;
+import java.util.Observer;
 
 import Model.CardValue.Value;
+import Model.Chien;
+import Model.Player;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
 import javafx.animation.SequentialTransition;
@@ -15,23 +19,23 @@ import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 import javafx.util.Pair;
 
-public class Card_View {
+public class Card_View implements Observer {
 	/// Constantes
 	final static int H_CARD = 85;
 	final static int W_CARD = 48;
 	final static Double START_X = 460.;
 	final static Double START_Y = 200.;
-	final static Double SPEED = 10.;
+	final static Double SPEED = 100.;
 
 	private Double speed_X;
 	private Double speed_Y;
 	private Double objX;
 	private Double objY;
-	boolean arrived;
-	boolean value_set;
-
+	private boolean arrived;
+	private boolean value_set;
+	private int id;
+	private int idOwner;
 	private Image image_front;
-	private String image_name;
 	private static Image image_back = new Image("file:./ressources/cards/cache.jpg");
 	private ImageView card_back = new ImageView();
 	private ImageView card_front = new ImageView();
@@ -74,16 +78,8 @@ public class Card_View {
 		return card_front;
 	}
 
-	public void identify(String file) {
-		image_front = new Image("file:./ressources/cards/" + file);
-		image_name = file;
-		card_front.setImage(image_front);
-		card_front.setFitWidth(W_CARD);
-		card_front.setFitHeight(H_CARD);
-		value_set = true;
-	}
-
 	public void move() {
+
 		Double next_pos_X = card_back.getX() + speed_X;
 		Double next_pos_Y = card_back.getY() + speed_Y;
 		if (Math.abs(next_pos_X - objX) > Math.abs(speed_X))
@@ -132,20 +128,47 @@ public class Card_View {
 			speed_Y = (dist_Y / dist_X) * -SPEED;
 		else
 			speed_Y = 0.;
-
 	}
 
 	public boolean isArrived() {
 		return arrived;
 	}
+	
 	public boolean isValueSet() {
 		return value_set;
 	}
 	
-	public String getImageName() {
-		return image_name;
+	public int getId() {
+		return id;
 	}
+	
 	public void setFrontVisible(boolean b) {
 		card_front.setVisible(b);
+	}
+	
+	@Override
+	public void update(Observable o, Object ob) {
+		if(ob instanceof Integer) {
+			id = (int) ob;
+			image_front = new Image("file:./ressources/cards/" + Window.data.getImage(this.id));
+			card_front.setImage(image_front);
+			card_front.setFitWidth(W_CARD);
+			card_front.setFitHeight(H_CARD);
+		} else if(ob instanceof Player) {
+			idOwner = ((Player) ob).getId();
+		} else if(ob instanceof Chien) {
+			idOwner = 5;
+		}
+	}
+	public int getIdOwner() {
+		
+		return idOwner;
+	}
+	
+	public Double getObjX() {
+		return objX;
+	}
+	public Double getObjY() {
+		return objY;
 	}
 }

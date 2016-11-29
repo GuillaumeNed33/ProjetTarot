@@ -27,6 +27,7 @@ public class Data {
 	Data() {
 		take_info();
 	}
+	
 	private enum Read_State {
 		IMAGE, TEXT, SOUND
 	}
@@ -83,32 +84,7 @@ public class Data {
 		return texts.get(i);
 	}
 
-	public String getImage(CardType type, CardValue value) {
-		if (type.getBasics() != null) {
-			switch (type.getBasics()) {
-			case CARREAUX:
-				return path_images.get(MAX_ATOUT + (2 * MAX_BASIC) + value.getVal());
-			case COEUR:
-				return path_images.get(MAX_ATOUT + (3 * MAX_BASIC) + value.getVal());
-			case PIQUE:
-				return path_images.get(MAX_ATOUT + (1 * MAX_BASIC) + value.getVal());
-			case TREFLE:
-				return path_images.get(MAX_ATOUT + value.getVal());
-			default:
-				break;
-
-			}
-		} else {
-			switch (type.getSpecials()) {
-			case ATOUT:
-				return path_images.get(value.getVal());
-			case EXCUSE:
-				return path_images.get(0);
-			default:
-				break;
-
-			}
-		}
-		return null;
+	public String getImage(int id) {
+		return path_images.get(id);
 	}
 }

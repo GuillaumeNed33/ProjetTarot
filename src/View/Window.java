@@ -1,5 +1,6 @@
 package View;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
@@ -30,10 +31,8 @@ public class Window extends Application implements Observer {
 	protected String title;
 	protected Controller c;
 	private AnimationTimer loop_G;
-	
-	private HashMap<Card, Card_View>player_cards;
-	private HashMap<Card, Card_View>chien_cards;
 
+	private ArrayList<Card_View> allCards;
 	private Vector<Card_View> playerCards;
 	private Vector<Card_View> chienCards;
 	private Pair<Double, Double> player_place;
@@ -42,7 +41,7 @@ public class Window extends Application implements Observer {
 	private Pair<Double, Double> player_place4;
 
 	private Pair<Double, Double> chien_place;
-	private Data data;
+	public static Data data;
 
 	public Window() {
 		title = "Tarot NEDELEC NORMAND S3C";
@@ -51,7 +50,6 @@ public class Window extends Application implements Observer {
 		player_place2 = new Pair<Double, Double>(-200., 300.);
 		player_place3 = new Pair<Double, Double>(460., -200.);
 		player_place4 = new Pair<Double, Double>(1200., 300.);
-
 		chien_place = new Pair<Double, Double>(525., 30.);
 	}
 
@@ -83,28 +81,30 @@ public class Window extends Application implements Observer {
 	}
 
 	private void StartGame(Group root, Scene scene) {
+		allCards = new ArrayList<Card_View>();
+		for (int i = 0; i < 78; i++) {
+			allCards.add(new Card_View());
+		}
 		Game m_tmp = new Game();
+		m_tmp.addCardObserver(allCards);
 		m_tmp.addObserver(this);
 		m_tmp.initGame();
+
 		root.getChildren().clear();
 		scene.setFill(Color.RED);
-		
-		Vector<Card_View> cards = new Vector<Card_View>();
+
 		chienCards = new Vector<Card_View>();
 		playerCards = new Vector<Card_View>();
-		
-		player_cards = new HashMap<Card, Card_View>();
-		chien_cards = new HashMap<Card, Card_View>();
-		
-		animeDistrib(cards);
-		
+
+		animeDistrib();
+
 		Button btnTri = new Button();
 		btnTri.setLayoutX(700);
 		btnTri.setLayoutY(660);
 		btnTri.setPrefSize(100, 30);
 		btnTri.setText("TRI");
 		btnTri.setVisible(false);
-		
+
 		Button btn = new Button();
 		btn.setLayoutX(400);
 		btn.setLayoutY(660);
@@ -120,19 +120,9 @@ public class Window extends Application implements Observer {
 		btnTri.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				m_tmp.triCards();
-				loop_G.stop();
-				loop_G = new AnimationTimer() {
-					@Override
-					public void handle(long now) {
-						for (Card_View cV : cards) {
-							cV.move();
-						}
-					}
-				};
-				loop_G.start();
 			}
 		});
-		for (Card_View cV : cards) {
+		for (Card_View cV : allCards) {
 			root.getChildren().addAll(cV.getNodes());
 		}
 		root.getChildren().add(btn);
@@ -141,7 +131,7 @@ public class Window extends Application implements Observer {
 		loop_G = new AnimationTimer() {
 			@Override
 			public void handle(long now) {
-				for (Card_View cV : cards) {
+				for (Card_View cV : allCards) {
 					if (cV.isArrived() == false) {
 						cV.move();
 						return;
@@ -153,89 +143,52 @@ public class Window extends Application implements Observer {
 
 	}
 
-	private void animeDistrib(Vector<Card_View> cards) {
-		int id_player = 0;
+	private void animeDistrib() {
 		int nb_carte = 0;
 		int nbChienCards = 0;
 
-		for (int i = 0; i < 78; i++) {
-			Card_View carte = new Card_View();
+		for (Card_View cV : allCards) {
 			Double X = 0.;
 			Double Y = 0.;
-
-			switch (id_player) {
-			case 0:
-				for (int j = 0; j < 3; j++) {
-					carte = new Card_View();
-					X = player_place.getKey() + ((nb_carte % 9) * (Card_View.W_CARD + 10));
-					Y = player_place.getValue();
-
-					if (nb_carte > 8) {
-						Y += Card_View.H_CARD + 10;
-					}
-					carte.setObjective(new Pair<Double, Double>(X, Y));
-					cards.add(carte);
-					playerCards.add(carte);
-
-					nb_carte++;
-					i++;
-				}
-				i--;
-				break;
-
+			switch (cV.getIdOwner()) {
 			case 1:
-				for (int j = 0; j < 3; j++) {
-					carte = new Card_View();
-					X = player_place2.getKey();
-					Y = player_place2.getValue();
-					carte.setObjective(new Pair<Double, Double>(X, Y));
-					cards.add(carte);
-					i++;
+				X = player_place.getKey() + ((nb_carte % 9) * (Card_View.W_CARD + 10));
+				Y = player_place.getValue();
+				if (nb_carte > 8) {
+					Y += Card_View.H_CARD + 10;
 				}
-				i--;
-
-				break;
-			case 4:
-				for (int j = 0; j < 3; j++) {
-					carte = new Card_View();
-					X = player_place3.getKey();
-					Y = player_place3.getValue();
-					carte.setObjective(new Pair<Double, Double>(X, Y));
-					cards.add(carte);
-					i++;
-				}
-				i--;
-
-				break;
-			case 3:
-				for (int j = 0; j < 3; j++) {
-					carte = new Card_View();
-					X = player_place4.getKey();
-					Y = player_place4.getValue();
-					carte.setObjective(new Pair<Double, Double>(X, Y));
-					cards.add(carte);
-					i++;
-				}
-				i--;
+				cV.setObjective(new Pair<Double, Double>(X, Y));
+				playerCards.add(cV);
+				nb_carte++;
 				break;
 			case 2:
-				if (nbChienCards < 6) {
-					carte = new Card_View();
+					X = player_place2.getKey();
+					Y = player_place2.getValue();
+					cV.setObjective(new Pair<Double, Double>(X, Y));
+				break;
+			case 3:
+					X = player_place3.getKey();
+					Y = player_place3.getValue();
+					cV.setObjective(new Pair<Double, Double>(X, Y));
+				break;
+			case 4:
+					X = player_place4.getKey();
+					Y = player_place4.getValue();
+					cV.setObjective(new Pair<Double, Double>(X, Y));
+				break;
+			case 5:
 					X = chien_place.getKey() + (nbChienCards * (Card_View.W_CARD + 10));
 					Y = chien_place.getValue();
-					carte.setObjective(new Pair<Double, Double>(X, Y));
-					chienCards.add(carte);
-					cards.add(carte);
+					cV.setObjective(new Pair<Double, Double>(X, Y));
+					chienCards.add(cV);
 					nbChienCards++;
-				} else
-					i--;
 				break;
 
 			default:
 				break;
 			}
-			id_player = (id_player + 1) % 5;
 		}
+
 	}
 
 	protected void lookCard(Vector<Card_View> cards) {
@@ -257,57 +210,5 @@ public class Window extends Application implements Observer {
 
 	@Override
 	public void update(Observable o, Object ob) {
-		if (o instanceof Game) {
-			if (ob instanceof Player) {
-				Platform.runLater(new Runnable() {
-					@Override
-					public void run() {
-						for (Card c : ((Player) ob).getHand().getGame()) {
-							for (Card_View cV : playerCards) {
-								if (!cV.isValueSet()) {
-									cV.identify(data.getImage(c.getType(), c.getValue()));
-									break;
-								}
-							}
-						}
-					}
-				});
-			} else if (ob instanceof Chien) {
-				Platform.runLater(new Runnable() {
-					@Override
-					public void run() {
-						for (Card c : ((Chien) ob).getCards()) {
-							for (Card_View cV : chienCards) {
-								if (!cV.isValueSet()) {
-									cV.identify(data.getImage(c.getType(), c.getValue()));
-									break;
-								}
-							}
-						}
-					}
-				});
-			} else if (ob instanceof Hand) {
-				Platform.runLater(new Runnable() {
-					@Override
-					public void run() {
-						int i = 0;
-						for (Card c : ((Hand) ob).getGame()) {
-							for (Card_View cV : playerCards) {
-								if (cV.getImageName().equalsIgnoreCase(data.getImage(c.getType(), c.getValue()))) {
-									Double X = player_place.getKey() + ((i % 9) * (Card_View.W_CARD + 10));
-									Double Y = player_place.getValue();
-
-									if (i > 8) {
-										Y += Card_View.H_CARD + 10;
-									}
-									cV.setObjective(new Pair<Double, Double>(X, Y));
-								}
-							}
-							i++;
-						}
-					}
-				});
-			}
-		}
 	}
 }

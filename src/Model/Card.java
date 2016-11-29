@@ -1,15 +1,22 @@
 package Model;
 
-public class Card {
+import java.util.Observable;
+
+public class Card extends Observable{
 	private int id;
 	private CardType type;
 	private CardValue value;
-	
-	public Card(CardType c, CardValue val, int id)
+	Player owner;
+	public Card() {
+		
+	}
+	public void initCard(CardType c, CardValue val, int id)
 	{
 		this.id = id;
 		type = c;
-		value = val; 
+		value = val;
+		setChanged();
+		notifyObservers(id);
 	}
 	
 	public CardType getType()
@@ -24,5 +31,12 @@ public class Card {
 
 	public int getId() {
 		return id;
+	}
+	public void setOwner(Object p) {
+		setChanged();
+		if(p instanceof Player) {
+			this.owner = (Player) p;
+		}
+		notifyObservers(p);
 	}
 }
