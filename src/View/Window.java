@@ -8,6 +8,7 @@ import Controler.Controller;
 import Model.Card;
 import Model.Chien;
 import Model.Game;
+import Model.Hand;
 import Model.Player;
 import javafx.animation.AnimationTimer;
 import javafx.animation.SequentialTransition;
@@ -77,14 +78,21 @@ public class Window extends Application implements Observer {
 	}
 
 	private void StartGame(Group root, Scene scene) {
-
+		Game m_tmp = new Game();
+		m_tmp.addObserver(this);
+		m_tmp.initGame();
 		root.getChildren().clear();
 		scene.setFill(Color.RED);
 		Vector<Card_View> cards = new Vector<Card_View>();
 		chienCards = new Vector<Card_View>();
 		playerCards = new Vector<Card_View>();
 		animeDistrib(cards);
-
+		Button btnTri = new Button();
+		btnTri.setLayoutX(500);
+		btnTri.setLayoutY(660);
+		btnTri.setPrefSize(100, 30);
+		btnTri.setText("Look your cards");
+		btnTri.setVisible(false);
 		Button btn = new Button();
 		btn.setLayoutX(400);
 		btn.setLayoutY(660);
@@ -94,12 +102,19 @@ public class Window extends Application implements Observer {
 			public void handle(ActionEvent event) {
 				lookCard(playerCards);
 				lookCard(chienCards);
+				btnTri.setVisible(true);
+			}
+		});
+		btnTri.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				m_tmp.triCards();
 			}
 		});
 		for (Card_View cV : cards) {
 			root.getChildren().addAll(cV.getNodes());
 		}
 		root.getChildren().add(btn);
+		root.getChildren().add(btnTri);
 
 		loop_G = new AnimationTimer() {
 			@Override
@@ -113,50 +128,30 @@ public class Window extends Application implements Observer {
 			}
 		};
 		loop_G.start();
-		/*
-		Platform.runLater(new Runnable() {
-			@Override
-			public void run() {
-<<<<<<< HEAD
-				// TODO Auto-generated method stub
-				//c.startGame();
-=======
-				c.startGame();
->>>>>>> branch 'master' of https://gitlab-ce.iut.u-bordeaux.fr/bnormand001/ProjetPOOJava.git
-			}
-			
-		});*/
-		Game m_tmp = new Game();
-		m_tmp.addObserver(this);
-		m_tmp.initGame();
+		
 	}
 
-
-	private void animeDistrib(Vector<Card_View> cards)
-	{
+	private void animeDistrib(Vector<Card_View> cards) {
 		int id_player = 0;
 		int nb_carte = 0;
 		int nbChienCards = 0;
 
-		for (int i = 0; i < 78; i++)
-		{
+		for (int i = 0; i < 78; i++) {
 			Card_View carte = new Card_View();
-			Double X =0.;
+			Double X = 0.;
 			Double Y = 0.;
 
-			switch(id_player) {
+			switch (id_player) {
 			case 0:
-				for(int j=0; j <3; j++)
-				{
+				for (int j = 0; j < 3; j++) {
 					carte = new Card_View();
-					X = player_place.getKey() + ((nb_carte%9) * (Card_View.W_CARD + 10));
+					X = player_place.getKey() + ((nb_carte % 9) * (Card_View.W_CARD + 10));
 					Y = player_place.getValue();
 
-					if (nb_carte > 8) 
-					{
+					if (nb_carte > 8) {
 						Y += Card_View.H_CARD + 10;
 					}
-					carte.setObjective(new Pair<Double, Double>(X,Y));
+					carte.setObjective(new Pair<Double, Double>(X, Y));
 					cards.add(carte);
 					playerCards.add(carte);
 
@@ -166,13 +161,12 @@ public class Window extends Application implements Observer {
 				i--;
 				break;
 
-			case 1:				
-				for(int j=0; j <3; j++)
-				{
+			case 1:
+				for (int j = 0; j < 3; j++) {
 					carte = new Card_View();
 					X = player_place2.getKey();
 					Y = player_place2.getValue();
-					carte.setObjective(new Pair<Double, Double>(X,Y));
+					carte.setObjective(new Pair<Double, Double>(X, Y));
 					cards.add(carte);
 					i++;
 				}
@@ -180,12 +174,11 @@ public class Window extends Application implements Observer {
 
 				break;
 			case 4:
-				for(int j=0; j <3; j++)
-				{
+				for (int j = 0; j < 3; j++) {
 					carte = new Card_View();
 					X = player_place3.getKey();
 					Y = player_place3.getValue();
-					carte.setObjective(new Pair<Double, Double>(X,Y));
+					carte.setObjective(new Pair<Double, Double>(X, Y));
 					cards.add(carte);
 					i++;
 				}
@@ -193,29 +186,26 @@ public class Window extends Application implements Observer {
 
 				break;
 			case 3:
-				for(int j=0; j <3; j++)
-				{
+				for (int j = 0; j < 3; j++) {
 					carte = new Card_View();
 					X = player_place4.getKey();
 					Y = player_place4.getValue();
-					carte.setObjective(new Pair<Double, Double>(X,Y));
+					carte.setObjective(new Pair<Double, Double>(X, Y));
 					cards.add(carte);
 					i++;
 				}
 				i--;
 				break;
 			case 2:
-				if(nbChienCards <6)
-				{
+				if (nbChienCards < 6) {
 					carte = new Card_View();
 					X = chien_place.getKey() + (nbChienCards * (Card_View.W_CARD + 10));
 					Y = chien_place.getValue();
-					carte.setObjective(new Pair<Double, Double>(X,Y));
+					carte.setObjective(new Pair<Double, Double>(X, Y));
 					chienCards.add(carte);
 					cards.add(carte);
 					nbChienCards++;
-				}
-				else
+				} else
 					i--;
 				break;
 
@@ -225,7 +215,7 @@ public class Window extends Application implements Observer {
 			id_player = (id_player + 1) % 5;
 		}
 	}
-	
+
 	protected void lookCard(Vector<Card_View> cards) {
 		SequentialTransition master = new SequentialTransition();
 		for (Card_View cV : cards) {
@@ -242,7 +232,6 @@ public class Window extends Application implements Observer {
 		this.c = c;
 	}
 
-
 	@Override
 	public void update(Observable o, Object ob) {
 		if (o instanceof Game) {
@@ -250,7 +239,7 @@ public class Window extends Application implements Observer {
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
-						for(Card c : ((Player) ob).getHand().getGame()) {
+						for (Card c : ((Player) ob).getHand().getGame()) {
 							for (Card_View cV : playerCards) {
 								if (!cV.isValueSet()) {
 									cV.identify(data.getImage(c.getType(), c.getValue()));
@@ -264,13 +253,34 @@ public class Window extends Application implements Observer {
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
-						for(Card c : ((Chien) ob).getCards()) {
+						for (Card c : ((Chien) ob).getCards()) {
 							for (Card_View cV : chienCards) {
 								if (!cV.isValueSet()) {
 									cV.identify(data.getImage(c.getType(), c.getValue()));
 									break;
 								}
 							}
+						}
+					}
+				});
+			} else if (ob instanceof Hand) {
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						int i = 0;
+						for (Card c : ((Hand) ob).getGame()) {
+							for(Card_View cV : playerCards) {
+								if(cV.getImageName().equalsIgnoreCase(data.getImage(c.getType(), c.getValue()))) {
+									Double X = player_place.getKey() + ((i % 9) * (Card_View.W_CARD + 10));
+									Double Y = player_place.getValue();
+
+									if (i > 8) {
+										Y += Card_View.H_CARD + 10;
+									}
+									cV.setObjective(new Pair<Double,Double>(X,Y));
+								}
+							}
+							i++;
 						}
 					}
 				});

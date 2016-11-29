@@ -3,6 +3,7 @@ package View;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import Model.CardValue.Value;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
 import javafx.animation.SequentialTransition;
@@ -20,7 +21,7 @@ public class Card_View {
 	final static int W_CARD = 48;
 	final static Double START_X = 460.;
 	final static Double START_Y = 200.;
-	final static Double SPEED = 100.;
+	final static Double SPEED = 10.;
 
 	private Double speed_X;
 	private Double speed_Y;
@@ -30,6 +31,7 @@ public class Card_View {
 	boolean value_set;
 
 	private Image image_front;
+	private String image_name;
 	private static Image image_back = new Image("file:./ressources/cards/cache.jpg");
 	private ImageView card_back = new ImageView();
 	private ImageView card_front = new ImageView();
@@ -54,7 +56,6 @@ public class Card_View {
 	public void setY(Double y) {
 		card_back.setY(y);
 		card_front.setY(y);
-		card_back.setCache(true);
 	}
 
 	public Collection<Node> getNodes() {
@@ -74,6 +75,7 @@ public class Card_View {
 
 	public void identify(String file) {
 		image_front = new Image("file:./ressources/cards/" + file);
+		image_name = file;
 		card_front.setImage(image_front);
 		card_front.setFitWidth(W_CARD);
 		card_front.setFitHeight(H_CARD);
@@ -111,6 +113,7 @@ public class Card_View {
 	}
 
 	public void setObjective(Pair<Double, Double> obj) {
+		arrived = false;
 		Double pos_X = card_back.getX();
 		Double pos_Y = card_back.getY();
 		objX = obj.getKey();
@@ -136,5 +139,9 @@ public class Card_View {
 	}
 	public boolean isValueSet() {
 		return value_set;
+	}
+	
+	public String getImageName() {
+		return image_name;
 	}
 }

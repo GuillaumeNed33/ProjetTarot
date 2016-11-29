@@ -1,9 +1,7 @@
 package Model;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Random;
@@ -66,21 +64,19 @@ public class Game extends Observable {
 			generateCards();
 			distribCard();
 		}
-		triCards();
+		// triCards();
 		// displayCardGame();
 	}
 
-	private void triCards() {
+	public void triCards() {
 		players.get(0).getHand().getGame().sort(new Comparator<Card>() {
 	        public int compare(Card c1, Card c2)
 	        {
-
 	            return  c1.getId() - c2.getId();
 	        }
 	    });
-		for(Card card : players.get(0).getHand().getGame()) {
-			System.out.println(card.getId());
-		}
+		setChanged();
+		notifyObservers(players.get(0).getHand());
 	}
 
 	private boolean testPetitSec() {
