@@ -21,7 +21,7 @@ public class Card_View {
 	final static int W_CARD = 48;
 	final static Double START_X = 460.;
 	final static Double START_Y = 200.;
-	final static Double SPEED = 10.;
+	final static Double SPEED = 100.;
 
 	private Double speed_X;
 	private Double speed_Y;

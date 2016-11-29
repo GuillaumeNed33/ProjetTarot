@@ -1,10 +1,10 @@
 package Model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Observable;
-import java.util.Random;
 
 import Controler.Controller;
 import Model.CardType;
@@ -18,12 +18,9 @@ public class Game extends Observable {
 	private List<Player> players;
 	private List<Card> cards;
 	private Chien chien;
-	private Team laPrise;
-	private Team laGarde;
 
 	public Game() {
 		generateCards();
-		// initGame();
 	}
 
 	public void setController(Controller c) {
@@ -55,26 +52,27 @@ public class Game extends Observable {
 	public void initGame() {
 		players = new ArrayList<Player>();
 		for (int i = 0; i < 4; i++) {
-			players.add(new Player());
+			players.add(new Player(i+1));
 		}
+
 		distribCard();
-		while (testPetitSec()) {
+		if (testPetitSec()) {
 			cards.removeAll(cards);
 			System.out.println("PETIT SEC ! Taille apres suppression : " + cards.size());
 			generateCards();
 			distribCard();
 		}
-		// triCards();
+		//triCards();
 		// displayCardGame();
 	}
 
 	public void triCards() {
 		players.get(0).getHand().getGame().sort(new Comparator<Card>() {
-	        public int compare(Card c1, Card c2)
-	        {
-	            return  c1.getId() - c2.getId();
-	        }
-	    });
+			public int compare(Card c1, Card c2)
+			{
+				return  c1.getId() - c2.getId();
+			}
+		});
 		setChanged();
 		notifyObservers(players.get(0).getHand());
 	}
@@ -95,57 +93,56 @@ public class Game extends Observable {
 	public void distribCard() {
 		chien = new Chien();
 		int id_player = 0;
-		Random r = new Random();
-		boolean firstCard = true;
+		Collections.shuffle(cards);		
 		while (!cards.isEmpty()) {
-			int card = r.nextInt(cards.size());
-			if (r.nextDouble() < 0.5 && chien.size() < 6 && !firstCard) {
-				chien.addCard(cards.get(card));
-				cards.remove(card);
-			} else {
-				if (firstCard)
-					firstCard = false;
-				Player p = players.get(id_player);
+			switch(id_player) {
+			case 3:
+				if(chien.size()<6)
+				chien.addCard(cards.get(0));
+				cards.remove(0);
+				break;
+			case 4:
+				Player p = players.get(3);
 				for (int i = 0; i < 3; i++) {
-					p.getHand().addCard(cards.get(card));
-					if (id_player == 0) {
-
-					}
-					cards.remove(card);
-					if (cards.size() > 0) {
-						card = r.nextInt(cards.size());
-					}
+					p.getHand().addCard(cards.get(0));
+					cards.remove(0);
 				}
+				break;
+			case 5:
+				System.out.println("ERROOOOOOOOOOOOR");
+				break;
+			default:				
 
-				id_player = (id_player + 1) % players.size();
+				Player player = players.get(id_player);
+				for (int i = 0; i < 3; i++) {
+					player.getHand().addCard(cards.get(0));
+					cards.remove(0);
+				}
+				break;
 			}
+
+			id_player = (id_player + 1) % (players.size()+1);
 		}
 
 		setChanged();
 		notifyObservers(players.get(0));
 		setChanged();
 		notifyObservers(chien);
-		// testPetitSec();
 	}
-
-	public void nextStep() {
-
-	}
-
+	
 	public void displayCardGame() {
 
 		System.out.println("------------------ AFFICHAGE CARTE ------------------");
-		System.out.println("Le Chien : ");
+		System.out.println("Le Chien : " + chien.size());
 		for (Card c : chien.getCards()) {
 			System.out.println(c.getValue().getVal() + " " + c.getType().toString());
 		}
 		for (int i = 0; i < players.size(); i++) {
-			System.out.println("\nLe joueur " + i + " : ");
+			System.out.println("\nLe joueur " + i + " : " + players.get(i).getHand().getGame().size());
 			for (Card c : players.get(i).getHand().getGame()) {
 				System.out.println(c.getValue().getVal() + " " + c.getType().toString());
 			}
 		}
 
 	}
-
 }

@@ -1,5 +1,6 @@
 package View;
 
+import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Vector;
@@ -29,6 +30,10 @@ public class Window extends Application implements Observer {
 	protected String title;
 	protected Controller c;
 	private AnimationTimer loop_G;
+	
+	private HashMap<Card, Card_View>player_cards;
+	private HashMap<Card, Card_View>chien_cards;
+
 	private Vector<Card_View> playerCards;
 	private Vector<Card_View> chienCards;
 	private Pair<Double, Double> player_place;
@@ -83,16 +88,21 @@ public class Window extends Application implements Observer {
 		m_tmp.initGame();
 		root.getChildren().clear();
 		scene.setFill(Color.RED);
+		
 		Vector<Card_View> cards = new Vector<Card_View>();
 		chienCards = new Vector<Card_View>();
 		playerCards = new Vector<Card_View>();
+		player_cards = new HashMap<Card, Card_View>();
+		chien_cards = new HashMap<Card, Card_View>();
 		animeDistrib(cards);
+		
 		Button btnTri = new Button();
-		btnTri.setLayoutX(500);
+		btnTri.setLayoutX(700);
 		btnTri.setLayoutY(660);
 		btnTri.setPrefSize(100, 30);
-		btnTri.setText("Look your cards");
+		btnTri.setText("TRI");
 		btnTri.setVisible(false);
+		
 		Button btn = new Button();
 		btn.setLayoutX(400);
 		btn.setLayoutY(660);
@@ -108,6 +118,16 @@ public class Window extends Application implements Observer {
 		btnTri.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				m_tmp.triCards();
+				loop_G.stop();
+				loop_G = new AnimationTimer() {
+					@Override
+					public void handle(long now) {
+						for (Card_View cV : cards) {
+							cV.move();
+						}
+					}
+				};
+				loop_G.start();
 			}
 		});
 		for (Card_View cV : cards) {
@@ -128,7 +148,7 @@ public class Window extends Application implements Observer {
 			}
 		};
 		loop_G.start();
-		
+
 	}
 
 	private void animeDistrib(Vector<Card_View> cards) {
@@ -269,15 +289,15 @@ public class Window extends Application implements Observer {
 					public void run() {
 						int i = 0;
 						for (Card c : ((Hand) ob).getGame()) {
-							for(Card_View cV : playerCards) {
-								if(cV.getImageName().equalsIgnoreCase(data.getImage(c.getType(), c.getValue()))) {
+							for (Card_View cV : playerCards) {
+								if (cV.getImageName().equalsIgnoreCase(data.getImage(c.getType(), c.getValue()))) {
 									Double X = player_place.getKey() + ((i % 9) * (Card_View.W_CARD + 10));
 									Double Y = player_place.getValue();
 
 									if (i > 8) {
 										Y += Card_View.H_CARD + 10;
 									}
-									cV.setObjective(new Pair<Double,Double>(X,Y));
+									cV.setObjective(new Pair<Double, Double>(X, Y));
 								}
 							}
 							i++;

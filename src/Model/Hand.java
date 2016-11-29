@@ -33,8 +33,4 @@ public class Hand {
 	{
 		return playerGame.size();
 	}
-
-	public void replace(ArrayList<Card> cards) {
-		playerGame = cards;
-	}
 }
