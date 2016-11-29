@@ -108,9 +108,7 @@ public class Game extends Observable {
 					cards.remove(0);
 				}
 				break;
-			case 5:
-				System.out.println("ERROOOOOOOOOOOOR");
-				break;
+
 			default:				
 
 				Player player = players.get(id_player);

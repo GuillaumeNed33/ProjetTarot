@@ -1,7 +1,5 @@
 package Model;
 
-import java.util.ArrayList;
-
 public class Player {
 	private int id;
 	private Hand handGame;  
@@ -15,5 +13,10 @@ public class Player {
 	public Hand getHand() 
 	{
 		return handGame;
+	}
+	
+	public int getId()
+	{
+		return id;
 	}
 }

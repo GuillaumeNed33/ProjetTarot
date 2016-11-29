@@ -92,8 +92,10 @@ public class Window extends Application implements Observer {
 		Vector<Card_View> cards = new Vector<Card_View>();
 		chienCards = new Vector<Card_View>();
 		playerCards = new Vector<Card_View>();
+		
 		player_cards = new HashMap<Card, Card_View>();
 		chien_cards = new HashMap<Card, Card_View>();
+		
 		animeDistrib(cards);
 		
 		Button btnTri = new Button();
@@ -240,6 +242,7 @@ public class Window extends Application implements Observer {
 		SequentialTransition master = new SequentialTransition();
 		for (Card_View cV : cards) {
 			master.getChildren().add(cV.flip());
+			cV.setFrontVisible(true);
 		}
 		master.play();
 	}

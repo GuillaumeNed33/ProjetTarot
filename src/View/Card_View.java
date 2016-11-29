@@ -21,7 +21,7 @@ public class Card_View {
 	final static int W_CARD = 48;
 	final static Double START_X = 460.;
 	final static Double START_Y = 200.;
-	final static Double SPEED = 100.;
+	final static Double SPEED = 10.;
 
 	private Double speed_X;
 	private Double speed_Y;
@@ -41,6 +41,7 @@ public class Card_View {
 		arrived = false;
 		value_set=false;
 		card_back.setImage(image_back);
+		card_front.setVisible(false);
 		card_back.setFitWidth(W_CARD);
 		card_back.setFitHeight(H_CARD);
 		card_back.setX(START_X);
@@ -143,5 +144,8 @@ public class Card_View {
 	
 	public String getImageName() {
 		return image_name;
+	}
+	public void setFrontVisible(boolean b) {
+		card_front.setVisible(b);
 	}
 }
