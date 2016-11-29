@@ -1,6 +1,6 @@
 package Model;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class Player {
 	private Hand handGame;  
@@ -15,7 +15,7 @@ public class Player {
 		return handGame;
 	}
 	
-	public void setGame(LinkedList<Card> cards)
+	public void setGame(ArrayList<Card> cards)
 	{
 		handGame.replace(cards);
 	}

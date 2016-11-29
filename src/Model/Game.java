@@ -2,6 +2,7 @@ package Model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
@@ -10,7 +11,7 @@ import java.util.Random;
 import Controler.Controller;
 import Model.CardType;
 
-public class Game extends Observable{
+public class Game extends Observable {
 
 	final int NBPLAYER = 4;
 	final int NBCARDS = 78;
@@ -24,7 +25,7 @@ public class Game extends Observable{
 
 	public Game() {
 		generateCards();
-		//initGame();
+		// initGame();
 	}
 
 	public void setController(Controller c) {
@@ -37,7 +38,7 @@ public class Game extends Observable{
 		int val = 1;
 		for (int i = 1; i < NBCARDS; i++) {
 			CardType copy = new CardType(type);
-			cards.add(new Card(copy, new CardValue(val)));
+			cards.add(new Card(copy, new CardValue(val), i));
 			val++;
 			if (i == 56) {
 				type.changeToAtout();
@@ -50,8 +51,7 @@ public class Game extends Observable{
 			}
 		}
 		type.changeToExcuse();
-		cards.add(new Card(type, new CardValue(0)));
-
+		cards.add(new Card(type, new CardValue(0), 78));
 	}
 
 	public void initGame() {
@@ -60,85 +60,35 @@ public class Game extends Observable{
 			players.add(new Player());
 		}
 		distribCard();
-		while(testPetitSec())
-		{
+		while (testPetitSec()) {
 			cards.removeAll(cards);
 			System.out.println("PETIT SEC ! Taille apres suppression : " + cards.size());
 			generateCards();
 			distribCard();
 		}
-		//triCards();
-		//displayCardGame();
+		triCards();
+		// displayCardGame();
 	}
 
 	private void triCards() {
-		LinkedList<Card>classify_game = new LinkedList<Card>();
-		ArrayList<Card>carreaux = new ArrayList<Card>();
-		ArrayList<Card>coeurs = new ArrayList<Card>();
-		ArrayList<Card>piques = new ArrayList<Card>();
-		ArrayList<Card>trefles = new ArrayList<Card>();
-		ArrayList<Card>atouts = new ArrayList<Card>();
+		players.get(0).getHand().getGame().sort(new Comparator<Card>() {
+	        public int compare(Card c1, Card c2)
+	        {
 
-		for(Card c : players.get(0).getHand().getGame())
-		{
-			if(c.getType().getSpecials() == CardType.Specials.ATOUT || c.getType().getSpecials() == CardType.Specials.EXCUSE) {
-				atouts.add(c);
-			}
-			else if(c.getType().getBasics() == CardType.Basics.CARREAUX) {
-				carreaux.add(c);
-			}
-			else if(c.getType().getBasics() == CardType.Basics.COEUR) {
-				coeurs.add(c);
-			}
-			else if(c.getType().getBasics() == CardType.Basics.PIQUE) {
-				piques.add(c);
-			}
-			else if(c.getType().getBasics() == CardType.Basics.TREFLE) {
-				trefles.add(c);
-			}				
-		}
-		triValues(carreaux);
-		triValues(coeurs);
-		triValues(piques);
-		triValues(trefles);
-		triValues(atouts);
-
-		players.get(0).setGame(classify_game);
-	}
-
-	private void triValues(ArrayList<Card> list) {
-		int passage =0;
-		boolean permut = false;
-
-		while(permut) {
-			permut = false;
-			for(int i=0; i<list.size()-1-passage;i++)
-			{
-				if(list.get(i).getValue().getVal() > list.get(i+1).getValue().getVal())
-				{
-					Card tmp = list.get(i);
-					list.add(i, list.get(i+1));
-					list.add(i+1, tmp);
-					permut = true;
-				}
-			}
-			passage++;
-		} 
-		
-		for(Card c : list)
-		{
-			System.out.println(c.getValue().getVal() + " " + c.getType().toString());
+	            return  c1.getId() - c2.getId();
+	        }
+	    });
+		for(Card card : players.get(0).getHand().getGame()) {
+			System.out.println(card.getId());
 		}
 	}
 
 	private boolean testPetitSec() {
 
-		for(Player p : players) 
-		{
-			for(Card c : p.getHand().getGame())
-			{
-				if((c.getType().getSpecials() == CardType.Specials.ATOUT && c.getValue().getVal() != 1) ||
-						c.getType().getSpecials() == CardType.Specials.EXCUSE) {
+		for (Player p : players) {
+			for (Card c : p.getHand().getGame()) {
+				if ((c.getType().getSpecials() == CardType.Specials.ATOUT && c.getValue().getVal() != 1)
+						|| c.getType().getSpecials() == CardType.Specials.EXCUSE) {
 					return false;
 				}
 			}
@@ -156,20 +106,17 @@ public class Game extends Observable{
 			if (r.nextDouble() < 0.5 && chien.size() < 6 && !firstCard) {
 				chien.addCard(cards.get(card));
 				cards.remove(card);
-			} 
-			else {
-				if(firstCard)
-					firstCard=false;
+			} else {
+				if (firstCard)
+					firstCard = false;
 				Player p = players.get(id_player);
-				for (int i = 0; i < 3; i++)
-				{
+				for (int i = 0; i < 3; i++) {
 					p.getHand().addCard(cards.get(card));
-					if(id_player == 0) {
+					if (id_player == 0) {
 
 					}
 					cards.remove(card);
-					if (cards.size() > 0)
-					{
+					if (cards.size() > 0) {
 						card = r.nextInt(cards.size());
 					}
 				}
@@ -177,11 +124,12 @@ public class Game extends Observable{
 				id_player = (id_player + 1) % players.size();
 			}
 		}
+
 		setChanged();
 		notifyObservers(players.get(0));
 		setChanged();
 		notifyObservers(chien);
-		//testPetitSec();
+		// testPetitSec();
 	}
 
 	public void nextStep() {

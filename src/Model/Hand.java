@@ -7,14 +7,14 @@ import java.util.List;
 import java.util.Queue;
 
 public class Hand {
-	private LinkedList<Card> playerGame;
+	private ArrayList<Card> playerGame;
 	
 	public Hand()
 	{
-		playerGame = new LinkedList<Card>();
+		playerGame = new ArrayList<Card>();
 	}
 	
-	public LinkedList<Card> getGame()
+	public ArrayList<Card> getGame()
 	{
 		return playerGame;
 	}
@@ -34,7 +34,7 @@ public class Hand {
 		return playerGame.size();
 	}
 
-	public void replace(LinkedList<Card> cards) {
+	public void replace(ArrayList<Card> cards) {
 		playerGame = cards;
 	}
 }
