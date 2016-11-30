@@ -1,4 +1,8 @@
-#root {
+.my_root {
     -fx-background-image: url("https://www.google.com/images/srpr/logo3w.png");
   
+}
+.my-rect {
+	-fx-fill: green;
+	/*-fx-background-image: url("../../ressources/img/background.jpg");*/
 }

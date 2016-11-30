@@ -21,6 +21,7 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -29,6 +30,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+import javafx.scene.shape.*;
 
 public class Window extends Application implements Observer {
 
@@ -62,6 +64,15 @@ public class Window extends Application implements Observer {
 		Group root = new Group();
 		Scene scene = new Scene(root, 1000, 700, null);
 		root.setId("root");
+		root.getStyleClass().add("my_root"); 
+
+		Rectangle rect = new Rectangle(1000,700); 
+		rect.setLayoutY(0);
+		rect.setLayoutX(0);
+		rect.getStyleClass().add("my-rect"); 
+
+
+		root.getChildren().add(rect);
 		primaryStage.setTitle(title);
 		
 		scene.getStylesheets().add(Window.class.getResource("application.css").toExternalForm());
@@ -85,8 +96,6 @@ public class Window extends Application implements Observer {
 				StartGame(root, scene);
 			}
 		});
-		//scene.getStylesheets().add(Window.class.getResource("application.css").toExternalForm());
-
 		root.getChildren().add(btn);
 	}
 
