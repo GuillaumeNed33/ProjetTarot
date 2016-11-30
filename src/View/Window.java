@@ -25,6 +25,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Pair;
@@ -59,17 +60,21 @@ public class Window extends Application implements Observer {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		Group root = new Group();
-		Scene scene = new Scene(root, 1000, 700, Color.GREEN);
-		
+		Scene scene = new Scene(root, 1000, 700, null);
+		root.setId("root");
 		primaryStage.setTitle(title);
-
+		
+		scene.getStylesheets().add(Window.class.getResource("application.css").toExternalForm());
 		LoadMenu(root, scene);
-
+		
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
 
 	private void LoadMenu(Group root, Scene scene) {
+		
+		
+		
 		Button btn = new Button();
 		btn.setLayoutX(350);
 		btn.setLayoutY(350);
@@ -80,8 +85,9 @@ public class Window extends Application implements Observer {
 				StartGame(root, scene);
 			}
 		});
-		root.getChildren().add(btn);
+		//scene.getStylesheets().add(Window.class.getResource("application.css").toExternalForm());
 
+		root.getChildren().add(btn);
 	}
 
 	private void StartGame(Group root, Scene scene) {
@@ -161,8 +167,11 @@ public class Window extends Application implements Observer {
 			Double Y = 0.;
 			switch (cV.getIdOwner()) {
 			case 1:
-				X = player_place.getKey() + (nb_carte  * (Card_View.W_CARD/2));
+				X = player_place.getKey() + (nb_carte%9  * (Card_View.W_CARD+10));
 				Y = player_place.getValue();
+				if (nb_carte > 8) {
+					Y += Card_View.H_CARD + 10;
+				}
 				cV.setObjective(new Pair<Double, Double>(X, Y));
 				playerCards.add(cV);
 				nb_carte++;
