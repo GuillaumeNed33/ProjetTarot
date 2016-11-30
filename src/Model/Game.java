@@ -12,8 +12,10 @@ import View.Card_View;
 
 public class Game extends Observable {
 
-	final int NBPLAYER = 4;
-	final int NBCARDS = 78;
+	
+	public final static int NBPLAYER = 4;
+	public final static int NBCARDS = 78;
+	public final static int IDPLAYER = 1;
 
 	Controller control;
 	private List<Player> players;
@@ -75,8 +77,6 @@ public class Game extends Observable {
 				return c1.getId() - c2.getId();
 			}
 		});
-		setChanged();
-		notifyObservers(players.get(0));
 	}
 
 	private boolean testPetitSec() {
