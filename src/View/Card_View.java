@@ -38,7 +38,7 @@ public class Card_View implements Observer {
 	private int idOwner;
 	
 	private Image image_front;
-	private static Image image_back = new Image("file:./ressources/cards/cache.jpg");
+	private static Image image_back = new Image("file:./ressources/cards/cachee.jpg");
 	private ImageView card_back = new ImageView();
 	private ImageView card_front = new ImageView();
 	static long halfFlipDuration = 100;

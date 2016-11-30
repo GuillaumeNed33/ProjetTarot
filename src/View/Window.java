@@ -22,6 +22,8 @@ import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Pair;
@@ -57,6 +59,7 @@ public class Window extends Application implements Observer {
 	public void start(Stage primaryStage) throws Exception {
 		Group root = new Group();
 		Scene scene = new Scene(root, 1000, 700, Color.GREEN);
+		
 		primaryStage.setTitle(title);
 
 		LoadMenu(root, scene);
