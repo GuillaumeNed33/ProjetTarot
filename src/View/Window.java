@@ -1,6 +1,7 @@
 package View;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
@@ -119,6 +120,7 @@ public class Window extends Application implements Observer {
 		btnTri.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				m_tmp.triCards();
+				triCardsView();
 			}
 		});
 		for (Card_View cV : allCards) {
@@ -215,20 +217,24 @@ public class Window extends Application implements Observer {
 				tmp.add(allCards.get(((Card) ((ArrayList<?>) ob).get(i)).getId()));
 			}
 			allCards = tmp;
-		} else if (ob instanceof Player) {
-			if (((Player) ob).getId() == Game.IDPLAYER) {
-				for (int i = 0; i < ((Player) ob).getHand().getGame().size(); i++) {
-					Double X = player_place.getKey() + ((i % 9) * (Card_View.W_CARD + 10));
-					Double Y = player_place.getValue();
-					if (i > 8) {
-						Y += Card_View.H_CARD + 10;
-					}
-					for (Card_View cV : allCards) {
-						if(cV.getId() == ((Player) ob).getHand().getCard(i).getId())
-						cV.setObjective(new Pair<Double, Double>(X, Y));
-					}
-				}
+		}
+	}
+
+	private void triCardsView() {
+		playerCards.sort(new Comparator<Card_View>() {
+			@Override
+			public int compare(Card_View cv1, Card_View cv2) {
+				// TODO Auto-generated method stub
+				return cv1.getId() - cv2.getId();
 			}
+		});
+		for (int i = 0; i < playerCards.size(); i++) {
+			Double X = player_place.getKey() + ((i % 9) * (Card_View.W_CARD + 10));
+			Double Y = player_place.getValue();
+			if (i > 8) {
+				Y += Card_View.H_CARD + 10;
+			}
+			playerCards.get(i).setObjective(new Pair<Double,Double>(X,Y));
 		}
 	}
 }

@@ -77,8 +77,6 @@ public class Game extends Observable {
 				return c1.getId() - c2.getId();
 			}
 		});
-		setChanged();
-		notifyObservers(players.get(0));
 	}
 
 	private boolean testPetitSec() {
