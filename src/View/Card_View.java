@@ -12,10 +12,12 @@ import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Transition;
+import javafx.event.EventHandler;
 import javafx.geometry.Point3D;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 import javafx.util.Pair;
@@ -34,7 +36,6 @@ public class Card_View implements Observer {
 	private Double objY;
 	
 	private boolean arrived;
-	private boolean value_set;
 	private int id;
 	private int idOwner;
 	
@@ -42,17 +43,40 @@ public class Card_View implements Observer {
 	private static Image image_back = new Image("file:./ressources/cards/cachee.jpg");
 	private ImageView card_back = new ImageView();
 	private ImageView card_front = new ImageView();
+	private ImageView card_big = new ImageView();
 	static long halfFlipDuration = 100;
 
 	public Card_View() {
 		arrived = false;
-		value_set=false;
 		card_back.setImage(image_back);
 		card_front.setVisible(false);
+		
+		card_big.setVisible(false);
+		card_big.setX(350);
+		card_big.setY(100);
+		card_big.setFitWidth(W_CARD*2);
+		card_big.setFitHeight(H_CARD*2);
 		card_back.setFitWidth(W_CARD);
 		card_back.setFitHeight(H_CARD);
 		card_back.setX(START_X);
 		card_back.setY(START_Y);
+		card_front.setOnMouseEntered(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				System.out.println("Coucou");
+				card_big.setVisible(true);
+				
+			}
+		});
+		card_front.setOnMouseExited(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				System.out.println("Au revoir");
+				card_big.setVisible(false);
+			}
+			
+		});
 
 	}
 	public void setX(Double x) {
@@ -70,6 +94,7 @@ public class Card_View implements Observer {
 		ArrayList<Node> al = new ArrayList<>();
 		al.add(card_front);
 		al.add(card_back);
+		al.add(card_big);
 		return al;
 	}
 
@@ -137,9 +162,6 @@ public class Card_View implements Observer {
 		return arrived;
 	}
 	
-	public boolean isValueSet() {
-		return value_set;
-	}
 	
 	public int getId() {
 		return id;
@@ -154,6 +176,7 @@ public class Card_View implements Observer {
 		if(ob instanceof Integer) {
 			id = (int) ob;
 			image_front = new Image("file:./ressources/cards/" + Window.data.getImage(this.id));
+			card_big.setImage(image_front);
 			card_front.setImage(image_front);
 			card_front.setFitWidth(W_CARD);
 			card_front.setFitHeight(H_CARD);
@@ -168,20 +191,21 @@ public class Card_View implements Observer {
 		return idOwner;
 	}
 	
-	public Double getObjX() {
-		return objX;
+	public Double getX() {
+		return card_back.getX();
 	}
-	public Double getObjY() {
-		return objY;
+	public Double getY() {
+		return card_back.getY();
 	}
 	public void actualiseRotate(int nb_carte) {
 		Double remY = card_back.getY();
 		System.out.println("DEPART : " + remY);
-		int angle = -34+(4*(nb_carte));
+		int angle = -51+(6*(nb_carte));
 		Double shift = remY+(W_CARD*Math.sin(Math.toRadians(Math.abs(angle))));
 		System.out.println("ANGLE : " + angle);
 		System.out.println("ARRIVER : " + shift);
 		card_back.setRotate(angle);
 		card_back.setY(shift);
+		card_front.setVisible(true);
 	}
 }

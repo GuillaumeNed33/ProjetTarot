@@ -49,7 +49,7 @@ public class Window extends Application implements Observer {
 	public Window() {
 		title = "Tarot NEDELEC NORMAND S3C";
 		data = new Data();
-		player_place = new Pair<Double, Double>(244., 450.);
+		player_place = new Pair<Double, Double>(150., 450.);
 		player_place2 = new Pair<Double, Double>(-200., 300.);
 		player_place3 = new Pair<Double, Double>(460., -200.);
 		player_place4 = new Pair<Double, Double>(1200., 300.);
@@ -140,10 +140,11 @@ public class Window extends Application implements Observer {
 						cV.move();
 						return;
 					}
-				}
+				}/*
 				for(int i=0;i<playerCards.size();i++) {
 					playerCards.get(i).actualiseRotate(i);
 				}
+				*/
 				this.stop();
 			}
 		};
@@ -188,7 +189,6 @@ public class Window extends Application implements Observer {
 				chienCards.add(cV);
 				nbChienCards++;
 				break;
-
 			default:
 				break;
 			}
@@ -229,7 +229,6 @@ public class Window extends Application implements Observer {
 		playerCards.sort(new Comparator<Card_View>() {
 			@Override
 			public int compare(Card_View cv1, Card_View cv2) {
-				// TODO Auto-generated method stub
 				return cv1.getId() - cv2.getId();
 			}
 		});
