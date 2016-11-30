@@ -22,12 +22,12 @@ public class Game extends Observable {
 
 	public Game() {
 		cards = new ArrayList<Card>();
-		for(int i=0;i<NBCARDS;i++) {
+		for (int i = 0; i < NBCARDS; i++) {
 			cards.add(new Card());
 		}
 		players = new ArrayList<Player>();
 		for (int i = 0; i < 4; i++) {
-			players.add(new Player(i+1));
+			players.add(new Player(i + 1));
 		}
 	}
 
@@ -38,7 +38,7 @@ public class Game extends Observable {
 	private void generateCards() {
 		CardType type = new CardType();
 		int val = 1;
-		for (int i = 0; i < NBCARDS-1; i++) {
+		for (int i = 0; i < NBCARDS - 1; i++) {
 			CardType copy = new CardType(type);
 			cards.get(i).initCard(copy, new CardValue(val), i);
 			val++;
@@ -71,9 +71,8 @@ public class Game extends Observable {
 
 	public void triCards() {
 		players.get(0).getHand().getGame().sort(new Comparator<Card>() {
-			public int compare(Card c1, Card c2)
-			{
-				return  c1.getId() - c2.getId();
+			public int compare(Card c1, Card c2) {
+				return c1.getId() - c2.getId();
 			}
 		});
 		setChanged();
@@ -97,39 +96,41 @@ public class Game extends Observable {
 		chien = new Chien();
 		int id_player = 0;
 		int i = 0;
-		Collections.shuffle(cards);		
-		while(!cards.isEmpty()) {
-			switch(id_player) {
+		Collections.shuffle(cards);
+		while (i < cards.size()) {
+			switch (id_player) {
 			case 3:
-				if(chien.size()<6) {
-					cards.get(0).setOwner(chien);
-					chien.addCard(cards.get(0));
-					cards.remove(0);
+				if (chien.size() < 6) {
+					cards.get(i).setOwner(chien);
+					chien.addCard(cards.get(i));
+					i++;
 				}
 				break;
 			case 4:
 				Player p = players.get(3);
 				for (int j = 0; j < 3; j++) {
-					cards.get(0).setOwner(p);
-					p.getHand().addCard(cards.get(0));
-					cards.remove(0);
+					cards.get(i).setOwner(p);
+					p.getHand().addCard(cards.get(i));
+					i++;
 				}
 				break;
 
-			default:				
+			default:
 				Player player = players.get(id_player);
 				for (int j = 0; j < 3; j++) {
-					player.getHand().addCard(cards.get(0));
-					cards.get(0).setOwner(player);
-					cards.remove(0);
+					cards.get(i).setOwner(player);
+					player.getHand().addCard(cards.get(i));
+					i++;
 				}
+
 				break;
 			}
-
-			id_player = (id_player + 1) % (players.size()+1);
+			id_player = (id_player + 1) % (players.size() + 1);
 		}
+		setChanged();
+		notifyObservers(cards);
 	}
-	
+
 	public void displayCardGame() {
 
 		System.out.println("------------------ AFFICHAGE CARTE ------------------");
@@ -148,7 +149,7 @@ public class Game extends Observable {
 
 	public void addCardObserver(ArrayList<Card_View> cards_view) {
 		int i = 0;
-		for(Card c : cards) {
+		for (Card c : cards) {
 			c.addObserver(cards_view.get(i));
 			i++;
 		}
