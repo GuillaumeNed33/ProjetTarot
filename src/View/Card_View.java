@@ -12,6 +12,7 @@ import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Transition;
+import javafx.geometry.Point3D;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -170,5 +171,15 @@ public class Card_View implements Observer {
 	}
 	public Double getObjY() {
 		return objY;
+	}
+	public void actualiseRotate(int nb_carte) {
+		Double remY = card_back.getY();
+		System.out.println("DEPART : " + remY);
+		int angle = -34+(4*(nb_carte));
+		Double shift = remY+(W_CARD*2*Math.sin(Math.toRadians(Math.abs(angle))));
+		System.out.println("ANGLE : " + angle);
+		System.out.println("ARRIVER : " + shift);
+		card_back.setRotate(angle);
+		card_back.setY(shift);
 	}
 }

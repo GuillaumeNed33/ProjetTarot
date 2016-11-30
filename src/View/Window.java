@@ -138,6 +138,10 @@ public class Window extends Application implements Observer {
 						return;
 					}
 				}
+				for(int i=0;i<playerCards.size();i++) {
+					playerCards.get(i).actualiseRotate(i);
+				}
+				this.stop();
 			}
 		};
 		loop_G.start();
@@ -153,11 +157,8 @@ public class Window extends Application implements Observer {
 			Double Y = 0.;
 			switch (cV.getIdOwner()) {
 			case 1:
-				X = player_place.getKey() + ((nb_carte % 9) * (Card_View.W_CARD + 10));
+				X = player_place.getKey() + (nb_carte  * (Card_View.W_CARD/2));
 				Y = player_place.getValue();
-				if (nb_carte > 8) {
-					Y += Card_View.H_CARD + 10;
-				}
 				cV.setObjective(new Pair<Double, Double>(X, Y));
 				playerCards.add(cV);
 				nb_carte++;
@@ -189,6 +190,7 @@ public class Window extends Application implements Observer {
 				break;
 			}
 		}
+
 
 	}
 
