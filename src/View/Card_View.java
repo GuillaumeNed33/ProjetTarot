@@ -31,10 +31,12 @@ public class Card_View implements Observer {
 	private Double speed_Y;
 	private Double objX;
 	private Double objY;
+	
 	private boolean arrived;
 	private boolean value_set;
 	private int id;
 	private int idOwner;
+	
 	private Image image_front;
 	private static Image image_back = new Image("file:./ressources/cards/cache.jpg");
 	private ImageView card_back = new ImageView();

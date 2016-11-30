@@ -65,7 +65,7 @@ public class Game extends Observable {
 			generateCards();
 			distribCard();
 		}
-		triCards();
+		//triCards();
 		// displayCardGame();
 	}
 
