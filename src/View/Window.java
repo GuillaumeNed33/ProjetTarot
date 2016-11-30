@@ -161,26 +161,26 @@ public class Window extends Application implements Observer {
 				nb_carte++;
 				break;
 			case 2:
-					X = player_place2.getKey();
-					Y = player_place2.getValue();
-					cV.setObjective(new Pair<Double, Double>(X, Y));
+				X = player_place2.getKey();
+				Y = player_place2.getValue();
+				cV.setObjective(new Pair<Double, Double>(X, Y));
 				break;
 			case 3:
-					X = player_place3.getKey();
-					Y = player_place3.getValue();
-					cV.setObjective(new Pair<Double, Double>(X, Y));
+				X = player_place3.getKey();
+				Y = player_place3.getValue();
+				cV.setObjective(new Pair<Double, Double>(X, Y));
 				break;
 			case 4:
-					X = player_place4.getKey();
-					Y = player_place4.getValue();
-					cV.setObjective(new Pair<Double, Double>(X, Y));
+				X = player_place4.getKey();
+				Y = player_place4.getValue();
+				cV.setObjective(new Pair<Double, Double>(X, Y));
 				break;
 			case 5:
-					X = chien_place.getKey() + (nbChienCards * (Card_View.W_CARD + 10));
-					Y = chien_place.getValue();
-					cV.setObjective(new Pair<Double, Double>(X, Y));
-					chienCards.add(cV);
-					nbChienCards++;
+				X = chien_place.getKey() + (nbChienCards * (Card_View.W_CARD + 10));
+				Y = chien_place.getValue();
+				cV.setObjective(new Pair<Double, Double>(X, Y));
+				chienCards.add(cV);
+				nbChienCards++;
 				break;
 
 			default:
@@ -209,12 +209,26 @@ public class Window extends Application implements Observer {
 
 	@Override
 	public void update(Observable o, Object ob) {
-		if(ob instanceof ArrayList) {
+		if (ob instanceof ArrayList) {
 			ArrayList<Card_View> tmp = new ArrayList<Card_View>();
-			for(int i=0; i< ((ArrayList<?>)ob).size();i++) {
-				tmp.add(allCards.get(((Card)((ArrayList<?>) ob).get(i)).getId()));
+			for (int i = 0; i < ((ArrayList<?>) ob).size(); i++) {
+				tmp.add(allCards.get(((Card) ((ArrayList<?>) ob).get(i)).getId()));
 			}
 			allCards = tmp;
+		} else if (ob instanceof Player) {
+			if (((Player) ob).getId() == Game.IDPLAYER) {
+				for (int i = 0; i < ((Player) ob).getHand().getGame().size(); i++) {
+					Double X = player_place.getKey() + ((i % 9) * (Card_View.W_CARD + 10));
+					Double Y = player_place.getValue();
+					if (i > 8) {
+						Y += Card_View.H_CARD + 10;
+					}
+					for (Card_View cV : allCards) {
+						if(cV.getId() == ((Player) ob).getHand().getCard(i).getId())
+						cV.setObjective(new Pair<Double, Double>(X, Y));
+					}
+				}
+			}
 		}
 	}
 }
