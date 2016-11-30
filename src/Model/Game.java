@@ -98,7 +98,6 @@ public class Game extends Observable {
 		int i = 0;
 		Collections.shuffle(cards);
 		while (i < cards.size()) {
-			System.out.println(i);
 			switch (id_player) {
 			case 3:
 				if (chien.size() < 6) {
@@ -109,8 +108,7 @@ public class Game extends Observable {
 				break;
 			case 4:
 				Player p = players.get(3);
-				for (int j=0; j < 3;j++) {
-					System.out.println(i);
+				for (int j = 0; j < 3; j++) {
 					cards.get(i).setOwner(p);
 					p.getHand().addCard(cards.get(i));
 					i++;
@@ -119,13 +117,12 @@ public class Game extends Observable {
 
 			default:
 				Player player = players.get(id_player);
-				for (int j=0; j < 3;j++) {
-					System.out.println(i);
+				for (int j = 0; j < 3; j++) {
 					cards.get(i).setOwner(player);
 					player.getHand().addCard(cards.get(i));
 					i++;
 				}
-				
+
 				break;
 			}
 			id_player = (id_player + 1) % (players.size() + 1);

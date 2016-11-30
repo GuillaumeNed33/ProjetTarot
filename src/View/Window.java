@@ -212,13 +212,9 @@ public class Window extends Application implements Observer {
 		if(ob instanceof ArrayList) {
 			ArrayList<Card_View> tmp = new ArrayList<Card_View>();
 			for(int i=0; i< ((ArrayList<?>)ob).size();i++) {
-				System.out.println(allCards.get(((Card)((ArrayList<?>) ob).get(i)).getId()));
 				tmp.add(allCards.get(((Card)((ArrayList<?>) ob).get(i)).getId()));
 			}
 			allCards = tmp;
-			for(Card_View cV : tmp) {
-				System.out.println(cV.getId());
-			}
 		}
 	}
 }
