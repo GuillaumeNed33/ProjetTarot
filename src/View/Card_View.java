@@ -9,9 +9,12 @@ import Model.CardValue.Value;
 import Model.Chien;
 import Model.Player;
 import javafx.animation.Interpolator;
+import javafx.animation.ParallelTransition;
 import javafx.animation.RotateTransition;
+import javafx.animation.ScaleTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Transition;
+import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
 import javafx.geometry.Point3D;
 import javafx.scene.Node;
@@ -19,6 +22,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Translate;
 import javafx.util.Duration;
 import javafx.util.Pair;
 
@@ -29,6 +33,8 @@ public class Card_View implements Observer {
 	final static Double START_X = 460.;
 	final static Double START_Y = 200.;
 	final static Double SPEED = 100.;
+	final static Double BIG_POS_X = 400.;
+	final static Double BIG_POS_Y = 150.;
 
 	private Double speed_X;
 	private Double speed_Y;
@@ -63,17 +69,14 @@ public class Card_View implements Observer {
 		card_front.setOnMouseEntered(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				System.out.println("Coucou");
-				card_big.setVisible(true);
-				
+				transformeToBig();
 			}
 		});
 		card_front.setOnMouseExited(new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent event) {
-				System.out.println("Au revoir");
-				card_big.setVisible(false);
+				restoreByDefault();
 			}
 			
 		});
@@ -122,19 +125,19 @@ public class Card_View implements Observer {
 	}
 
 	public Transition flip() {
-		final RotateTransition rotateOutFront = new RotateTransition(Duration.millis(halfFlipDuration), card_back);
-		rotateOutFront.setInterpolator(Interpolator.LINEAR);
-		rotateOutFront.setAxis(Rotate.Y_AXIS);
-		rotateOutFront.setFromAngle(0);
-		rotateOutFront.setToAngle(90);
+		final RotateTransition rotateOutBack = new RotateTransition(Duration.millis(halfFlipDuration), card_back);
+		rotateOutBack.setInterpolator(Interpolator.LINEAR);
+		rotateOutBack.setAxis(Rotate.Y_AXIS);
+		rotateOutBack.setFromAngle(0);
+		rotateOutBack.setToAngle(90);
 		//
-		final RotateTransition rotateInBack = new RotateTransition(Duration.millis(halfFlipDuration), card_front);
-		rotateInBack.setInterpolator(Interpolator.LINEAR);
-		rotateInBack.setAxis(Rotate.Y_AXIS);
-		rotateInBack.setFromAngle(-90);
-		rotateInBack.setToAngle(0);
+		final RotateTransition rotateInFront = new RotateTransition(Duration.millis(halfFlipDuration), card_front);
+		rotateInFront.setInterpolator(Interpolator.LINEAR);
+		rotateInFront.setAxis(Rotate.Y_AXIS);
+		rotateInFront.setFromAngle(-90);
+		rotateInFront.setToAngle(0);
 		//
-		return new SequentialTransition(rotateOutFront, rotateInBack);
+		return new SequentialTransition(rotateOutBack, rotateInFront);
 	}
 
 	public void setObjective(Pair<Double, Double> obj) {
@@ -207,5 +210,57 @@ public class Card_View implements Observer {
 		card_back.setRotate(angle);
 		card_back.setY(shift);
 		card_front.setVisible(true);
+	}
+	private void transformeToBig() {
+		final ScaleTransition zoomFront = new ScaleTransition(Duration.millis(halfFlipDuration),card_front);
+		zoomFront.setByX(1.1);
+		zoomFront.setByY(1.1);
+		zoomFront.setToX(3.);
+		zoomFront.setToY(3.);
+		final ScaleTransition zoomBack = new ScaleTransition(Duration.millis(halfFlipDuration),card_back);
+		zoomBack.setByX(1.1);
+		zoomBack.setByY(1.1);
+		zoomBack.setToX(3.);
+		zoomBack.setToY(3.);
+		final ParallelTransition zoomAnimation = new ParallelTransition(zoomFront,zoomBack);
+		final TranslateTransition moveFront = new TranslateTransition(Duration.millis(halfFlipDuration),card_front);
+		moveFront.setByX(2);
+		moveFront.setByY(2);
+		moveFront.setToX(BIG_POS_X-card_front.getX());
+		moveFront.setToY(BIG_POS_Y-card_front.getY());
+		final TranslateTransition moveBack = new TranslateTransition(Duration.millis(halfFlipDuration),card_back);
+		moveBack.setByX(2);
+		moveBack.setByY(2);
+		moveBack.setToX(BIG_POS_X-card_back.getX());
+		moveBack.setToY(BIG_POS_Y-card_back.getY());
+		final ParallelTransition moveAnimation = new ParallelTransition(moveFront,moveBack);
+		//moveAnimation.play();
+		zoomAnimation.play();
+	}
+	private void restoreByDefault() {
+		final ScaleTransition zoomFront = new ScaleTransition(Duration.millis(halfFlipDuration),card_front);
+		zoomFront.setByX(0.9);
+		zoomFront.setByY(0.9);
+		zoomFront.setToX(1.);
+		zoomFront.setToY(1.);
+		final ScaleTransition zoomBack = new ScaleTransition(Duration.millis(halfFlipDuration),card_back);
+		zoomBack.setByX(0.9);
+		zoomBack.setByY(0.9);
+		zoomBack.setToX(1.);
+		zoomBack.setToY(1.);
+		final ParallelTransition zoomAnimation = new ParallelTransition(zoomFront,zoomBack);
+		final TranslateTransition moveFront = new TranslateTransition(Duration.millis(halfFlipDuration),card_front);
+		moveFront.setByX(2);
+		moveFront.setByY(2);
+		moveFront.setToX(objX-card_front.getX());
+		moveFront.setToY(objY-card_front.getY());
+		final TranslateTransition moveBack = new TranslateTransition(Duration.millis(halfFlipDuration),card_back);
+		moveBack.setByX(2);
+		moveBack.setByY(2);
+		moveBack.setToX(objX-card_back.getX());
+		moveBack.setToY(objY-card_back.getY());
+		final ParallelTransition moveAnimation = new ParallelTransition(moveFront,moveBack);
+		//moveAnimation.play();
+		zoomAnimation.play();
 	}
 }
