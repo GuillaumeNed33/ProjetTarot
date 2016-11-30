@@ -176,7 +176,7 @@ public class Card_View implements Observer {
 		Double remY = card_back.getY();
 		System.out.println("DEPART : " + remY);
 		int angle = -34+(4*(nb_carte));
-		Double shift = remY+(W_CARD*2*Math.sin(Math.toRadians(Math.abs(angle))));
+		Double shift = remY+(W_CARD*Math.sin(Math.toRadians(Math.abs(angle))));
 		System.out.println("ANGLE : " + angle);
 		System.out.println("ARRIVER : " + shift);
 		card_back.setRotate(angle);
