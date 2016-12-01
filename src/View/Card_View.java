@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Observable;
 import java.util.Observer;
 
+import com.sun.javafx.geom.Rectangle;
+
 import Model.CardValue.Value;
 import Model.Chien;
 import Model.Player;
@@ -15,8 +17,10 @@ import javafx.animation.ScaleTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Point3D;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -32,12 +36,9 @@ public class Card_View implements Observer {
 	final static int W_CARD = 48;
 	final static Double START_X = 460.;
 	final static Double START_Y = 200.;
-	final static Double SPEED = 100.;
+	final static Double SPEED = 1.;
 	final static Double BIG_POS_X = 400.;
 	final static Double BIG_POS_Y = 150.;
-
-	private Double speed_X;
-	private Double speed_Y;
 	private Double objX;
 	private Double objY;
 	
@@ -55,21 +56,20 @@ public class Card_View implements Observer {
 	public Card_View() {
 		arrived = false;
 		card_back.setImage(image_back);
-		card_front.setVisible(false);
-		
 		card_big.setVisible(false);
-		card_big.setX(350);
-		card_big.setY(100);
-		card_big.setFitWidth(W_CARD*2);
-		card_big.setFitHeight(H_CARD*2);
+		card_big.setFitHeight(H_CARD);
+		card_big.setFitWidth(W_CARD);
+		card_front.setFitWidth(W_CARD);
+		card_front.setFitHeight(H_CARD);
 		card_back.setFitWidth(W_CARD);
 		card_back.setFitHeight(H_CARD);
-		card_back.setX(START_X);
-		card_back.setY(START_Y);
+		this.setX(START_X);
+		this.setY(START_Y);
+		
 		card_front.setOnMouseEntered(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				transformeToBig();
+				transformeToBig(card_big);
 			}
 		});
 		card_front.setOnMouseExited(new EventHandler<MouseEvent>() {
@@ -85,12 +85,13 @@ public class Card_View implements Observer {
 	public void setX(Double x) {
 		card_back.setX(x);
 		card_front.setX(x);
-
+		card_big.setX(x);
 	}
 
 	public void setY(Double y) {
 		card_back.setY(y);
 		card_front.setY(y);
+		card_big.setY(y);
 	}
 
 	public Collection<Node> getNodes() {
@@ -109,21 +110,6 @@ public class Card_View implements Observer {
 		return card_front;
 	}
 
-	public void move() {
-
-		Double next_pos_X = card_back.getX() + speed_X;
-		Double next_pos_Y = card_back.getY() + speed_Y;
-		if (Math.abs(next_pos_X - objX) > Math.abs(speed_X))
-			card_back.setX(next_pos_X);
-		if (Math.abs(next_pos_Y - objY) > Math.abs(speed_Y))
-			card_back.setY(next_pos_Y);
-		if (Math.abs(next_pos_X - objX) <= Math.abs(speed_X) && Math.abs(next_pos_Y - objY) <= Math.abs(speed_Y)) {
-			this.setX(objX);
-			this.setY(objY);
-			arrived = true;
-		}
-	}
-
 	public Transition flip() {
 		final RotateTransition rotateOutBack = new RotateTransition(Duration.millis(halfFlipDuration), card_back);
 		rotateOutBack.setInterpolator(Interpolator.LINEAR);
@@ -140,25 +126,18 @@ public class Card_View implements Observer {
 		return new SequentialTransition(rotateOutBack, rotateInFront);
 	}
 
-	public void setObjective(Pair<Double, Double> obj) {
-		arrived = false;
-		Double pos_X = card_back.getX();
-		Double pos_Y = card_back.getY();
-		objX = obj.getKey();
-		objY = obj.getValue();
-		Double dist_X = Math.sqrt(Math.pow(pos_X, 2) + Math.pow(objX, 2));
-		Double dist_Y = Math.sqrt(Math.pow(pos_Y, 2) + Math.pow(objY, 2));
-
-		if (objX > pos_X)
-			speed_X = SPEED;
-		else
-			speed_X = -SPEED;
-		if (objY > pos_Y)
-			speed_Y = (dist_Y / dist_X) * SPEED;
-		else if (objY < pos_Y)
-			speed_Y = (dist_Y / dist_X) * -SPEED;
-		else
-			speed_Y = 0.;
+	public TranslateTransition createMoveAnimation(ImageView iV) {
+		final TranslateTransition move = new TranslateTransition(Duration.millis(halfFlipDuration),iV);
+		move.setByX(SPEED);
+		move.setByY(SPEED);
+		move.setToX(objX-iV.getX());
+		move.setToY(objY-iV.getY());
+		return move;
+	}
+	public Transition moveAnimation() {
+	
+		return new ParallelTransition(createMoveAnimation(card_back),createMoveAnimation(card_front),
+				createMoveAnimation(card_big));
 	}
 
 	public boolean isArrived() {
@@ -179,10 +158,8 @@ public class Card_View implements Observer {
 		if(ob instanceof Integer) {
 			id = (int) ob;
 			image_front = new Image("file:./ressources/cards/" + Window.data.getImage(this.id));
-			card_big.setImage(image_front);
 			card_front.setImage(image_front);
-			card_front.setFitWidth(W_CARD);
-			card_front.setFitHeight(H_CARD);
+			card_big.setImage(image_front);
 		} else if(ob instanceof Player) {
 			idOwner = ((Player) ob).getId();
 		} else if(ob instanceof Chien) {
@@ -211,56 +188,39 @@ public class Card_View implements Observer {
 		card_back.setY(shift);
 		card_front.setVisible(true);
 	}
-	private void transformeToBig() {
-		final ScaleTransition zoomFront = new ScaleTransition(Duration.millis(halfFlipDuration),card_front);
+	private void transformeToBig(ImageView node) {
+		card_big.setVisible(true);
+		final ScaleTransition zoomFront = new ScaleTransition(Duration.millis(halfFlipDuration),node);
 		zoomFront.setByX(1.1);
 		zoomFront.setByY(1.1);
 		zoomFront.setToX(3.);
 		zoomFront.setToY(3.);
-		final ScaleTransition zoomBack = new ScaleTransition(Duration.millis(halfFlipDuration),card_back);
-		zoomBack.setByX(1.1);
-		zoomBack.setByY(1.1);
-		zoomBack.setToX(3.);
-		zoomBack.setToY(3.);
-		final ParallelTransition zoomAnimation = new ParallelTransition(zoomFront,zoomBack);
-		final TranslateTransition moveFront = new TranslateTransition(Duration.millis(halfFlipDuration),card_front);
-		moveFront.setByX(2);
-		moveFront.setByY(2);
-		moveFront.setToX(BIG_POS_X-card_front.getX());
-		moveFront.setToY(BIG_POS_Y-card_front.getY());
-		final TranslateTransition moveBack = new TranslateTransition(Duration.millis(halfFlipDuration),card_back);
-		moveBack.setByX(2);
-		moveBack.setByY(2);
-		moveBack.setToX(BIG_POS_X-card_back.getX());
-		moveBack.setToY(BIG_POS_Y-card_back.getY());
-		final ParallelTransition moveAnimation = new ParallelTransition(moveFront,moveBack);
-		//moveAnimation.play();
-		zoomAnimation.play();
+		final TranslateTransition moveFront = new TranslateTransition(Duration.millis(halfFlipDuration),node);
+		moveFront.setByX(SPEED);
+		moveFront.setByY(SPEED);
+		moveFront.setToX(BIG_POS_X-node.getX());
+		moveFront.setToY(BIG_POS_Y-node.getY());
+		final ParallelTransition master = new ParallelTransition(moveFront,zoomFront);
+		master.play();
 	}
 	private void restoreByDefault() {
-		final ScaleTransition zoomFront = new ScaleTransition(Duration.millis(halfFlipDuration),card_front);
+		card_big.setVisible(false);
+
+		final ScaleTransition zoomFront = new ScaleTransition(Duration.millis(halfFlipDuration),card_big);
 		zoomFront.setByX(0.9);
 		zoomFront.setByY(0.9);
 		zoomFront.setToX(1.);
 		zoomFront.setToY(1.);
-		final ScaleTransition zoomBack = new ScaleTransition(Duration.millis(halfFlipDuration),card_back);
-		zoomBack.setByX(0.9);
-		zoomBack.setByY(0.9);
-		zoomBack.setToX(1.);
-		zoomBack.setToY(1.);
-		final ParallelTransition zoomAnimation = new ParallelTransition(zoomFront,zoomBack);
-		final TranslateTransition moveFront = new TranslateTransition(Duration.millis(halfFlipDuration),card_front);
+		final TranslateTransition moveFront = new TranslateTransition(Duration.millis(halfFlipDuration),card_big);
 		moveFront.setByX(2);
 		moveFront.setByY(2);
-		moveFront.setToX(objX-card_front.getX());
-		moveFront.setToY(objY-card_front.getY());
-		final TranslateTransition moveBack = new TranslateTransition(Duration.millis(halfFlipDuration),card_back);
-		moveBack.setByX(2);
-		moveBack.setByY(2);
-		moveBack.setToX(objX-card_back.getX());
-		moveBack.setToY(objY-card_back.getY());
-		final ParallelTransition moveAnimation = new ParallelTransition(moveFront,moveBack);
-		//moveAnimation.play();
-		zoomAnimation.play();
+		moveFront.setToX(objX-card_big.getX());
+		moveFront.setToY(objY-card_big.getY());
+		final ParallelTransition master = new ParallelTransition(moveFront,zoomFront);
+		master.play();
+	}
+	public void setObjective(Pair<Double, Double> pair) {
+		objX = pair.getKey();
+		objY = pair.getValue();
 	}
 }

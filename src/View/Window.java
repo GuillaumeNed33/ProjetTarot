@@ -147,23 +147,7 @@ public class Window extends Application implements Observer {
 		root.getChildren().add(btn);
 		root.getChildren().add(btnTri);
 
-		loop_G = new AnimationTimer() {
-			@Override
-			public void handle(long now) {
-				for (Card_View cV : allCards) {
-					if (cV.isArrived() == false) {
-						cV.move();
-						return;
-					}
-				}/*
-				for(int i=0;i<playerCards.size();i++) {
-					playerCards.get(i).actualiseRotate(i);
-				}
-				*/
-				this.stop();
-			}
-		};
-		loop_G.start();
+		
 
 	}
 
@@ -211,8 +195,11 @@ public class Window extends Application implements Observer {
 				break;
 			}
 		}
-
-
+		SequentialTransition master = new SequentialTransition();
+		for(Card_View cV : allCards) {
+			master.getChildren().add(cV.moveAnimation());
+		}
+		master.play();
 	}
 
 	protected void lookCard(Vector<Card_View> cards) {
