@@ -14,6 +14,7 @@ import Model.Game;
 import Model.Hand;
 import Model.Player;
 import javafx.animation.AnimationTimer;
+import javafx.animation.ParallelTransition;
 import javafx.animation.SequentialTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -36,7 +37,6 @@ public class Window extends Application implements Observer {
 
 	protected String title;
 	protected Controller c;
-	private AnimationTimer loop_G;
 
 	private ArrayList<Card_View> allCards;
 	private Vector<Card_View> playerCards;
@@ -45,8 +45,9 @@ public class Window extends Application implements Observer {
 	private Pair<Double, Double> player_place2;
 	private Pair<Double, Double> player_place3;
 	private Pair<Double, Double> player_place4;
-
 	private Pair<Double, Double> chien_place;
+	Button btnLookCards;
+	Button btnTriCards;
 	public static Data data;
 
 	public Window() {
@@ -114,28 +115,26 @@ public class Window extends Application implements Observer {
 
 		chienCards = new Vector<Card_View>();
 		playerCards = new Vector<Card_View>();
-		animeDistrib();
+		animeDistrib().play();
+		btnTriCards = new Button();
+		btnTriCards.setLayoutX(700);
+		btnTriCards.setLayoutY(660);
+		btnTriCards.setPrefSize(100, 30);
+		btnTriCards.setText("TRI");
+		btnTriCards.setVisible(false);
 
-		Button btnTri = new Button();
-		btnTri.setLayoutX(700);
-		btnTri.setLayoutY(660);
-		btnTri.setPrefSize(100, 30);
-		btnTri.setText("TRI");
-		btnTri.setVisible(false);
-
-		Button btn = new Button();
-		btn.setLayoutX(400);
-		btn.setLayoutY(660);
-		btn.setPrefSize(150, 30);
-		btn.setText("Look your cards");
-		btn.setOnAction(new EventHandler<ActionEvent>() {
+		btnLookCards = new Button();
+		btnLookCards.setLayoutX(400);
+		btnLookCards.setLayoutY(660);
+		btnLookCards.setPrefSize(150, 30);
+		btnLookCards.setText("Look your cards");
+		btnLookCards.setVisible(false);
+		btnLookCards.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				lookCard(playerCards);
-				lookCard(chienCards);
-				btnTri.setVisible(true);
+				lookCard(playerCards).play();
 			}
 		});
-		btnTri.setOnAction(new EventHandler<ActionEvent>() {
+		btnTriCards.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				m_tmp.triCards();
 				triCardsView();
@@ -144,14 +143,14 @@ public class Window extends Application implements Observer {
 		for (Card_View cV : allCards) {
 			root.getChildren().addAll(cV.getNodes());
 		}
-		root.getChildren().add(btn);
-		root.getChildren().add(btnTri);
+		root.getChildren().add(btnLookCards);
+		root.getChildren().add(btnTriCards);
 
 		
 
 	}
 
-	private void animeDistrib() {
+	private SequentialTransition animeDistrib() {
 		int nb_carte = 0;
 		int nbChienCards = 0;
 
@@ -160,11 +159,8 @@ public class Window extends Application implements Observer {
 			Double Y = 0.;
 			switch (cV.getIdOwner()) {
 			case 1:
-				X = player_place.getKey() + (nb_carte%9  * (Card_View.W_CARD+10));
+				X = player_place.getKey() + (nb_carte * (Card_View.W_CARD/2));
 				Y = player_place.getValue();
-				if (nb_carte > 8) {
-					Y += Card_View.H_CARD + 10;
-				}
 				cV.setObjective(new Pair<Double, Double>(X, Y));
 				playerCards.add(cV);
 				nb_carte++;
@@ -195,20 +191,46 @@ public class Window extends Application implements Observer {
 				break;
 			}
 		}
+		return moveCardsToObjSeq();
+	}
+
+	public SequentialTransition moveCardsToObjSeq() {
 		SequentialTransition master = new SequentialTransition();
+		for(Card_View cV : allCards) {
+			master.getChildren().add(cV.moveAnimation());
+		}
+		master.setOnFinished(new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent arg0) {
+				btnLookCards.setVisible(true);
+			}
+		});
+		return master;
+	}
+	
+	
+	public void moveCardsToObjParal() {
+		ParallelTransition master = new ParallelTransition();
 		for(Card_View cV : allCards) {
 			master.getChildren().add(cV.moveAnimation());
 		}
 		master.play();
 	}
-
-	protected void lookCard(Vector<Card_View> cards) {
+	
+	protected SequentialTransition lookCard(Vector<Card_View> cards) {
 		SequentialTransition master = new SequentialTransition();
 		for (Card_View cV : cards) {
 			master.getChildren().add(cV.flip());
 			cV.setFrontVisible(true);
 		}
-		master.play();
+		master.setOnFinished(new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent arg0) {
+				btnTriCards.setVisible(true);
+				btnLookCards.setVisible(false);
+			}
+		});
+		return master;
 	}
 
 	public void run() {
@@ -238,12 +260,11 @@ public class Window extends Application implements Observer {
 			}
 		});
 		for (int i = 0; i < playerCards.size(); i++) {
-			Double X = player_place.getKey() + ((i % 9) * (Card_View.W_CARD + 10));
+			Double X = player_place.getKey() +(i  * (Card_View.W_CARD/2));
 			Double Y = player_place.getValue();
-			if (i > 8) {
-				Y += Card_View.H_CARD + 10;
-			}
 			playerCards.get(i).setObjective(new Pair<Double,Double>(X,Y));
+			playerCards.get(i).getFrontCard().toBack();
 		}
+		this.moveCardsToObjParal();
 	}
 }

@@ -51,7 +51,7 @@ public class Card_View implements Observer {
 	private ImageView card_back = new ImageView();
 	private ImageView card_front = new ImageView();
 	private ImageView card_big = new ImageView();
-	static long halfFlipDuration = 100;
+	static long halfFlipDuration = 10;
 
 	public Card_View() {
 		arrived = false;
@@ -59,6 +59,7 @@ public class Card_View implements Observer {
 		card_big.setVisible(false);
 		card_big.setFitHeight(H_CARD);
 		card_big.setFitWidth(W_CARD);
+		card_big.toBack();
 		card_front.setFitWidth(W_CARD);
 		card_front.setFitHeight(H_CARD);
 		card_back.setFitWidth(W_CARD);
