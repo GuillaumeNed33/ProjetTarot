@@ -26,4 +26,12 @@ public class Controller {
 		game.addCardObserver(cards_view);
 	}
 
+	public void triCards() {
+		game.triCards();
+	}
+
+	public void distrib() {
+		game.distribCard();
+	}
+
 }

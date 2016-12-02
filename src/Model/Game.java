@@ -60,14 +60,6 @@ public class Game extends Observable {
 
 	public void initGame() {
 		generateCards();
-		distribCard();
-		if (testPetitSec()) {
-			cards.removeAll(cards);
-			System.out.println("PETIT SEC ! Taille apres suppression : " + cards.size());
-			generateCards();
-			distribCard();
-		}
-		//triCards();
 		// displayCardGame();
 	}
 
@@ -128,7 +120,7 @@ public class Game extends Observable {
 			id_player = (id_player + 1) % (players.size() + 1);
 		}
 		setChanged();
-		notifyObservers(cards);
+		//notifyObservers(cards);
 	}
 
 	public void displayCardGame() {

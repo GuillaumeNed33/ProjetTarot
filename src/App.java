@@ -14,12 +14,12 @@ public class App {
 		win = new Window();
 		control = new Controller(game, win);
 		game.setController(control);
-		win.setController(control);
 		
 	}
 	
 	public void run()
 	{
+		win.setController(control);
 		win.run();
 	}
 

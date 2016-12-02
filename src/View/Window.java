@@ -36,8 +36,7 @@ import javafx.scene.shape.*;
 public class Window extends Application implements Observer {
 
 	protected String title;
-	protected Controller c;
-
+	private static Controller c;
 	private ArrayList<Card_View> allCards;
 	private Vector<Card_View> playerCards;
 	private Vector<Card_View> chienCards;
@@ -53,6 +52,7 @@ public class Window extends Application implements Observer {
 	public Window() {
 		title = "Tarot NEDELEC NORMAND S3C";
 		data = new Data();
+		allCards = new ArrayList<Card_View>();
 		player_place = new Pair<Double, Double>(150., 450.);
 		player_place2 = new Pair<Double, Double>(-200., 300.);
 		player_place3 = new Pair<Double, Double>(460., -200.);
@@ -64,29 +64,27 @@ public class Window extends Application implements Observer {
 	public void start(Stage primaryStage) throws Exception {
 		Group root = new Group();
 		Scene scene = new Scene(root, 1000, 700, null);
+		scene.getStylesheets().add(Window.class.getResource("application.css").toExternalForm());
 		root.setId("root");
-		root.getStyleClass().add("my_root"); 
+		root.getStyleClass().add("my_root");
 
-		Rectangle rect = new Rectangle(1000,700); 
+		Rectangle rect = new Rectangle(1000, 700);
 		rect.setLayoutY(0);
 		rect.setLayoutX(0);
-		rect.getStyleClass().add("my-rect"); 
-
+		rect.getStyleClass().add("my-rect");
 
 		root.getChildren().add(rect);
 		primaryStage.setTitle(title);
-		
-		scene.getStylesheets().add(Window.class.getResource("application.css").toExternalForm());
+
 		LoadMenu(root, scene);
+
 		
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
 
 	private void LoadMenu(Group root, Scene scene) {
-		
-		
-		
+
 		Button btn = new Button();
 		btn.setLayoutX(350);
 		btn.setLayoutY(350);
@@ -105,14 +103,11 @@ public class Window extends Application implements Observer {
 		for (int i = 0; i < 78; i++) {
 			allCards.add(new Card_View());
 		}
-		Game m_tmp = new Game();
-		m_tmp.addCardObserver(allCards);
-		m_tmp.addObserver(this);
-		m_tmp.initGame();
-
+		c.syncCards(allCards);
+		c.startGame();
 		root.getChildren().clear();
 		scene.setFill(Color.RED);
-
+		c.distrib();
 		chienCards = new Vector<Card_View>();
 		playerCards = new Vector<Card_View>();
 		animeDistrib().play();
@@ -136,7 +131,7 @@ public class Window extends Application implements Observer {
 		});
 		btnTriCards.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				m_tmp.triCards();
+				c.triCards();
 				triCardsView();
 			}
 		});
@@ -145,8 +140,6 @@ public class Window extends Application implements Observer {
 		}
 		root.getChildren().add(btnLookCards);
 		root.getChildren().add(btnTriCards);
-
-		
 
 	}
 
@@ -159,7 +152,7 @@ public class Window extends Application implements Observer {
 			Double Y = 0.;
 			switch (cV.getIdOwner()) {
 			case 1:
-				X = player_place.getKey() + (nb_carte * (Card_View.W_CARD/2));
+				X = player_place.getKey() + (nb_carte * (Card_View.W_CARD / 2));
 				Y = player_place.getValue();
 				cV.setObjective(new Pair<Double, Double>(X, Y));
 				playerCards.add(cV);
@@ -196,10 +189,10 @@ public class Window extends Application implements Observer {
 
 	public SequentialTransition moveCardsToObjSeq() {
 		SequentialTransition master = new SequentialTransition();
-		for(Card_View cV : allCards) {
+		for (Card_View cV : allCards) {
 			master.getChildren().add(cV.moveAnimation());
 		}
-		master.setOnFinished(new EventHandler<ActionEvent>(){
+		master.setOnFinished(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
 				btnLookCards.setVisible(true);
@@ -207,23 +200,22 @@ public class Window extends Application implements Observer {
 		});
 		return master;
 	}
-	
-	
+
 	public void moveCardsToObjParal() {
 		ParallelTransition master = new ParallelTransition();
-		for(Card_View cV : allCards) {
+		for (Card_View cV : allCards) {
 			master.getChildren().add(cV.moveAnimation());
 		}
 		master.play();
 	}
-	
+
 	protected SequentialTransition lookCard(Vector<Card_View> cards) {
 		SequentialTransition master = new SequentialTransition();
 		for (Card_View cV : cards) {
 			master.getChildren().add(cV.flip());
 			cV.setFrontVisible(true);
 		}
-		master.setOnFinished(new EventHandler<ActionEvent>(){
+		master.setOnFinished(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
 				btnTriCards.setVisible(true);
@@ -238,7 +230,7 @@ public class Window extends Application implements Observer {
 	}
 
 	public void setController(Controller c) {
-		this.c = c;
+		Window.c = c;
 	}
 
 	@Override
@@ -246,6 +238,7 @@ public class Window extends Application implements Observer {
 		if (ob instanceof ArrayList) {
 			ArrayList<Card_View> tmp = new ArrayList<Card_View>();
 			for (int i = 0; i < ((ArrayList<?>) ob).size(); i++) {
+				
 				tmp.add(allCards.get(((Card) ((ArrayList<?>) ob).get(i)).getId()));
 			}
 			allCards = tmp;
@@ -260,9 +253,9 @@ public class Window extends Application implements Observer {
 			}
 		});
 		for (int i = 0; i < playerCards.size(); i++) {
-			Double X = player_place.getKey() +(i  * (Card_View.W_CARD/2));
+			Double X = player_place.getKey() + (i * (Card_View.W_CARD / 2));
 			Double Y = player_place.getValue();
-			playerCards.get(i).setObjective(new Pair<Double,Double>(X,Y));
+			playerCards.get(i).setObjective(new Pair<Double, Double>(X, Y));
 			playerCards.get(i).getFrontCard().toBack();
 		}
 		this.moveCardsToObjParal();
