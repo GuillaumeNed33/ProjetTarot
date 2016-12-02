@@ -32,11 +32,11 @@ import javafx.util.Pair;
 
 public class Card_View implements Observer {
 	/// Constantes
-	final static int H_CARD = 85;
-	final static int W_CARD = 48;
+	final static int H_CARD = 110;//85
+	final static int W_CARD = 74;//48
 	final static Double START_X = 460.;
 	final static Double START_Y = 200.;
-	final static Double SPEED = 1.;
+	final static Double SPEED = 0.001;
 	final static Double BIG_POS_X = 400.;
 	final static Double BIG_POS_Y = 150.;
 	private Double objX;
@@ -51,7 +51,9 @@ public class Card_View implements Observer {
 	private ImageView card_back = new ImageView();
 	private ImageView card_front = new ImageView();
 	private ImageView card_big = new ImageView();
-	static long halfFlipDuration = 10;
+	static long halfFlipDuration = 100;
+	static long halfDistribDuration = 350;
+
 
 	public Card_View() {
 		arrived = false;
@@ -128,9 +130,9 @@ public class Card_View implements Observer {
 	}
 
 	public TranslateTransition createMoveAnimation(ImageView iV) {
-		final TranslateTransition move = new TranslateTransition(Duration.millis(halfFlipDuration),iV);
-		move.setByX(SPEED);
-		move.setByY(SPEED);
+		final TranslateTransition move = new TranslateTransition(Duration.millis(halfDistribDuration),iV);
+	//	move.setByX(SPEED);
+	//	move.setByY(SPEED);
 		move.setToX(objX-iV.getX());
 		move.setToY(objY-iV.getY());
 		return move;
