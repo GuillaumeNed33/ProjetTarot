@@ -62,18 +62,10 @@ public class Window extends Application implements Observer {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		Group root = new Group();
+		StackPane root = new StackPane();
 		Scene scene = new Scene(root, 1000, 700, null);
 		scene.getStylesheets().add(Window.class.getResource("application.css").toExternalForm());
 		root.setId("root");
-		root.getStyleClass().add("my_root");
-
-		Rectangle rect = new Rectangle(1000, 700);
-		rect.setLayoutY(0);
-		rect.setLayoutX(0);
-		rect.getStyleClass().add("my-rect");
-
-		root.getChildren().add(rect);
 		primaryStage.setTitle(title);
 
 		LoadMenu(root, scene);
@@ -83,7 +75,7 @@ public class Window extends Application implements Observer {
 		primaryStage.show();
 	}
 
-	private void LoadMenu(Group root, Scene scene) {
+	private void LoadMenu(StackPane root, Scene scene) {
 
 		Button btn = new Button();
 		btn.setLayoutX(350);
@@ -98,7 +90,7 @@ public class Window extends Application implements Observer {
 		root.getChildren().add(btn);
 	}
 
-	private void StartGame(Group root, Scene scene) {
+	private void StartGame(StackPane root, Scene scene) {
 		allCards = new ArrayList<Card_View>();
 		for (int i = 0; i < 78; i++) {
 			allCards.add(new Card_View());
