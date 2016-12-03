@@ -13,19 +13,18 @@ public class Controller {
 	public Controller(Game g, Window w)
 	{
 		game = g;
+		game.setController(this);
 		win = w;
-		game.addObserver(win);
+		win.setController(this);
 	}
 
 	public void startGame() {
-		System.out.println("Je lance le jeu");
 		game.initGame();
-		game.distribCard();
-		System.out.println("Fin modele");
 	}
 	
-	public void syncCards(ArrayList<Card_View> cards_view) {
+	public void syncCards(ArrayList<Card_View> cards_view,Window v) {
 		game.addCardObserver(cards_view);
+		game.addObserver(v);
 	}
 
 	public void triCards() {

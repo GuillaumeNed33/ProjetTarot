@@ -131,8 +131,6 @@ public class Card_View implements Observer {
 
 	public TranslateTransition createMoveAnimation(ImageView iV) {
 		final TranslateTransition move = new TranslateTransition(Duration.millis(halfDistribDuration),iV);
-	//	move.setByX(SPEED);
-	//	move.setByY(SPEED);
 		move.setToX(objX-iV.getX());
 		move.setToY(objY-iV.getY());
 		return move;

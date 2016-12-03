@@ -120,7 +120,7 @@ public class Game extends Observable {
 			id_player = (id_player + 1) % (players.size() + 1);
 		}
 		setChanged();
-		//notifyObservers(cards);
+		notifyObservers(cards);
 	}
 
 	public void displayCardGame() {

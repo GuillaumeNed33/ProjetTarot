@@ -13,13 +13,11 @@ public class App {
 		game = new Game();
 		win = new Window();
 		control = new Controller(game, win);
-		game.setController(control);
 		
 	}
 	
 	public void run()
 	{
-		win.setController(control);
 		win.run();
 	}
 

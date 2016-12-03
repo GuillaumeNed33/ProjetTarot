@@ -2,36 +2,23 @@ package View;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Vector;
 
 import Controler.Controller;
 import Model.Card;
-import Model.Chien;
-import Model.Game;
-import Model.Hand;
-import Model.Player;
-import javafx.animation.AnimationTimer;
 import javafx.animation.ParallelTransition;
 import javafx.animation.SequentialTransition;
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Pair;
-import javafx.scene.shape.*;
 
 public class Window extends Application implements Observer {
 
@@ -67,7 +54,7 @@ public class Window extends Application implements Observer {
 		scene.getStylesheets().add(Window.class.getResource("application.css").toExternalForm());
 		root.setId("root");
 		primaryStage.setTitle(title);
-
+		
 		LoadMenu(root, scene);
 
 		
@@ -88,20 +75,21 @@ public class Window extends Application implements Observer {
 			}
 		});
 		root.getChildren().add(btn);
+		System.out.println(this.toString());
 	}
 
 	private void StartGame(Group root, Scene scene) {
 		
 		root.getChildren().clear();
 		scene.setFill(Color.RED);
-		
+	
 		allCards = new ArrayList<Card_View>();
 		for (int i = 0; i < 78; i++) {
 			allCards.add(new Card_View());
 		}
-		c.syncCards(allCards);
+		c.syncCards(allCards,this);
 		c.startGame();
-				
+		c.distrib();
 		chienCards = new Vector<Card_View>();
 		playerCards = new Vector<Card_View>();
 		
