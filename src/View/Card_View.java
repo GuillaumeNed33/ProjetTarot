@@ -53,7 +53,7 @@ public class Card_View implements Observer {
 	private ImageView card_big = new ImageView();
 	static long halfFlipDuration = 100;
 	static long halfDistribDuration = 350;
-
+ 
 
 	public Card_View() {
 		arrived = false;
