@@ -36,7 +36,6 @@ public class Card_View implements Observer {
 	final static int W_CARD = 74;//48
 	final static Double START_X = 460.;
 	final static Double START_Y = 200.;
-	final static Double SPEED = 0.001;
 	final static Double BIG_POS_X = 400.;
 	final static Double BIG_POS_Y = 150.;
 	private Double objX;
@@ -119,13 +118,13 @@ public class Card_View implements Observer {
 		rotateOutBack.setAxis(Rotate.Y_AXIS);
 		rotateOutBack.setFromAngle(0);
 		rotateOutBack.setToAngle(90);
-		//
+		
 		final RotateTransition rotateInFront = new RotateTransition(Duration.millis(halfFlipDuration), card_front);
 		rotateInFront.setInterpolator(Interpolator.LINEAR);
 		rotateInFront.setAxis(Rotate.Y_AXIS);
 		rotateInFront.setFromAngle(-90);
 		rotateInFront.setToAngle(0);
-		//
+
 		return new SequentialTransition(rotateOutBack, rotateInFront);
 	}
 
@@ -192,13 +191,9 @@ public class Card_View implements Observer {
 	private void transformeToBig(ImageView node) {
 		card_big.setVisible(true);
 		final ScaleTransition zoomFront = new ScaleTransition(Duration.millis(halfFlipDuration),node);
-		zoomFront.setByX(1.1);
-		zoomFront.setByY(1.1);
 		zoomFront.setToX(3.);
 		zoomFront.setToY(3.);
 		final TranslateTransition moveFront = new TranslateTransition(Duration.millis(halfFlipDuration),node);
-		moveFront.setByX(SPEED);
-		moveFront.setByY(SPEED);
 		moveFront.setToX(BIG_POS_X-node.getX());
 		moveFront.setToY(BIG_POS_Y-node.getY());
 		final ParallelTransition master = new ParallelTransition(moveFront,zoomFront);
@@ -208,13 +203,9 @@ public class Card_View implements Observer {
 		card_big.setVisible(false);
 
 		final ScaleTransition zoomFront = new ScaleTransition(Duration.millis(halfFlipDuration),card_big);
-		zoomFront.setByX(0.9);
-		zoomFront.setByY(0.9);
 		zoomFront.setToX(1.);
 		zoomFront.setToY(1.);
 		final TranslateTransition moveFront = new TranslateTransition(Duration.millis(halfFlipDuration),card_big);
-		moveFront.setByX(2);
-		moveFront.setByY(2);
 		moveFront.setToX(objX-card_big.getX());
 		moveFront.setToY(objY-card_big.getY());
 		final ParallelTransition master = new ParallelTransition(moveFront,zoomFront);
