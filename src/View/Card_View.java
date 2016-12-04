@@ -157,7 +157,7 @@ public class Card_View implements Observer {
 	public void update(Observable o, Object ob) {
 		if(ob instanceof Integer) {
 			id = (int) ob;
-			image_front = new Image("file:./ressources/cards/" + Window.data.getImage(this.id));
+			image_front = new Image("file:" + Window.data.getImage(this.id));
 			card_front.setImage(image_front);
 			card_big.setImage(image_front);
 		} else if(ob instanceof Player) {
