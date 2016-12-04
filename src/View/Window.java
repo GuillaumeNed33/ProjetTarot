@@ -43,11 +43,10 @@ public class Window extends Application implements Observer {
 	public static Data data;
 
 
-	private static Image imageMenu;
-	private static Image imageGame;
+	static String imageMenu = "file:./ressources/img/background2.jpg";
+	static String imageGame = "file:./ressources/img/background2.jpg";
 
-	private ImageView background;
-
+	private ImageView background = new ImageView();;
 
 	public Window() {
 		title = "Tarot NEDELEC NORMAND S3C";
@@ -58,6 +57,8 @@ public class Window extends Application implements Observer {
 		player_place3 = new Pair<Double, Double>(460., -200.);
 		player_place4 = new Pair<Double, Double>(1200., 300.);
 		chien_place = new Pair<Double, Double>(525., 30.);
+		background.setFitHeight(HEIGHT);
+		background.setFitWidth(WIDTH);
 	}
 
 	@Override
@@ -65,14 +66,7 @@ public class Window extends Application implements Observer {
 		Group root = new Group();
 		Scene scene = new Scene(root, WIDTH, HEIGHT, null);
 		primaryStage.setTitle(title);
-
-		imageMenu = new Image("file:./ressources/img/background2.jpg");
-		imageGame = new Image("file:./ressources/img/background4.jpg");
 		
-		background = new ImageView();
-		background.setFitHeight(HEIGHT);
-		background.setFitWidth(WIDTH);
-
 		LoadMenu(root, scene);
 
 		primaryStage.setScene(scene);
@@ -80,15 +74,7 @@ public class Window extends Application implements Observer {
 	}
 
 	private void LoadMenu(Group root, Scene scene) {
-
-		background.setImage(imageMenu);
-
-		/*Animation ani = new AnimatedGif(getClass().getResource("test.gif").toExternalForm(), 1000);
-        ani.setCycleCount(10);
-        ani.play();
-
-		root.getChildren().addAll(ani.get);*/
-
+		background.setImage(new Image(imageMenu));
 		root.getChildren().add(background);
 
 		Button btn = new Button();
@@ -108,7 +94,7 @@ public class Window extends Application implements Observer {
 
 		root.getChildren().clear();
 		scene.setFill(Color.RED);
-		background.setImage(imageGame);
+		background.setImage(new Image(imageGame));
 
 		root.getChildren().add(background);
 
