@@ -231,14 +231,14 @@ public class Window extends Application implements Observer {
 
 	@Override
 	public void update(Observable o, Object ob) {
-		if (ob instanceof ArrayList) {
+		/*if (ob instanceof ArrayList) {
 			ArrayList<Card_View> tmp = new ArrayList<Card_View>();
 			for (int i = 0; i < ((ArrayList<?>) ob).size(); i++) {
 				
-				tmp.add(allCards.get(((Card) ((ArrayList<?>) ob).get(i)).getId()));
+			//	tmp.add(allCards.get(((Card) ((ArrayList<?>) ob).get(i)).getId()));
 			}
 			allCards = tmp;
-		}
+		}*/
 	}
 
 	private void triCardsView() {
