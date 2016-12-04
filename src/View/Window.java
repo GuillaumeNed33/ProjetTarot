@@ -165,7 +165,7 @@ public class Window extends Application implements Observer {
 				btn.setText("La garde contre le chien");
 				btn.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {
-						//LE CHIEN EST DONNE AUX AUTRES SANS ETRE DEVOILE
+						//LE CHIEN EST DONNE AUX AUTRES SANS ETRE DEVOILE 
 					}
 				});
 				break;
