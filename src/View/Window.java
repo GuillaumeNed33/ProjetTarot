@@ -8,6 +8,7 @@ import java.util.Vector;
 
 import Controler.Controller;
 import Model.Card;
+import javafx.animation.Animation;
 import javafx.animation.ParallelTransition;
 import javafx.animation.SequentialTransition;
 import javafx.application.Application;
@@ -40,12 +41,12 @@ public class Window extends Application implements Observer {
 	private Button btnLookCards;
 	private Button btnTriCards;
 	public static Data data;
-	
-	
-	static Image imageMenu = new Image("file:./ressources/img/background.jpg");
-	static Image imageGame = new Image("file:./ressources/img/background2.jpg");
 
-	private ImageView background = new ImageView();;
+
+	private static Image imageMenu;
+	private static Image imageGame;
+
+	private ImageView background;
 
 
 	public Window() {
@@ -57,12 +58,6 @@ public class Window extends Application implements Observer {
 		player_place3 = new Pair<Double, Double>(460., -200.);
 		player_place4 = new Pair<Double, Double>(1200., 300.);
 		chien_place = new Pair<Double, Double>(525., 30.);
-		
-		//imageMenu = new Image("file:./ressources/img/background.jpg");
-		//imageGame = new Image("file:./ressources/img/background2.jpg");
-		//background = new ImageView();
-		background.setFitHeight(HEIGHT);
-		background.setFitWidth(WIDTH);
 	}
 
 	@Override
@@ -70,6 +65,13 @@ public class Window extends Application implements Observer {
 		Group root = new Group();
 		Scene scene = new Scene(root, WIDTH, HEIGHT, null);
 		primaryStage.setTitle(title);
+
+		imageMenu = new Image("file:./ressources/img/background2.jpg");
+		imageGame = new Image("file:./ressources/img/background4.jpg");
+		
+		background = new ImageView();
+		background.setFitHeight(HEIGHT);
+		background.setFitWidth(WIDTH);
 
 		LoadMenu(root, scene);
 
@@ -80,9 +82,15 @@ public class Window extends Application implements Observer {
 	private void LoadMenu(Group root, Scene scene) {
 
 		background.setImage(imageMenu);
-		
+
+		/*Animation ani = new AnimatedGif(getClass().getResource("test.gif").toExternalForm(), 1000);
+        ani.setCycleCount(10);
+        ani.play();
+
+		root.getChildren().addAll(ani.get);*/
+
 		root.getChildren().add(background);
-		
+
 		Button btn = new Button();
 		btn.setLayoutX(350);
 		btn.setLayoutY(350);
