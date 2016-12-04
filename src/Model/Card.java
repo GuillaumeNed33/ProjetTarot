@@ -5,12 +5,12 @@ import java.util.Observable;
 public class Card extends Observable{
 	private int id;
 	private CardType type;
-	private CardValue value;
+	private int value;
 	Player owner;
 	public Card() {
 		
 	}
-	public void initCard(CardType c, CardValue val, int id)
+	public void initCard(CardType c, int val, int id)
 	{
 		this.id = id;
 		type = c;
@@ -24,7 +24,7 @@ public class Card extends Observable{
 		return this.type;
 	}
 	
-	public CardValue getValue()
+	public int getValue()
 	{
 		return value;
 	}

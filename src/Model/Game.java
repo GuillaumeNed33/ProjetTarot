@@ -12,10 +12,11 @@ import View.Card_View;
 
 public class Game extends Observable {
 
-	
 	public final static int NBPLAYER = 4;
 	public final static int NBCARDS = 78;
 	public final static int IDPLAYER = 1;
+	public final static int NBATOUT = 21;
+	public final static int NB_CARD_COLOR = 14;
 
 	Controller control;
 	private List<Player> players;
@@ -38,24 +39,20 @@ public class Game extends Observable {
 	}
 
 	private void generateCards() {
-		CardType type = new CardType();
-		int val = 1;
 		for (int i = 0; i < NBCARDS - 1; i++) {
-			CardType copy = new CardType(type);
-			cards.get(i).initCard(copy, new CardValue(val), i);
-			val++;
-			if (i == 56) {
-				type.changeToAtout();
-				val = 1;
-			}
-
-			if (i % 14 == 0 && type.BasicType()) {
-				val = 1;
-				type.changeBasics();
+			if(i>=0 && i<NBATOUT) {
+				cards.get(i).initCard(CardType.ATOUT, i+1, i);
+			} else if(i>=NBATOUT && i< NBATOUT+NB_CARD_COLOR){
+				cards.get(i).initCard(CardType.TREFLE,(i-NBATOUT)+1, i);
+			} else if(i>=NBATOUT+NB_CARD_COLOR && i< NBATOUT+(NB_CARD_COLOR*2)){
+				cards.get(i).initCard(CardType.PIQUE,((i-NBATOUT)%14)+1, i);
+			} else if(i>=NBATOUT+(NB_CARD_COLOR*2) && i< NBATOUT+(NB_CARD_COLOR*3)){
+				cards.get(i).initCard(CardType.CARREAUX,((i-NBATOUT)%14)+1, i);
+			} else {
+				cards.get(i).initCard(CardType.COEUR,((i-NBATOUT)%14)+1, i);
 			}
 		}
-		type.changeToExcuse();
-		cards.get(77).initCard(type, new CardValue(0), 77);
+		cards.get(77).initCard(CardType.EXCUSE, 0, 77);
 	}
 
 	public void initGame() {
@@ -75,8 +72,8 @@ public class Game extends Observable {
 
 		for (Player p : players) {
 			for (Card c : p.getHand().getGame()) {
-				if ((c.getType().getSpecials() == CardType.Specials.ATOUT && c.getValue().getVal() != 1)
-						|| c.getType().getSpecials() == CardType.Specials.EXCUSE) {
+				if ((c.getType() == CardType.ATOUT && c.getValue() != 1)
+						|| c.getType() == CardType.EXCUSE) {
 					return false;
 				}
 			}
@@ -120,7 +117,11 @@ public class Game extends Observable {
 			id_player = (id_player + 1) % (players.size() + 1);
 		}
 		setChanged();
-		notifyObservers(cards);
+		if (!testPetitSec()) {
+			notifyObservers(cards);
+		} else {
+			notifyObservers("PetitSec");
+		}
 	}
 
 	public void displayCardGame() {
@@ -128,12 +129,12 @@ public class Game extends Observable {
 		System.out.println("------------------ AFFICHAGE CARTE ------------------");
 		System.out.println("Le Chien : " + chien.size());
 		for (Card c : chien.getCards()) {
-			System.out.println(c.getValue().getVal() + " " + c.getType().toString());
+			System.out.println(c.getValue() + " " + c.getType().toString());
 		}
 		for (int i = 0; i < players.size(); i++) {
 			System.out.println("\nLe joueur " + i + " : " + players.get(i).getHand().getGame().size());
 			for (Card c : players.get(i).getHand().getGame()) {
-				System.out.println(c.getValue().getVal() + " " + c.getType().toString());
+				System.out.println(c.getValue() + " " + c.getType().toString());
 			}
 		}
 

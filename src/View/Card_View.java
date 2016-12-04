@@ -5,9 +5,6 @@ import java.util.Collection;
 import java.util.Observable;
 import java.util.Observer;
 
-import com.sun.javafx.geom.Rectangle;
-
-import Model.CardValue.Value;
 import Model.Chien;
 import Model.Player;
 import javafx.animation.Interpolator;
@@ -17,16 +14,12 @@ import javafx.animation.ScaleTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Point3D;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.transform.Rotate;
-import javafx.scene.transform.Translate;
 import javafx.util.Duration;
 import javafx.util.Pair;
 
@@ -117,12 +110,12 @@ public class Card_View implements Observer {
 		rotateOutBack.setInterpolator(Interpolator.LINEAR);
 		rotateOutBack.setAxis(Rotate.Y_AXIS);
 		rotateOutBack.setFromAngle(0);
-		rotateOutBack.setToAngle(90);
+		rotateOutBack.setToAngle(-90);
 		
 		final RotateTransition rotateInFront = new RotateTransition(Duration.millis(halfFlipDuration), card_front);
 		rotateInFront.setInterpolator(Interpolator.LINEAR);
 		rotateInFront.setAxis(Rotate.Y_AXIS);
-		rotateInFront.setFromAngle(-90);
+		rotateInFront.setFromAngle(90);
 		rotateInFront.setToAngle(0);
 
 		return new SequentialTransition(rotateOutBack, rotateInFront);
@@ -191,8 +184,8 @@ public class Card_View implements Observer {
 	private void transformeToBig(ImageView node) {
 		card_big.setVisible(true);
 		final ScaleTransition zoomFront = new ScaleTransition(Duration.millis(halfFlipDuration),node);
-		zoomFront.setToX(3.);
-		zoomFront.setToY(3.);
+		zoomFront.setToX(2.);
+		zoomFront.setToY(2.);
 		final TranslateTransition moveFront = new TranslateTransition(Duration.millis(halfFlipDuration),node);
 		moveFront.setToX(BIG_POS_X-node.getX());
 		moveFront.setToY(BIG_POS_Y-node.getY());

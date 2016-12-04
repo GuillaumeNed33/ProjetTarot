@@ -74,7 +74,6 @@ public class Window extends Application implements Observer {
 			}
 		});
 		root.getChildren().add(btn);
-		System.out.println(this.toString());
 	}
 
 	private void StartGame(Group root, Scene scene) {
@@ -122,13 +121,11 @@ public class Window extends Application implements Observer {
 		}
 		root.getChildren().add(btnLookCards);
 		root.getChildren().add(btnTriCards);
-
 	}
 
 	private SequentialTransition animeDistrib() {
 		int nb_carte = 0;
 		int nbChienCards = 0;
-		System.out.println(allCards.size());
 		for (Card_View cV : allCards) {
 			Double X = 0.;
 			Double Y = 0.;
@@ -249,7 +246,7 @@ public class Window extends Application implements Observer {
 			Double X = player_place.getKey() + (i * (Card_View.W_CARD / 2));
 			Double Y = player_place.getValue();
 			playerCards.get(i).setObjective(new Pair<Double, Double>(X, Y));
-			playerCards.get(i).getFrontCard().toBack();
+			playerCards.get(i).getFrontCard().toFront();
 		}
 		this.moveCardsToObjParal();
 	}
