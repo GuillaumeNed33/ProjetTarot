@@ -93,7 +93,6 @@ public class Window extends Application implements Observer {
 		chienCards = new Vector<Card_View>();
 		playerCards = new Vector<Card_View>();
 		
-		animeDistrib().play();
 		
 		btnTriCards = new Button();
 		btnTriCards.setLayoutX(700);
@@ -119,6 +118,7 @@ public class Window extends Application implements Observer {
 				triCardsView();
 			}
 		});
+		animeDistrib().play();
 		for (Card_View cV : allCards) {
 			root.getChildren().addAll(cV.getNodes());
 		}
@@ -130,7 +130,7 @@ public class Window extends Application implements Observer {
 	private SequentialTransition animeDistrib() {
 		int nb_carte = 0;
 		int nbChienCards = 0;
-
+		System.out.println(allCards.size());
 		for (Card_View cV : allCards) {
 			Double X = 0.;
 			Double Y = 0.;
@@ -219,14 +219,13 @@ public class Window extends Application implements Observer {
 
 	@Override
 	public void update(Observable o, Object ob) {
-		/*if (ob instanceof ArrayList) {
+		if (ob instanceof ArrayList) {
 			ArrayList<Card_View> tmp = new ArrayList<Card_View>();
 			for (int i = 0; i < ((ArrayList<?>) ob).size(); i++) {
-				
-			//	tmp.add(allCards.get(((Card) ((ArrayList<?>) ob).get(i)).getId()));
+				tmp.add(allCards.get(((Card) ((ArrayList<?>) ob).get(i)).getId()));
 			}
 			allCards = tmp;
-		}*/
+		}
 	}
 
 	private void triCardsView() {
