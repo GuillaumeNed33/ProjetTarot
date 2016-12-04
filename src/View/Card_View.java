@@ -29,8 +29,8 @@ public class Card_View implements Observer {
 	final static int W_CARD = 80;//48
 	final static Double START_X = 460.;
 	final static Double START_Y = 200.;
-	final static Double BIG_POS_X = 400.;
-	final static Double BIG_POS_Y = 150.;
+	final static Double BIG_POS_X = 150.;
+	final static Double BIG_POS_Y = 200.;
 	private Double objX;
 	private Double objY;
 	

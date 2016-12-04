@@ -41,6 +41,8 @@ public class Window extends Application implements Observer {
 	private Pair<Double, Double> player_place3;
 	private Pair<Double, Double> player_place4;
 	private Pair<Double, Double> chien_place;
+	Vector<Button>choices;
+
 	//private Button btnLookCards;
 	//private Button btnTriCards;
 	public static Data data;
@@ -124,19 +126,21 @@ public class Window extends Application implements Observer {
 		chienCards = new Vector<Card_View>();
 		playerCards = new Vector<Card_View>();
 
-		animeDistrib().play();
-		Vector<Button>choices = new Vector<Button>();
+		choices = new Vector<Button>();
 		for(int i=0;i<5;i++)
 		{
 			Button btn = new Button();
 			btn.setLayoutX(175*i+100);
 			btn.setLayoutY(10);
 			btn.setPrefSize(150, 25);
+			btn.setVisible(false);
 			switch(i) {
 			case 0:
 				btn.setText("La prise");
 				btn.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {
+						lookCard(chienCards).play();
+						//CHANGEMENT DE CARTE ENTRE LE JEU DU JOUEUR ET LE CHIEN POSSIBLE
 					}
 				});
 				break;
@@ -144,6 +148,8 @@ public class Window extends Application implements Observer {
 				btn.setText("La garde");
 				btn.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {
+						lookCard(chienCards).play();
+						//CHANGEMENT DE CARTE ENTRE LE JEU DU JOUEUR ET LE CHIEN POSSIBLE
 					}
 				});
 				break;
@@ -151,6 +157,7 @@ public class Window extends Application implements Observer {
 				btn.setText("La garde sans le chien");
 				btn.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {
+						//LE CHIEN EST DONNE AU PRENEUR SANS ETRE DEVOILE
 					}
 				});
 				break;
@@ -158,6 +165,7 @@ public class Window extends Application implements Observer {
 				btn.setText("La garde contre le chien");
 				btn.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {
+						//LE CHIEN EST DONNE AUX AUTRES SANS ETRE DEVOILE
 					}
 				});
 				break;
@@ -165,6 +173,8 @@ public class Window extends Application implements Observer {
 				btn.setText("Passe");
 				btn.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {
+						lookCard(chienCards).play();
+						//DONNE LE CHIEN A UN DES JOUEURS ALEATOIREMENT
 					}
 				});
 				break;
@@ -176,6 +186,13 @@ public class Window extends Application implements Observer {
 		}
 		for (Button b : choices) {
 			root.getChildren().add(b);
+		}
+		animeDistrib().play();
+		
+		if(c.petitSec())
+		{
+			//ANIMATION RETOUR DES CARTES AU CENTRE, RESET PUIS REDISTRIBUTION
+			System.out.println("PETIT SEC");
 		}
 	}
 
@@ -267,6 +284,9 @@ public class Window extends Application implements Observer {
 			public void handle(ActionEvent arg0) {
 				c.triCards();
 				triCardsView();
+				for (Button b : choices) {
+					b.setVisible(true);
+				}
 			}
 		});
 		return master;
@@ -292,6 +312,7 @@ public class Window extends Application implements Observer {
 	}
 
 	private void triCardsView() {
+		//TRI DANS L'ORDRE PIQUE COEUR ATOUT CARREAUX TREFLE
 		/*playerCards.sort(new Comparator<Card_View>() {
 			@Override
 			public int compare(Card_View cv1, Card_View cv2) {
