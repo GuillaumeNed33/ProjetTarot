@@ -40,13 +40,11 @@ public class Window extends Application implements Observer {
 	private Button btnLookCards;
 	private Button btnTriCards;
 	public static Data data;
-	
-	
-	static Image imageMenu = new Image("file:./ressources/img/background.jpg");
-	static Image imageGame = new Image("file:./ressources/img/background2.jpg");
+
+	static String imageMenu = "file:./ressources/img/background.jpg";
+	static String imageGame = "file:./ressources/img/background2.jpg";
 
 	private ImageView background = new ImageView();;
-
 
 	public Window() {
 		title = "Tarot NEDELEC NORMAND S3C";
@@ -57,18 +55,15 @@ public class Window extends Application implements Observer {
 		player_place3 = new Pair<Double, Double>(460., -200.);
 		player_place4 = new Pair<Double, Double>(1200., 300.);
 		chien_place = new Pair<Double, Double>(525., 30.);
-		
-		//imageMenu = new Image("file:./ressources/img/background.jpg");
-		//imageGame = new Image("file:./ressources/img/background2.jpg");
-		//background = new ImageView();
-		background.setFitHeight(HEIGHT);
-		background.setFitWidth(WIDTH);
 	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		Group root = new Group();
 		Scene scene = new Scene(root, WIDTH, HEIGHT, null);
+
+		background.setFitHeight(HEIGHT);
+		background.setFitWidth(WIDTH);
 		primaryStage.setTitle(title);
 
 		LoadMenu(root, scene);
@@ -79,10 +74,10 @@ public class Window extends Application implements Observer {
 
 	private void LoadMenu(Group root, Scene scene) {
 
-		background.setImage(imageMenu);
-		
+		background.setImage(new Image(imageMenu));
+
 		root.getChildren().add(background);
-		
+
 		Button btn = new Button();
 		btn.setLayoutX(350);
 		btn.setLayoutY(350);
@@ -100,7 +95,7 @@ public class Window extends Application implements Observer {
 
 		root.getChildren().clear();
 		scene.setFill(Color.RED);
-		background.setImage(imageGame);
+		background.setImage(new Image(imageGame));
 
 		root.getChildren().add(background);
 
