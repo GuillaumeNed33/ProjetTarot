@@ -54,10 +54,9 @@ public class Window extends Application implements Observer {
 		scene.getStylesheets().add(Window.class.getResource("application.css").toExternalForm());
 		root.setId("root");
 		primaryStage.setTitle(title);
-		
+
 		LoadMenu(root, scene);
 
-		
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
@@ -79,21 +78,20 @@ public class Window extends Application implements Observer {
 	}
 
 	private void StartGame(Group root, Scene scene) {
-		
+
 		root.getChildren().clear();
 		scene.setFill(Color.RED);
-	
+
 		allCards = new ArrayList<Card_View>();
 		for (int i = 0; i < 78; i++) {
 			allCards.add(new Card_View());
 		}
-		c.syncCards(allCards,this);
+		c.syncCards(allCards, this);
 		c.startGame();
 		c.distrib();
 		chienCards = new Vector<Card_View>();
 		playerCards = new Vector<Card_View>();
-		
-		
+
 		btnTriCards = new Button();
 		btnTriCards.setLayoutX(700);
 		btnTriCards.setLayoutY(660);
@@ -173,9 +171,21 @@ public class Window extends Application implements Observer {
 
 	public SequentialTransition moveCardsToObjSeq() {
 		SequentialTransition master = new SequentialTransition();
-		for (Card_View cV : allCards) {
-			master.getChildren().add(cV.moveAnimation());
+		int i = 0;
+		while (i < allCards.size()) {
+			if (allCards.get(i).getIdOwner() != 5) {
+				ParallelTransition cards = new ParallelTransition();
+				for (int j = 0; j < 3; j++) {
+					cards.getChildren().add(allCards.get(i + j).moveAnimation());
+				}
+				i += 3;
+				master.getChildren().add(cards);
+			} else {
+				master.getChildren().add(allCards.get(i).moveAnimation());
+				i++;
+			}
 		}
+
 		master.setOnFinished(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
