@@ -8,7 +8,6 @@ import java.util.Vector;
 
 import Controler.Controller;
 import Model.Card;
-import javafx.animation.Animation;
 import javafx.animation.ParallelTransition;
 import javafx.animation.SequentialTransition;
 import javafx.application.Application;
@@ -19,9 +18,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Pair;
@@ -71,7 +68,10 @@ public class Window extends Application implements Observer {
 		Group root = new Group();
 		Scene scene = new Scene(root, WIDTH, HEIGHT, null);
 		primaryStage.setTitle(title);
-
+		allCards = new ArrayList<Card_View>();
+		for (int i = 0; i < 78; i++) {
+			allCards.add(new Card_View());
+		}
 		LoadMenu(root, scene);
 
 		primaryStage.setScene(scene);
@@ -112,10 +112,6 @@ public class Window extends Application implements Observer {
 	}
 
 	private void StartGame(Group root, Scene scene) {
-		allCards = new ArrayList<Card_View>();
-		for (int i = 0; i < 78; i++) {
-			allCards.add(new Card_View());
-		}
 		c.syncCards(allCards, this);
 
 		root.getChildren().clear();
@@ -312,13 +308,6 @@ public class Window extends Application implements Observer {
 	}
 
 	private void triCardsView() {
-		//TRI DANS L'ORDRE PIQUE COEUR ATOUT CARREAUX TREFLE
-		/*playerCards.sort(new Comparator<Card_View>() {
-			@Override
-			public int compare(Card_View cv1, Card_View cv2) {
-				return cv1.() - cv2.getId();
-			}
-		});*/
 		playerCards.sort(new Comparator<Card_View>() {
 			@Override
 			public int compare(Card_View cv1, Card_View cv2) {

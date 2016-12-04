@@ -53,7 +53,6 @@ public class Data {
 				default:
 					switch (state) {
 					case IMAGE:
-						//System.out.println(line);
 						path_images.put(Integer.parseInt(line.split(":")[0]), line.split(":")[1]);
 						break;
 					case SOUND:
@@ -72,7 +71,7 @@ public class Data {
 			br.close();
 		} catch (Exception e) {
 			System.out.println(e.toString());
-			
+			e.printStackTrace();
 		}
 	}
 
