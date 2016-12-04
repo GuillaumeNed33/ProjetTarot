@@ -20,6 +20,9 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -38,12 +41,12 @@ public class Window extends Application implements Observer {
 	private Pair<Double, Double> player_place3;
 	private Pair<Double, Double> player_place4;
 	private Pair<Double, Double> chien_place;
-	private Button btnLookCards;
-	private Button btnTriCards;
+	//private Button btnLookCards;
+	//private Button btnTriCards;
 	public static Data data;
 
 
-	static String imageMenu = "file:./ressources/img/background2.jpg";
+	static String imageMenu = "file:./ressources/img/background.jpg";
 	static String imageGame = "file:./ressources/img/background2.jpg";
 
 	private ImageView background = new ImageView();;
@@ -56,7 +59,7 @@ public class Window extends Application implements Observer {
 		player_place2 = new Pair<Double, Double>(-200., 300.);
 		player_place3 = new Pair<Double, Double>(460., -200.);
 		player_place4 = new Pair<Double, Double>(1200., 300.);
-		chien_place = new Pair<Double, Double>(525., 30.);
+		chien_place = new Pair<Double, Double>(425., 45.);
 		background.setFitHeight(HEIGHT);
 		background.setFitWidth(WIDTH);
 	}
@@ -66,7 +69,7 @@ public class Window extends Application implements Observer {
 		Group root = new Group();
 		Scene scene = new Scene(root, WIDTH, HEIGHT, null);
 		primaryStage.setTitle(title);
-		
+
 		LoadMenu(root, scene);
 
 		primaryStage.setScene(scene);
@@ -76,6 +79,10 @@ public class Window extends Application implements Observer {
 	private void LoadMenu(Group root, Scene scene) {
 		background.setImage(new Image(imageMenu));
 		root.getChildren().add(background);
+
+		Text mainTitle = new Text(90,200,"SteamPunk Tarot");
+		mainTitle.setFont(Font.loadFont ("file:./ressources/font/Steampunk.otf", 125.));
+		root.getChildren().add(mainTitle);
 
 		Button btn = new Button();
 		btn.setLayoutX(350);
@@ -88,56 +95,88 @@ public class Window extends Application implements Observer {
 			}
 		});
 		root.getChildren().add(btn);
+
+		Button btnQuit = new Button();
+		btnQuit.setLayoutX(350);
+		btnQuit.setLayoutY(500);
+		btnQuit.setPrefSize(250, 50);
+		btnQuit.setText("QUIT");
+		btnQuit.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				System.exit(0);
+			}
+		});
+		root.getChildren().add(btnQuit);
 	}
 
 	private void StartGame(Group root, Scene scene) {
-
-		root.getChildren().clear();
-		scene.setFill(Color.RED);
-		background.setImage(new Image(imageGame));
-
-		root.getChildren().add(background);
-
 		allCards = new ArrayList<Card_View>();
 		for (int i = 0; i < 78; i++) {
 			allCards.add(new Card_View());
 		}
 		c.syncCards(allCards, this);
+
+		root.getChildren().clear();
+		background.setImage(new Image(imageGame));
+		root.getChildren().add(background);
 		c.startGame();
 		c.distrib();
 		chienCards = new Vector<Card_View>();
 		playerCards = new Vector<Card_View>();
 
-		btnTriCards = new Button();
-		btnTriCards.setLayoutX(700);
-		btnTriCards.setLayoutY(660);
-		btnTriCards.setPrefSize(100, 30);
-		btnTriCards.setText("TRI");
-		btnTriCards.setVisible(false);
-
-		btnLookCards = new Button();
-		btnLookCards.setLayoutX(400);
-		btnLookCards.setLayoutY(660);
-		btnLookCards.setPrefSize(150, 30);
-		btnLookCards.setText("Look your cards");
-		btnLookCards.setVisible(false);
-		btnLookCards.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent event) {
-				lookCard(playerCards).play();
-			}
-		});
-		btnTriCards.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent event) {
-				c.triCards();
-				triCardsView();
-			}
-		});
 		animeDistrib().play();
+		Vector<Button>choices = new Vector<Button>();
+		for(int i=0;i<5;i++)
+		{
+			Button btn = new Button();
+			btn.setLayoutX(175*i+100);
+			btn.setLayoutY(10);
+			btn.setPrefSize(150, 25);
+			switch(i) {
+			case 0:
+				btn.setText("La prise");
+				btn.setOnAction(new EventHandler<ActionEvent>() {
+					public void handle(ActionEvent event) {
+					}
+				});
+				break;
+			case 1:
+				btn.setText("La garde");
+				btn.setOnAction(new EventHandler<ActionEvent>() {
+					public void handle(ActionEvent event) {
+					}
+				});
+				break;
+			case 2:
+				btn.setText("La garde sans le chien");
+				btn.setOnAction(new EventHandler<ActionEvent>() {
+					public void handle(ActionEvent event) {
+					}
+				});
+				break;
+			case 3:
+				btn.setText("La garde contre le chien");
+				btn.setOnAction(new EventHandler<ActionEvent>() {
+					public void handle(ActionEvent event) {
+					}
+				});
+				break;
+			case 4:
+				btn.setText("Passe");
+				btn.setOnAction(new EventHandler<ActionEvent>() {
+					public void handle(ActionEvent event) {
+					}
+				});
+				break;
+			}
+			choices.add(btn);
+		}
 		for (Card_View cV : allCards) {
 			root.getChildren().addAll(cV.getNodes());
 		}
-		root.getChildren().add(btnLookCards);
-		root.getChildren().add(btnTriCards);
+		for (Button b : choices) {
+			root.getChildren().add(b);
+		}
 	}
 
 	private SequentialTransition animeDistrib() {
@@ -203,7 +242,7 @@ public class Window extends Application implements Observer {
 		master.setOnFinished(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-				btnLookCards.setVisible(true);
+				lookCard(playerCards).play();
 			}
 		});
 		return master;
@@ -226,8 +265,8 @@ public class Window extends Application implements Observer {
 		master.setOnFinished(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-				btnTriCards.setVisible(true);
-				btnLookCards.setVisible(false);
+				c.triCards();
+				triCardsView();
 			}
 		});
 		return master;
@@ -253,6 +292,12 @@ public class Window extends Application implements Observer {
 	}
 
 	private void triCardsView() {
+		/*playerCards.sort(new Comparator<Card_View>() {
+			@Override
+			public int compare(Card_View cv1, Card_View cv2) {
+				return cv1.() - cv2.getId();
+			}
+		});*/
 		playerCards.sort(new Comparator<Card_View>() {
 			@Override
 			public int compare(Card_View cv1, Card_View cv2) {

@@ -25,8 +25,8 @@ import javafx.util.Pair;
 
 public class Card_View implements Observer {
 	/// Constantes
-	final static int H_CARD = 110;//85
-	final static int W_CARD = 74;//48
+	final static int H_CARD = 112;//85
+	final static int W_CARD = 80;//48
 	final static Double START_X = 460.;
 	final static Double START_Y = 200.;
 	final static Double BIG_POS_X = 400.;

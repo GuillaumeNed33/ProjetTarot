@@ -57,7 +57,6 @@ public class Game extends Observable {
 
 	public void initGame() {
 		generateCards();
-		// displayCardGame();
 	}
 
 	public void triCards() {
@@ -68,7 +67,7 @@ public class Game extends Observable {
 		});
 	}
 
-	private boolean testPetitSec() {
+	public boolean testPetitSec() {
 
 		for (Player p : players) {
 			for (Card c : p.getHand().getGame()) {

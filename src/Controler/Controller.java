@@ -34,5 +34,10 @@ public class Controller {
 	public void distrib() {
 		game.distribCard();
 	}
+	
+	public boolean petitSec()
+	{
+		return game.testPetitSec();
+	}
 
 }
