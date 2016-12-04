@@ -16,13 +16,18 @@ import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
 public class Window extends Application implements Observer {
 
-	protected String title;
+	final static Double WIDTH = 1000.;
+	final static Double HEIGHT = 700.;
+
+	private String title;
 	private static Controller c;
 	private ArrayList<Card_View> allCards;
 	private Vector<Card_View> playerCards;
@@ -32,9 +37,16 @@ public class Window extends Application implements Observer {
 	private Pair<Double, Double> player_place3;
 	private Pair<Double, Double> player_place4;
 	private Pair<Double, Double> chien_place;
-	Button btnLookCards;
-	Button btnTriCards;
+	private Button btnLookCards;
+	private Button btnTriCards;
 	public static Data data;
+	
+	
+	static Image imageMenu = new Image("file:./ressources/img/background.jpg");
+	static Image imageGame = new Image("file:./ressources/img/background2.jpg");
+
+	private ImageView background = new ImageView();;
+
 
 	public Window() {
 		title = "Tarot NEDELEC NORMAND S3C";
@@ -45,14 +57,18 @@ public class Window extends Application implements Observer {
 		player_place3 = new Pair<Double, Double>(460., -200.);
 		player_place4 = new Pair<Double, Double>(1200., 300.);
 		chien_place = new Pair<Double, Double>(525., 30.);
+		
+		//imageMenu = new Image("file:./ressources/img/background.jpg");
+		//imageGame = new Image("file:./ressources/img/background2.jpg");
+		//background = new ImageView();
+		background.setFitHeight(HEIGHT);
+		background.setFitWidth(WIDTH);
 	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		Group root = new Group();
-		Scene scene = new Scene(root, 1000, 700, null);
-		scene.getStylesheets().add(Window.class.getResource("application.css").toExternalForm());
-		root.setId("root");
+		Scene scene = new Scene(root, WIDTH, HEIGHT, null);
 		primaryStage.setTitle(title);
 
 		LoadMenu(root, scene);
@@ -63,6 +79,10 @@ public class Window extends Application implements Observer {
 
 	private void LoadMenu(Group root, Scene scene) {
 
+		background.setImage(imageMenu);
+		
+		root.getChildren().add(background);
+		
 		Button btn = new Button();
 		btn.setLayoutX(350);
 		btn.setLayoutY(350);
@@ -80,6 +100,9 @@ public class Window extends Application implements Observer {
 
 		root.getChildren().clear();
 		scene.setFill(Color.RED);
+		background.setImage(imageGame);
+
+		root.getChildren().add(background);
 
 		allCards = new ArrayList<Card_View>();
 		for (int i = 0; i < 78; i++) {
