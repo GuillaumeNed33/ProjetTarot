@@ -33,9 +33,6 @@ public class GameTest {
 			case ATOUT:
 				nb_atout++;				
 				break;
-			case EXCUSE:
-				nb_excuse++;
-				break;
 			case PIQUE:
 				nb_pique++;
 				break;
