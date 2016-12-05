@@ -77,8 +77,8 @@ public class Game extends Observable {
 			sec = gameSec;
 			i++;
 		}
-		return true;
-		//return sec;
+		//return true;
+		return sec;
 	}
 
 	public void distribCard() {

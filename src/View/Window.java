@@ -116,10 +116,10 @@ public class Window extends Application implements Observer {
 	}
 
 	private void StartGame(Group root, Scene scene) {
-		c.syncCards(allCards, this);
 		root.getChildren().clear();
 		background.setImage(new Image(imageGame));
 		root.getChildren().add(background);
+		c.syncCards(allCards, this);
 		c.startGame();
 		c.distrib();
 		chienCards = new Vector<Card_View>();
@@ -147,9 +147,16 @@ public class Window extends Application implements Observer {
 				btn.setText("La garde");
 				btn.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {
-						SequentialTransition theGard = new SequentialTransition();
-						theGard.getChildren().addAll(lookCard(chienCards), goToMyHand(), triCardsView());
-						theGard.play();
+						SequentialTransition look = lookCard(chienCards);
+						look.setOnFinished(new EventHandler<ActionEvent>() {
+							@Override
+							public void handle(ActionEvent event) {
+								SequentialTransition theGard = new SequentialTransition();
+								theGard.getChildren().addAll(goToMyHand(), triCardsView());
+								theGard.play();
+							}	
+						});
+						look.play();;
 					}
 				});
 				break;
@@ -311,7 +318,6 @@ public class Window extends Application implements Observer {
 		SequentialTransition master = new SequentialTransition();
 		for (Card_View cV : cards) {
 			master.getChildren().add(cV.flip());
-			cV.setFrontVisible(true);
 		}
 		return master;
 	}
@@ -371,8 +377,8 @@ public class Window extends Application implements Observer {
 		for (Card_View cV : chienCards) {
 			cV.setObjective(new Pair<Double, Double>(X, Y));
 			X += Card_View.W_CARD / 2;
-			cV.getFrontCard().toFront();
 			playerCards.add(cV);
+			
 		}
 		return moveCardsToObjParal();
 	}
