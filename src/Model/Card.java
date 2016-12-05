@@ -7,9 +7,19 @@ public class Card extends Observable{
 	private CardType type;
 	private int value;
 	Player owner;
+
 	public Card() {
-		
+
 	}
+
+	public Card(CardType c, int val, int id) {
+		this.id = id;
+		type = c;
+		value = val;
+		setChanged();
+		notifyObservers(id);
+	}
+	
 	public void initCard(CardType c, int val, int id)
 	{
 		this.id = id;
@@ -18,12 +28,12 @@ public class Card extends Observable{
 		setChanged();
 		notifyObservers(id);
 	}
-	
+
 	public CardType getType()
 	{
 		return this.type;
 	}
-	
+
 	public int getValue()
 	{
 		return value;
