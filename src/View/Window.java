@@ -224,7 +224,7 @@ public class Window extends Application implements Observer {
 					}
 					backToCenter().play();
 					c.resetGame();
-
+ 
 				} else {
 					for (Button b : choices) {
 						b.setVisible(true);
