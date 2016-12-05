@@ -10,6 +10,7 @@ import Controler.Controller;
 import Model.Card;
 import javafx.animation.Animation;
 import javafx.animation.ParallelTransition;
+import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -22,6 +23,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import javafx.util.Pair;
 
 public class Window extends Application implements Observer {
@@ -330,6 +332,16 @@ public class Window extends Application implements Observer {
 			@Override
 			public void handle(ActionEvent arg0) {
 				if (c.testPetitSec()) {
+					Text info = new Text(130, 415, "Le Petit est sec !");
+					info.setFont(Font.loadFont("file:./ressources/font/Steampunk.otf", 100.));
+					root.getChildren().add(info);
+
+					try {
+						Thread.sleep(1500L);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					backToCenter();
 					c.resetGame();
 
