@@ -75,7 +75,6 @@ public class Card_View implements Observer {
 			}
 			
 		});
-
 	}
 	public void setX(Double x) {
 		card_back.setX(x);

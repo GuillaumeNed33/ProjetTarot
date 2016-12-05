@@ -11,7 +11,7 @@ import Model.Player;
 
 public class GameTest {
 	public final static int NBCARDS = 78;
-	public final static int NBATOUT = 21;
+	public final static int NBATOUT = 22; //21 Atouts + Excuse
 	public final static int NB_CARD_COLOR = 14;
 
 
@@ -22,7 +22,6 @@ public class GameTest {
 		int nb_coeur = 0;
 		int nb_carreaux = 0;
 		int nb_atout= 0;
-		int nb_excuse = 0;
 
 		Game g = new Game();
 		g.initGame();
@@ -53,10 +52,7 @@ public class GameTest {
 		assertEquals(nb_coeur, NB_CARD_COLOR);
 		assertEquals(nb_carreaux, NB_CARD_COLOR);
 		assertEquals(nb_atout, NBATOUT);
-		assertEquals(nb_excuse, 1);
-		assertEquals(nb_pique+nb_coeur+nb_trefle+nb_atout+nb_excuse+nb_carreaux, NBCARDS);
-
-
+		assertEquals(nb_pique+nb_coeur+nb_trefle+nb_atout+nb_carreaux, NBCARDS);
 	}
 
 	@Test

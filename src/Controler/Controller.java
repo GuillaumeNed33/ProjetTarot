@@ -38,4 +38,8 @@ public class Controller {
 		return game.testPetitSec();
 	}
 
+	public void resetGame() {
+		game.reset();		
+	}
+
 }

@@ -10,6 +10,7 @@ import Controler.Controller;
 import Model.Card;
 import javafx.animation.Animation;
 import javafx.animation.ParallelTransition;
+import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -22,6 +23,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import javafx.util.Pair;
 
 public class Window extends Application implements Observer {
@@ -46,7 +48,10 @@ public class Window extends Application implements Observer {
 	static String imageMenu = "file:./ressources/img/background.jpg";
 	static String imageGame = "file:./ressources/img/background2.jpg";
 
-	private ImageView background = new ImageView();;
+	Group root;
+	Scene scene;
+
+	private ImageView background = new ImageView();
 
 	public Window() {
 		title = "Tarot NEDELEC NORMAND S3C";
@@ -64,8 +69,8 @@ public class Window extends Application implements Observer {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		Group root = new Group();
-		Scene scene = new Scene(root, WIDTH, HEIGHT, null);
+		root = new Group();
+		scene = new Scene(root, WIDTH, HEIGHT, null);
 		primaryStage.setTitle(title);
 		allCards = new ArrayList<Card_View>();
 		for (int i = 0; i < 78; i++) {
@@ -112,7 +117,6 @@ public class Window extends Application implements Observer {
 
 	private void StartGame(Group root, Scene scene) {
 		c.syncCards(allCards, this);
-
 		root.getChildren().clear();
 		background.setImage(new Image(imageGame));
 		root.getChildren().add(background);
@@ -144,7 +148,7 @@ public class Window extends Application implements Observer {
 				btn.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {
 						SequentialTransition theGard = new SequentialTransition();
-						theGard.getChildren().addAll(lookCard(chienCards),goToMyHand(),triCardsView());
+						theGard.getChildren().addAll(lookCard(chienCards), goToMyHand(), triCardsView());
 						theGard.play();
 					}
 				});
@@ -172,7 +176,6 @@ public class Window extends Application implements Observer {
 				btn.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {
 						lookCard(chienCards).play();
-						// DONNE LE CHIEN A UN DES JOUEURS ALEATOIREMENT
 					}
 				});
 				break;
@@ -185,32 +188,53 @@ public class Window extends Application implements Observer {
 		for (Button b : choices) {
 			root.getChildren().add(b);
 		}
-		
+
 		SequentialTransition masterDistrib = new SequentialTransition();
-		masterDistrib.getChildren().addAll(animeDistrib(),lookCard(playerCards));
-		
+		masterDistrib.getChildren().addAll(animeDistrib(), lookCard(playerCards));
+
 		masterDistrib.setOnFinished(new EventHandler<ActionEvent>() {
+
 			@Override
 			public void handle(ActionEvent arg0) {
 				c.triCards();
 				triCardsView().play();
 				if (c.testPetitSec()) {
+					Text info = new Text(130, 415, "Le Petit est sec !");
+					info.setFont(Font.loadFont("file:./ressources/font/Steampunk.otf", 100.));
+					root.getChildren().add(info);
+					try {
+						Thread.sleep(1500L);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					backToCenter().play();
+					c.resetGame();
+
 				} else {
 					for (Button b : choices) {
 						b.setVisible(true);
 					}
+
 				}
 			}
 		});
 		masterDistrib.play();
+
 	}
 
 	private ParallelTransition backToCenter() {
 		for (Card_View cV : allCards) {
 			cV.setObjective(new Pair<Double, Double>(Card_View.START_X, Card_View.START_Y));
 		}
-		return moveCardsToObjParal();
+		ParallelTransition master = moveCardsToObjParal();
+		master.setOnFinished(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				StartGame(root, scene);
+			}
+		});
+		return master;
 	}
 
 	private SequentialTransition animeDistrib() {
@@ -342,7 +366,7 @@ public class Window extends Application implements Observer {
 	}
 
 	private ParallelTransition goToMyHand() {
-		Double X = player_place.getKey()+playerCards.size()*(Card_View.W_CARD/2);
+		Double X = player_place.getKey() + playerCards.size() * (Card_View.W_CARD / 2);
 		Double Y = player_place.getValue();
 		for (Card_View cV : chienCards) {
 			cV.setObjective(new Pair<Double, Double>(X, Y));
