@@ -6,7 +6,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Observable;
 
-import Controler.Controller;
 import Model.CardType;
 import View.Card_View;
 
@@ -15,10 +14,9 @@ public class Game extends Observable {
 	public final static int NBPLAYER = 4;
 	public final static int NBCARDS = 78;
 	public final static int IDPLAYER = 1;
-	public final static int NBATOUT = 21;
+	public final static int NBATOUT = 22;
 	public final static int NB_CARD_COLOR = 14;
 
-	Controller control;
 	private List<Player> players;
 	private List<Card> cards;
 	private Chien chien;
@@ -34,25 +32,20 @@ public class Game extends Observable {
 		}
 	}
 
-	public void setController(Controller c) {
-		control = c;
-	}
-
 	private void generateCards() {
-		for (int i = 0; i < NBCARDS - 1; i++) {
-			if(i>=0 && i<NBATOUT) {
-				cards.get(i).initCard(CardType.ATOUT, i+1, i);
-			} else if(i>=NBATOUT && i< NBATOUT+NB_CARD_COLOR){
-				cards.get(i).initCard(CardType.TREFLE,(i-NBATOUT)+1, i);
-			} else if(i>=NBATOUT+NB_CARD_COLOR && i< NBATOUT+(NB_CARD_COLOR*2)){
-				cards.get(i).initCard(CardType.PIQUE,((i-NBATOUT)%14)+1, i);
-			} else if(i>=NBATOUT+(NB_CARD_COLOR*2) && i< NBATOUT+(NB_CARD_COLOR*3)){
-				cards.get(i).initCard(CardType.CARREAUX,((i-NBATOUT)%14)+1, i);
+		for (int i = 0; i < NBCARDS; i++) {
+			if (i >= 0 && i < NB_CARD_COLOR) {
+				cards.get(i).initCard(CardType.PIQUE, i + 1, i);
+			} else if (i >= NB_CARD_COLOR && i < NB_CARD_COLOR * 2) {
+				cards.get(i).initCard(CardType.COEUR, (i % NB_CARD_COLOR) + 1, i);
+			} else if (i >= NB_CARD_COLOR * 2 && i < NBATOUT + (NB_CARD_COLOR * 2)) {
+				cards.get(i).initCard(CardType.ATOUT, (i - (NB_CARD_COLOR * 2)), i);
+			} else if (i >= NBATOUT + (NB_CARD_COLOR * 2) && i < NBATOUT + (NB_CARD_COLOR * 3)) {
+				cards.get(i).initCard(CardType.CARREAUX, ((i - NBATOUT) % 14) + 1, i);
 			} else {
-				cards.get(i).initCard(CardType.COEUR,((i-NBATOUT)%14)+1, i);
+				cards.get(i).initCard(CardType.TREFLE, ((i - NBATOUT) % 14) + 1, i);
 			}
 		}
-		cards.get(77).initCard(CardType.EXCUSE, 0, 77);
 	}
 
 	public void initGame() {
@@ -68,16 +61,22 @@ public class Game extends Observable {
 	}
 
 	public boolean testPetitSec() {
-
-		for (Player p : players) {
-			for (Card c : p.getHand().getGame()) {
-				if ((c.getType() == CardType.ATOUT && c.getValue() != 1)
-						|| c.getType() == CardType.EXCUSE) {
-					return false;
+		boolean sec = false;
+		int i = 0;
+		while (i < players.size() && !sec) {
+			int j = 0;
+			boolean gameSec = true;
+			while (j < players.get(i).getHand().getGame().size() && gameSec) {
+				Card c = players.get(i).getHand().getCard(j);
+				if ((c.getType() == CardType.ATOUT && c.getValue() != 1)) {
+					gameSec = false;
 				}
+				j++;
 			}
+			sec = gameSec;
+			i++;
 		}
-		return true;
+		return sec;
 	}
 
 	public void distribCard() {
@@ -116,11 +115,7 @@ public class Game extends Observable {
 			id_player = (id_player + 1) % (players.size() + 1);
 		}
 		setChanged();
-		if (!testPetitSec()) {
-			notifyObservers(cards);
-		} else {
-			notifyObservers("PetitSec");
-		}
+		notifyObservers(cards);
 	}
 
 	public void displayCardGame() {
@@ -133,7 +128,7 @@ public class Game extends Observable {
 		for (int i = 0; i < players.size(); i++) {
 			System.out.println("\nLe joueur " + i + " : " + players.get(i).getHand().getGame().size());
 			for (Card c : players.get(i).getHand().getGame()) {
-				System.out.println(c.getValue() + " " + c.getType().toString());
+				System.out.println(c.getValue() + " " + c.getType().toString() + " ID : " + c.getId());
 			}
 		}
 

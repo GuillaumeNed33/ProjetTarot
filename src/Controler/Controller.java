@@ -13,7 +13,6 @@ public class Controller {
 	public Controller(Game g, Window w)
 	{
 		game = g;
-		game.setController(this);
 		win = w;
 		win.setController(this);
 	}
@@ -35,8 +34,7 @@ public class Controller {
 		game.distribCard();
 	}
 	
-	public boolean petitSec()
-	{
+	public boolean testPetitSec() {
 		return game.testPetitSec();
 	}
 

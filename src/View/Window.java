@@ -8,6 +8,7 @@ import java.util.Vector;
 
 import Controler.Controller;
 import Model.Card;
+import javafx.animation.Animation;
 import javafx.animation.ParallelTransition;
 import javafx.animation.SequentialTransition;
 import javafx.application.Application;
@@ -38,12 +39,8 @@ public class Window extends Application implements Observer {
 	private Pair<Double, Double> player_place3;
 	private Pair<Double, Double> player_place4;
 	private Pair<Double, Double> chien_place;
-	Vector<Button>choices;
-
-	//private Button btnLookCards;
-	//private Button btnTriCards;
+	Vector<Button> choices;
 	public static Data data;
-
 
 	static String imageMenu = "file:./ressources/img/background.jpg";
 	static String imageGame = "file:./ressources/img/background2.jpg";
@@ -82,8 +79,8 @@ public class Window extends Application implements Observer {
 		background.setImage(new Image(imageMenu));
 		root.getChildren().add(background);
 
-		Text mainTitle = new Text(90,200,"SteamPunk Tarot");
-		mainTitle.setFont(Font.loadFont ("file:./ressources/font/Steampunk.otf", 125.));
+		Text mainTitle = new Text(90, 200, "SteamPunk Tarot");
+		mainTitle.setFont(Font.loadFont("file:./ressources/font/Steampunk.otf", 125.));
 		root.getChildren().add(mainTitle);
 
 		Button btn = new Button();
@@ -123,20 +120,20 @@ public class Window extends Application implements Observer {
 		playerCards = new Vector<Card_View>();
 
 		choices = new Vector<Button>();
-		for(int i=0;i<5;i++)
-		{
+		for (int i = 0; i < 5; i++) {
 			Button btn = new Button();
-			btn.setLayoutX(175*i+100);
+			btn.setLayoutX(175 * i + 100);
 			btn.setLayoutY(10);
 			btn.setPrefSize(150, 25);
 			btn.setVisible(false);
-			switch(i) {
+			switch (i) {
 			case 0:
 				btn.setText("La prise");
 				btn.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {
 						lookCard(chienCards).play();
-						//CHANGEMENT DE CARTE ENTRE LE JEU DU JOUEUR ET LE CHIEN POSSIBLE
+						// CHANGEMENT DE CARTE ENTRE LE JEU DU JOUEUR ET LE
+						// CHIEN POSSIBLE
 					}
 				});
 				break;
@@ -145,7 +142,8 @@ public class Window extends Application implements Observer {
 				btn.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {
 						lookCard(chienCards).play();
-						//CHANGEMENT DE CARTE ENTRE LE JEU DU JOUEUR ET LE CHIEN POSSIBLE
+						// CHANGEMENT DE CARTE ENTRE LE JEU DU JOUEUR ET LE
+						// CHIEN POSSIBLE
 					}
 				});
 				break;
@@ -153,7 +151,7 @@ public class Window extends Application implements Observer {
 				btn.setText("La garde sans le chien");
 				btn.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {
-						//LE CHIEN EST DONNE AU PRENEUR SANS ETRE DEVOILE
+						// LE CHIEN EST DONNE AU PRENEUR SANS ETRE DEVOILE
 					}
 				});
 				break;
@@ -161,7 +159,7 @@ public class Window extends Application implements Observer {
 				btn.setText("La garde contre le chien");
 				btn.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {
-						//LE CHIEN EST DONNE AUX AUTRES SANS ETRE DEVOILE 
+						// LE CHIEN EST DONNE AUX AUTRES SANS ETRE DEVOILE
 					}
 				});
 				break;
@@ -170,7 +168,7 @@ public class Window extends Application implements Observer {
 				btn.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {
 						lookCard(chienCards).play();
-						//DONNE LE CHIEN A UN DES JOUEURS ALEATOIREMENT
+						// DONNE LE CHIEN A UN DES JOUEURS ALEATOIREMENT
 					}
 				});
 				break;
@@ -183,16 +181,17 @@ public class Window extends Application implements Observer {
 		for (Button b : choices) {
 			root.getChildren().add(b);
 		}
-		animeDistrib().play();
-		
-		if(c.petitSec())
-		{
-			//ANIMATION RETOUR DES CARTES AU CENTRE, RESET PUIS REDISTRIBUTION
-			System.out.println("PETIT SEC");
-		}
+		animeDistrib();
 	}
 
-	private SequentialTransition animeDistrib() {
+	private void backToCenter() {
+		for (Card_View cV : allCards) {
+			cV.setObjective(new Pair<Double, Double>(Card_View.START_X, Card_View.START_Y));
+		}
+		moveCardsToObjParal();
+	}
+
+	private void animeDistrib() {
 		int nb_carte = 0;
 		int nbChienCards = 0;
 		for (Card_View cV : allCards) {
@@ -232,7 +231,8 @@ public class Window extends Application implements Observer {
 				break;
 			}
 		}
-		return moveCardsToObjSeq();
+		moveCardsToObjSeq().play();
+		;
 	}
 
 	public SequentialTransition moveCardsToObjSeq() {
@@ -280,8 +280,12 @@ public class Window extends Application implements Observer {
 			public void handle(ActionEvent arg0) {
 				c.triCards();
 				triCardsView();
-				for (Button b : choices) {
-					b.setVisible(true);
+				if (c.testPetitSec()) {
+					backToCenter();
+				} else {
+					for (Button b : choices) {
+						b.setVisible(true);
+					}
 				}
 			}
 		});
