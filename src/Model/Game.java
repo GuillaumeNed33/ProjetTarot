@@ -141,4 +141,19 @@ public class Game extends Observable {
 			i++;
 		}
 	}
+	
+	public List<Card> getCards()
+	{
+		return cards;
+	}
+	
+	public List<Player> getPlayers()
+	{
+		return players;
+	}
+	
+	public Chien getChien()
+	{
+		return chien;
+	}
 }
