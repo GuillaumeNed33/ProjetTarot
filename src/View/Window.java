@@ -20,6 +20,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.shape.StrokeLineJoin;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -42,6 +46,7 @@ public class Window extends Application implements Observer {
 	private Pair<Double, Double> player_place4;
 	private Pair<Double, Double> chien_place;
 	private Pair<Double, Double> chien_player_place;
+	private Rectangle dropTarget;
 	Vector<Button> choices;
 	public static Data data;
 
@@ -73,6 +78,13 @@ public class Window extends Application implements Observer {
 		scene = new Scene(root, WIDTH, HEIGHT, null);
 		primaryStage.setTitle(title);
 		allCards = new ArrayList<Card_View>();
+		dropTarget = new Rectangle(800, 50, 300, 300);
+		dropTarget.getStrokeDashArray().add(10.);
+		dropTarget.setStrokeLineJoin(StrokeLineJoin.ROUND);
+		dropTarget.setStrokeLineCap(StrokeLineCap.ROUND);
+		dropTarget.setStrokeWidth(5.);
+		dropTarget.setFill(Color.TRANSPARENT);
+		dropTarget.setStroke(Color.BLACK);
 		for (int i = 0; i < 78; i++) {
 			allCards.add(new Card_View());
 		}
@@ -144,9 +156,15 @@ public class Window extends Application implements Observer {
 								SequentialTransition theGard = new SequentialTransition();
 								theGard.getChildren().addAll(goToMyHand(), triCardsView());
 								theGard.play();
-							}	
+								theGard.setOnFinished(new EventHandler<ActionEvent>() {
+									@Override
+									public void handle(ActionEvent event) {
+										constituteShift();
+									}
+								});
+							}
 						});
-						look.play();;
+						look.play();
 					}
 				});
 				break;
@@ -161,9 +179,10 @@ public class Window extends Application implements Observer {
 								SequentialTransition theGard = new SequentialTransition();
 								theGard.getChildren().addAll(goToMyHand(), triCardsView());
 								theGard.play();
-							}	
+							}
 						});
-						look.play();;
+						look.play();
+						allowDragAndDrop();
 					}
 				});
 				break;
@@ -359,7 +378,7 @@ public class Window extends Application implements Observer {
 			Double X = player_place.getKey() + (i * (Card_View.W_CARD / 2));
 			Double Y = player_place.getValue();
 			playerCards.get(i).setObjective(new Pair<Double, Double>(X, Y));
-			playerCards.get(i).getFrontCard().toFront();
+			playerCards.get(i).setToFrontCard();
 		}
 		return moveCardsToObjParal();
 	}
@@ -385,8 +404,70 @@ public class Window extends Application implements Observer {
 			cV.setObjective(new Pair<Double, Double>(X, Y));
 			X += Card_View.W_CARD / 2;
 			playerCards.add(cV);
-			
+
 		}
 		return moveCardsToObjParal();
+	}
+
+	/**
+	 * 
+	 */
+	private void allowDragAndDrop() {
+		for (Card_View cV : playerCards) {
+			System.out.println(cV.getId());
+			if (!(cV.getId() == 13 || cV.getId() == 27 || cV.getId() == 28 || cV.getId() == 29 || cV.getId() == 30
+					|| cV.getId() == 49 || cV.getId() == 63 || cV.getId() == 77)) {
+				cV.openDragAndDrop(dropTarget);
+			}
+			cV.blockZoom();
+		}
+	}
+
+	/**
+	 * 
+	 */
+	public void constituteShift() {
+		root.getChildren().clear();
+		initSceneToConstituteShift();
+		ParallelTransition move = setPosCardsForShift();
+		move.setOnFinished(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				allowDragAndDrop();
+			}
+		});
+		move.play();
+	}
+
+	private ParallelTransition setPosCardsForShift() {
+		Double firstCard_X = 50.;
+		Double firstCard_Y = 150.; 
+		for(int i=0;i<playerCards.size();i++) {
+			playerCards.get(i).setObjective(new Pair<Double, Double>((i%8)*(Card_View.W_CARD+10)+ firstCard_X,
+					(Math.floorDiv(i, 8)*(Card_View.H_CARD+10)) + firstCard_Y));
+		}
+		return moveCardsToObjParal();
+	}
+
+	private void initSceneToConstituteShift() {
+		Text title = new Text(100., 100., "Constitute the shift.");
+		title.setFont(Font.loadFont("file:./ressources/font/Steampunk.otf", 50.));
+		Button btn = new Button("Confirm");
+		btn.autosize();
+		btn.setLayoutX(900.);
+		btn.setLayoutY(600.);
+		btn.setOnAction(new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent event) {
+				System.out.println("fini");
+			}
+		});
+		root.getChildren().add(background);
+		root.getChildren().add(dropTarget);
+		for (Card_View cV : playerCards) {
+			root.getChildren().addAll(cV.getNodes());
+		}
+		root.getChildren().add(title);
+		root.getChildren().add(btn);
 	}
 }

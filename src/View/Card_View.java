@@ -15,91 +15,97 @@ import javafx.animation.SequentialTransition;
 import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 import javafx.util.Pair;
 
 public class Card_View implements Observer {
 	/// Constantes
-	final static int H_CARD = 112;//85
-	final static int W_CARD = 80;//48
+	final static int H_CARD = 112;// 85
+	final static int W_CARD = 80;// 48
 	final static Double START_X = 460.;
 	final static Double START_Y = 200.;
 	final static Double BIG_POS_X = 150.;
 	final static Double BIG_POS_Y = 200.;
 	private Double objX;
 	private Double objY;
-	
+
 	private boolean arrived;
 	private int id;
 	private int idOwner;
-	
+
 	private Image image_front;
 	private static Image image_back = new Image("file:./ressources/cards/cachee.jpg");
 	private ImageView card_back = new ImageView();
 	private ImageView card_front = new ImageView();
-	private ImageView card_big = new ImageView();
+	private Rectangle card_shape = new Rectangle(START_X, START_Y, W_CARD, H_CARD);
 	static long halfFlipDuration = 100;
 	static long halfDistribDuration = 350;
- 
 
 	public Card_View() {
 		arrived = false;
 		card_back.setImage(image_back);
-		card_big.setVisible(false);
-		card_big.setFitHeight(H_CARD);
-		card_big.setFitWidth(W_CARD);
-		card_big.toBack();
+		card_shape.setVisible(true);
+		card_shape.setFill(Color.TRANSPARENT);
 		card_front.setFitWidth(W_CARD);
 		card_front.setFitHeight(H_CARD);
 		card_back.setFitWidth(W_CARD);
 		card_back.setFitHeight(H_CARD);
 		this.setX(START_X);
 		this.setY(START_Y);
-		
-		card_front.setOnMouseEntered(new EventHandler<MouseEvent>() {
+
+		card_shape.setOnMouseEntered(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				transformeToBig(card_big);
+				transformeToBig(card_front);
 			}
 		});
-		card_front.setOnMouseExited(new EventHandler<MouseEvent>() {
+		card_shape.setOnMouseExited(new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent event) {
 				restoreByDefault();
 			}
-			
+
 		});
 	}
+
 	public void setX(Double x) {
 		card_back.setX(x);
 		card_front.setX(x);
-		card_big.setX(x);
+		card_shape.setX(x);
 	}
 
 	public void setY(Double y) {
 		card_back.setY(y);
 		card_front.setY(y);
-		card_big.setY(y);
+		card_shape.setY(y);
 	}
 
 	public Collection<Node> getNodes() {
 		ArrayList<Node> al = new ArrayList<>();
 		al.add(card_front);
 		al.add(card_back);
-		al.add(card_big);
+		al.add(card_shape);
 		return al;
 	}
 
 	public Node getBackCard() {
 		return card_back;
 	}
-	
+
 	public Node getFrontCard() {
 		return card_front;
 	}
@@ -110,7 +116,7 @@ public class Card_View implements Observer {
 		rotateOutBack.setAxis(Rotate.Y_AXIS);
 		rotateOutBack.setFromAngle(0);
 		rotateOutBack.setToAngle(-90);
-		
+
 		final RotateTransition rotateInFront = new RotateTransition(Duration.millis(halfFlipDuration), card_front);
 		rotateInFront.setInterpolator(Interpolator.LINEAR);
 		rotateInFront.setAxis(Rotate.Y_AXIS);
@@ -121,91 +127,123 @@ public class Card_View implements Observer {
 	}
 
 	public TranslateTransition createMoveAnimation(ImageView iV) {
-		final TranslateTransition move = new TranslateTransition(Duration.millis(halfDistribDuration),iV);
-		move.setToX(objX-iV.getX());
-		move.setToY(objY-iV.getY());
+		final TranslateTransition move = new TranslateTransition(Duration.millis(halfDistribDuration), iV);
+		move.setToX(objX - iV.getX());
+		move.setToY(objY - iV.getY());
 		return move;
 	}
+
 	public Transition moveAnimation() {
-	
-		return new ParallelTransition(createMoveAnimation(card_back),createMoveAnimation(card_front),
-				createMoveAnimation(card_big));
+
+		return new ParallelTransition(createMoveAnimation(card_back), createMoveAnimation(card_front));
 	}
 
 	public boolean isArrived() {
 		return arrived;
 	}
-	
-	
+
 	public int getId() {
 		return id;
 	}
-	
-	public void setFrontVisible(boolean b) {
-		card_front.setVisible(b);
-	}
-	
+
 	@Override
 	public void update(Observable o, Object ob) {
-		if(ob instanceof Integer) {
+		if (ob instanceof Integer) {
 			id = (int) ob;
-			image_front = new Image("file:" + Window.data.getImage(this.id+1));
+			image_front = new Image("file:" + Window.data.getImage(this.id));
 			card_front.setImage(image_front);
-			card_big.setImage(image_front);
-		} else if(ob instanceof Player) {
+		} else if (ob instanceof Player) {
 			idOwner = ((Player) ob).getId();
-		} else if(ob instanceof Chien) {
+		} else if (ob instanceof Chien) {
 			idOwner = 5;
 		}
 	}
+
 	public int getIdOwner() {
-		
+
 		return idOwner;
 	}
-	
+
 	public Double getX() {
 		return card_back.getX();
 	}
+
 	public Double getY() {
 		return card_back.getY();
 	}
-	public void actualiseRotate(int nb_carte) {
-		Double remY = card_back.getY();
-		System.out.println("DEPART : " + remY);
-		int angle = -51+(6*(nb_carte));
-		Double shift = remY+(W_CARD*Math.sin(Math.toRadians(Math.abs(angle))));
-		System.out.println("ANGLE : " + angle);
-		System.out.println("ARRIVER : " + shift);
-		card_back.setRotate(angle);
-		card_back.setY(shift);
-		card_front.setVisible(true);
-	}
+
 	private void transformeToBig(ImageView node) {
-		card_big.setVisible(true);
-		final ScaleTransition zoomFront = new ScaleTransition(Duration.millis(halfFlipDuration),node);
+		final ScaleTransition zoomFront = new ScaleTransition(Duration.millis(halfFlipDuration), node);
 		zoomFront.setToX(2.);
 		zoomFront.setToY(2.);
-		final TranslateTransition moveFront = new TranslateTransition(Duration.millis(halfFlipDuration),node);
-		moveFront.setToX(BIG_POS_X-node.getX());
-		moveFront.setToY(BIG_POS_Y-node.getY());
-		final ParallelTransition master = new ParallelTransition(moveFront,zoomFront);
+		final TranslateTransition moveFront = new TranslateTransition(Duration.millis(halfFlipDuration), node);
+		moveFront.setToX(BIG_POS_X - node.getX());
+		moveFront.setToY(BIG_POS_Y - node.getY());
+		final ParallelTransition master = new ParallelTransition(moveFront, zoomFront);
 		master.play();
 	}
-	private void restoreByDefault() {
-		card_big.setVisible(false);
 
-		final ScaleTransition zoomFront = new ScaleTransition(Duration.millis(halfFlipDuration),card_big);
+	private void restoreByDefault() {
+		final ScaleTransition zoomFront = new ScaleTransition(Duration.millis(halfFlipDuration), card_front);
 		zoomFront.setToX(1.);
 		zoomFront.setToY(1.);
-		final TranslateTransition moveFront = new TranslateTransition(Duration.millis(halfFlipDuration),card_big);
-		moveFront.setToX(objX-card_big.getX());
-		moveFront.setToY(objY-card_big.getY());
-		final ParallelTransition master = new ParallelTransition(moveFront,zoomFront);
+		final TranslateTransition moveFront = new TranslateTransition(Duration.millis(halfFlipDuration), card_front);
+		moveFront.setToX(objX - card_front.getX());
+		moveFront.setToY(objY - card_front.getY());
+		final ParallelTransition master = new ParallelTransition(moveFront, zoomFront);
 		master.play();
 	}
+
 	public void setObjective(Pair<Double, Double> pair) {
 		objX = pair.getKey();
 		objY = pair.getValue();
+		card_shape.setX(objX);
+		card_shape.setY(objY);
 	}
-	
+
+	public void setToFrontCard() {
+		card_back.toBack();
+		card_front.toFront();
+		card_shape.toFront();
+	}
+
+	public void blockZoom() {
+		card_shape.toBack();
+	}
+
+	public void openDragAndDrop(Rectangle dropTarget) {
+		card_front.setOnDragDetected(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent me) {
+				if (me.isPrimaryButtonDown()) {
+					card_shape.setVisible(false);
+					Double shiftX = me.getX() - getX();
+					Double shiftY = me.getY() - getY();
+					card_front.setOnMouseDragged((new EventHandler<MouseEvent>() {
+						@Override
+						public void handle(MouseEvent me) {
+							card_shape.setVisible(false);
+							setX(me.getX() - shiftX);
+							setY(me.getY() - shiftY);
+						}
+					}));
+				}
+			}
+		});
+
+		card_front.setOnDragDropped(new EventHandler<DragEvent>() {
+			@Override
+			public void handle(DragEvent event) {
+				if (dropTarget.contains(card_front.getX(), card_front.getY())
+						|| dropTarget.contains(card_front.getX(), card_front.getY()+H_CARD)
+						|| dropTarget.contains(card_front.getX() + W_CARD, card_front.getY())
+						|| dropTarget.contains(card_front.getX() + W_CARD, card_front.getY() + H_CARD)) {
+					event.setDropCompleted(true);
+				} else {
+					event.setDropCompleted(false);
+				}
+			}
+		});
+	}
+
 }
