@@ -137,9 +137,16 @@ public class Window extends Application implements Observer {
 				btn.setText("La prise");
 				btn.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {
-						lookCard(chienCards).play();
-						// CHANGEMENT DE CARTE ENTRE LE JEU DU JOUEUR ET LE
-						// CHIEN POSSIBLE
+						SequentialTransition look = lookCard(chienCards);
+						look.setOnFinished(new EventHandler<ActionEvent>() {
+							@Override
+							public void handle(ActionEvent event) {
+								SequentialTransition theGard = new SequentialTransition();
+								theGard.getChildren().addAll(goToMyHand(), triCardsView());
+								theGard.play();
+							}	
+						});
+						look.play();;
 					}
 				});
 				break;
