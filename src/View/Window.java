@@ -45,7 +45,10 @@ public class Window extends Application implements Observer {
 	static String imageMenu = "file:./ressources/img/background.jpg";
 	static String imageGame = "file:./ressources/img/background2.jpg";
 
-	private ImageView background = new ImageView();;
+	Group root;
+	Scene scene;
+
+	private ImageView background = new ImageView();
 
 	public Window() {
 		title = "Tarot NEDELEC NORMAND S3C";
@@ -62,8 +65,8 @@ public class Window extends Application implements Observer {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		Group root = new Group();
-		Scene scene = new Scene(root, WIDTH, HEIGHT, null);
+		root = new Group();
+		scene = new Scene(root, WIDTH, HEIGHT, null);
 		primaryStage.setTitle(title);
 		allCards = new ArrayList<Card_View>();
 		for (int i = 0; i < 78; i++) {
@@ -110,7 +113,6 @@ public class Window extends Application implements Observer {
 
 	private void StartGame(Group root, Scene scene) {
 		c.syncCards(allCards, this);
-
 		root.getChildren().clear();
 		background.setImage(new Image(imageGame));
 		root.getChildren().add(background);
@@ -168,7 +170,6 @@ public class Window extends Application implements Observer {
 				btn.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {
 						lookCard(chienCards).play();
-						// DONNE LE CHIEN A UN DES JOUEURS ALEATOIREMENT
 					}
 				});
 				break;
@@ -188,7 +189,14 @@ public class Window extends Application implements Observer {
 		for (Card_View cV : allCards) {
 			cV.setObjective(new Pair<Double, Double>(Card_View.START_X, Card_View.START_Y));
 		}
-		moveCardsToObjParal();
+		ParallelTransition master = moveCardsToObjParal();
+		master.setOnFinished(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				StartGame(root, scene);
+			}
+		});
+		master.play();
 	}
 
 	private void animeDistrib() {
@@ -231,8 +239,14 @@ public class Window extends Application implements Observer {
 				break;
 			}
 		}
-		moveCardsToObjSeq().play();
-		;
+		SequentialTransition master = moveCardsToObjSeq();
+		master.setOnFinished(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				lookCard(playerCards).play();
+			}
+		});
+		master.play();
 	}
 
 	public SequentialTransition moveCardsToObjSeq() {
@@ -251,22 +265,15 @@ public class Window extends Application implements Observer {
 				i++;
 			}
 		}
-
-		master.setOnFinished(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent arg0) {
-				lookCard(playerCards).play();
-			}
-		});
 		return master;
 	}
 
-	public void moveCardsToObjParal() {
+	public ParallelTransition moveCardsToObjParal() {
 		ParallelTransition master = new ParallelTransition();
 		for (Card_View cV : allCards) {
 			master.getChildren().add(cV.moveAnimation());
 		}
-		master.play();
+		return master;
 	}
 
 	protected SequentialTransition lookCard(Vector<Card_View> cards) {
@@ -280,13 +287,6 @@ public class Window extends Application implements Observer {
 			public void handle(ActionEvent arg0) {
 				c.triCards();
 				triCardsView();
-				if (c.testPetitSec()) {
-					backToCenter();
-				} else {
-					for (Button b : choices) {
-						b.setVisible(true);
-					}
-				}
 			}
 		});
 		return master;
@@ -324,6 +324,22 @@ public class Window extends Application implements Observer {
 			playerCards.get(i).setObjective(new Pair<Double, Double>(X, Y));
 			playerCards.get(i).getFrontCard().toFront();
 		}
-		this.moveCardsToObjParal();
+
+		ParallelTransition master = moveCardsToObjParal();
+		master.setOnFinished(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				if (c.testPetitSec()) {
+					backToCenter();
+					c.resetGame();
+
+				} else {
+					for (Button b : choices) {
+						b.setVisible(true);
+					}
+				}
+			}
+		});	
+		master.play();
 	}
 }

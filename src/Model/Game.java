@@ -60,8 +60,9 @@ public class Game extends Observable {
 		});
 	}
 
-	public boolean testPetitSec() {
+	public boolean testPetitSec() { 
 		boolean sec = false;
+		
 		int i = 0;
 		while (i < players.size() && !sec) {
 			int j = 0;
@@ -76,7 +77,8 @@ public class Game extends Observable {
 			sec = gameSec;
 			i++;
 		}
-		return sec;
+		return true;
+		//return sec;
 	}
 
 	public void distribCard() {
@@ -141,19 +143,34 @@ public class Game extends Observable {
 			i++;
 		}
 	}
-	
+
 	public List<Card> getCards()
 	{
 		return cards;
 	}
-	
+
 	public List<Player> getPlayers()
 	{
 		return players;
 	}
-	
+
 	public Chien getChien()
 	{
 		return chien;
+	}
+
+	public void reset()
+	{
+		cards.removeAll(cards);
+		for (int i = 0; i < NBCARDS; i++) {
+			cards.add(new Card());
+		}
+		players.removeAll(players);
+		for (int i = 0; i < 4; i++) {
+			players.add(new Player(i + 1));
+		}
+		chien.getCards().removeAll(chien.getCards());
+		generateCards();
+		distribCard();
 	}
 }
