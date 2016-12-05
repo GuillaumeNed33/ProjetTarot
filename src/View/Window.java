@@ -179,10 +179,15 @@ public class Window extends Application implements Observer {
 								SequentialTransition theGard = new SequentialTransition();
 								theGard.getChildren().addAll(goToMyHand(), triCardsView());
 								theGard.play();
+								theGard.setOnFinished(new EventHandler<ActionEvent>() {
+									@Override
+									public void handle(ActionEvent event) {
+										constituteShift();
+									}
+								});
 							}
 						});
 						look.play();
-						allowDragAndDrop();
 					}
 				});
 				break;
