@@ -14,7 +14,8 @@ public class Hand {
 	 * <br>
 	 * <code> public Hand() </code> <br>
 	 * 
-	 * <p> Créer une main vide.
+	 * <p>
+	 * Créer une main vide.
 	 * </p>
 	 * 
 	 */

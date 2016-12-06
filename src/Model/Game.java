@@ -226,8 +226,10 @@ public class Game extends Observable {
 	 * <br>
 	 * <code> public Chien getChien() </code> <br>
 	 * 
-	 * <p> Récupères le chien du model.
+	 * <p>
+	 * Récupères le chien du model.
 	 * </p>
+	 * 
 	 * @return Chien.
 	 * 
 	 */

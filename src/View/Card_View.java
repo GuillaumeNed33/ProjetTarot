@@ -137,7 +137,8 @@ public class Card_View implements Observer {
 
 	public Transition moveAnimation(long halfDurationMove) {
 
-		return new ParallelTransition(createMoveAnimation(card_back, halfDurationMove), createMoveAnimation(card_front, halfDurationMove));
+		return new ParallelTransition(createMoveAnimation(card_back, halfDurationMove),
+				createMoveAnimation(card_front, halfDurationMove));
 	}
 
 	public boolean isArrived() {
@@ -211,14 +212,14 @@ public class Card_View implements Observer {
 
 	public void allowZoom(boolean isAllowed) {
 		card_shape.setVisible(isAllowed);
-		if(isAllowed) {
+		if (isAllowed) {
 			setToFrontCard();
 		} else {
 			card_back.toFront();
 		}
 	}
 
-	public void openDragAndDrop(Rectangle dropTarget,ArrayList<Card_View> n_chienCards) {
+	public void openDragAndDrop(Rectangle dropTarget, ArrayList<Card_View> n_chienCards) {
 		Double originX = card_front.getX();
 		Double originY = card_front.getY();
 		card_front.setOnMousePressed(new EventHandler<MouseEvent>() {
@@ -227,14 +228,14 @@ public class Card_View implements Observer {
 				if (me.isPrimaryButtonDown()) {
 					Double shiftX = me.getSceneX() - originX;
 					Double shiftY = me.getSceneY() - originY;
-					
+
 					card_front.setOnMouseDragged((new EventHandler<MouseEvent>() {
 						@Override
 						public void handle(MouseEvent me) {
 							card_shape.setVisible(false);
 							setX(me.getSceneX() - shiftX);
 							setY(me.getSceneY() - shiftY);
-							me.consume();			
+							me.consume();
 						}
 					}));
 					me.consume();
@@ -245,10 +246,10 @@ public class Card_View implements Observer {
 		card_front.setOnMouseReleased(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				//System.out.println(dropTarget.toString());
-				Point2D mousePos =new Point2D(event.getSceneX(), event.getSceneY());	
+				// System.out.println(dropTarget.toString());
+				Point2D mousePos = new Point2D(event.getSceneX(), event.getSceneY());
 				if (dropTarget.contains(mousePos)) {
-					//ajouter les autres carte
+					// ajouter les autres carte
 				} else {
 					setX(originX);
 					setY(originY);
@@ -258,8 +259,8 @@ public class Card_View implements Observer {
 		});
 	}
 
-	public boolean AuthorizedToChien(ArrayList<Integer> NoAuthorize) {	
-		
+	public boolean AuthorizedToChien(ArrayList<Integer> NoAuthorize) {
+
 		return !NoAuthorize.contains(id);
 	}
 

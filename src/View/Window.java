@@ -36,7 +36,6 @@ public class Window extends Application implements Observer {
 	private static final long HalfDurationMove = 350;
 	private static final long HalfDurationShuffle = 1500;
 
-
 	private String title;
 	private static Controller c;
 	private ArrayList<Card_View> allCards;
@@ -61,7 +60,6 @@ public class Window extends Application implements Observer {
 	private ImageView background = new ImageView();
 	ArrayList<Integer> NoAuthorize;
 
-
 	public Window() {
 		title = "Tarot NEDELEC NORMAND S3C";
 		data = new Data();
@@ -75,13 +73,14 @@ public class Window extends Application implements Observer {
 		background.setFitHeight(HEIGHT);
 		background.setFitWidth(WIDTH);
 
-		NoAuthorize = new ArrayList<Integer>();//Tableau des Id non autorisés à mettre dans le chien
-		NoAuthorize.add(27); //Id des Rois
+		NoAuthorize = new ArrayList<Integer>();// Tableau des Id non autorisés à
+												// mettre dans le chien
+		NoAuthorize.add(27); // Id des Rois
 		NoAuthorize.add(63);
 		NoAuthorize.add(77);
 		NoAuthorize.add(13);
-		for(int i = 28; i<= 49; i++) //Id des Atouts et de l'excuse
-			NoAuthorize.add(i);	
+		for (int i = 28; i <= 49; i++) // Id des Atouts et de l'excuse
+			NoAuthorize.add(i);
 	}
 
 	@Override
@@ -139,7 +138,7 @@ public class Window extends Application implements Observer {
 				System.exit(0);
 			}
 		});
-		root.getChildren().add(btnQuit);		
+		root.getChildren().add(btnQuit);
 	}
 
 	private void StartGame(Group root, Scene scene) {
@@ -152,12 +151,12 @@ public class Window extends Application implements Observer {
 			@Override
 			public void handle(ActionEvent arg0) {
 				ParallelTransition back = comeBack();
-				back.setOnFinished(new EventHandler<ActionEvent>() {					
+				back.setOnFinished(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent arg0) {
-						distribCard();						
-					}					
-				});	
+						distribCard();
+					}
+				});
 				back.play();
 			}
 		});
@@ -165,7 +164,7 @@ public class Window extends Application implements Observer {
 			@Override
 			public void run() {
 				shuffle.play();
-			} 
+			}
 		});
 
 		c.distrib();
@@ -196,7 +195,7 @@ public class Window extends Application implements Observer {
 				}
 			}
 		});
-		masterDistrib.play();		
+		masterDistrib.play();
 	}
 
 	private void resetGame() {
@@ -216,8 +215,8 @@ public class Window extends Application implements Observer {
 				StartGame(root, scene);
 			}
 		});
-		c.resetGame();	
-		goToInitialPos.play();				
+		c.resetGame();
+		goToInitialPos.play();
 	}
 
 	private void addChoicesButtons() {
@@ -236,7 +235,7 @@ public class Window extends Application implements Observer {
 					public void handle(ActionEvent event) {
 						event.consume();
 						priseAndGuardAction();
-					}					
+					}
 				});
 				break;
 			case 1:
@@ -281,7 +280,7 @@ public class Window extends Application implements Observer {
 		}
 		for (Button b : choices) {
 			root.getChildren().add(b);
-		}		
+		}
 	}
 
 	private void priseAndGuardAction() {
@@ -301,7 +300,7 @@ public class Window extends Application implements Observer {
 				});
 			}
 		});
-		look.play();						
+		look.play();
 	}
 
 	private ParallelTransition comeBack() {
@@ -316,10 +315,10 @@ public class Window extends Application implements Observer {
 
 	private ParallelTransition goAway() {
 		for (Card_View cV : allCards) {
-			Double X = Math.random() * ( WIDTH - 0 );
-			Double Y = Math.random() * ( HEIGHT - 0 );
-			cV.setObjective(new Pair<Double, Double>(X, Y));			
-		}		
+			Double X = Math.random() * (WIDTH - 0);
+			Double Y = Math.random() * (HEIGHT - 0);
+			cV.setObjective(new Pair<Double, Double>(X, Y));
+		}
 		return moveCardsToObjParal(HalfDurationShuffle);
 	}
 
@@ -466,10 +465,9 @@ public class Window extends Application implements Observer {
 	private void allowDragAndDrop() {
 		int atouts = allowAtoutToBeDrag();
 		for (Card_View cV : playerCards) {
-			//System.out.println(cV.getId());
+			// System.out.println(cV.getId());
 			if (atouts > 0) {
-				if(!NoAuthorize.contains(cV.getId()))
-				{
+				if (!NoAuthorize.contains(cV.getId())) {
 					cV.openDragAndDrop(dropTarget, chienCards);
 				}
 			}
@@ -478,20 +476,19 @@ public class Window extends Application implements Observer {
 				cV.openDragAndDrop(dropTarget, chienCards);
 			}
 			cV.allowZoom(false);
-		} 
+		}
 	}
 
 	private int allowAtoutToBeDrag() {
 		int AuthorizedCards = 0;
-		int i=0;
-		while (AuthorizedCards < 6 && i< playerCards.size()) {
-			if(playerCards.get(i).AuthorizedToChien(NoAuthorize))
-			{
+		int i = 0;
+		while (AuthorizedCards < 6 && i < playerCards.size()) {
+			if (playerCards.get(i).AuthorizedToChien(NoAuthorize)) {
 				AuthorizedCards++;
 			}
 			i++;
 		}
-		return 6-AuthorizedCards;
+		return 6 - AuthorizedCards;
 	}
 
 	public void constituteShift() {
@@ -554,18 +551,14 @@ public class Window extends Application implements Observer {
 		int nb_card = 0;
 		System.out.println(playerCards.size());
 
-		for(Card_View c : playerCards)
-		{
-			if(dropTarget.contains(c.getX(), c.getY()))
-			{
+		for (Card_View c : playerCards) {
+			if (dropTarget.contains(c.getX(), c.getY())) {
 				nb_card++;
 			}
 		}
-		if(nb_card>6)
-		{
+		if (nb_card > 6) {
 			System.out.println("Trop de cartes dans le chien");
-		}
-		else if(nb_card <6)
+		} else if (nb_card < 6)
 			System.out.println("Trop de cartes dans le chien");
 		else
 			System.out.println("OK");
