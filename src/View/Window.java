@@ -8,12 +8,11 @@ import java.util.Vector;
 
 import Controler.Controller;
 import Model.Card;
-import javafx.animation.Animation;
 import javafx.animation.ParallelTransition;
-import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Transition;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -21,7 +20,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeLineCap;
@@ -29,7 +27,6 @@ import javafx.scene.shape.StrokeLineJoin;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import javafx.util.Pair;
 
 public class Window extends Application implements Observer {
@@ -84,6 +81,9 @@ public class Window extends Application implements Observer {
 		for (int i = 0; i < 78; i++) {
 			allCards.add(new Card_View());
 		}
+		c.syncCards(allCards, this);
+		c.startGame();
+		
 		LoadMenu(root, scene);
 
 		primaryStage.setScene(scene);
@@ -129,31 +129,54 @@ public class Window extends Application implements Observer {
 		root.getChildren().clear();
 		background.setImage(new Image(imageGame));
 		root.getChildren().add(background);
+		ParallelTransition shuffle = goAway();
+		shuffle.setOnFinished(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				ParallelTransition back = comeBack();
+				back.setOnFinished(new EventHandler<ActionEvent>() {					
+					@Override
+					public void handle(ActionEvent arg0) {
+						SequentialTransition masterDistrib = new SequentialTransition();
+						masterDistrib.getChildren().addAll(animeDistrib(), lookCard(playerCards));
+						masterDistrib.setOnFinished(new EventHandler<ActionEvent>() {
+							@Override
+							public void handle(ActionEvent arg0) {
+								c.triCards();
+								triCardsView().play();
+								if (c.testPetitSec()) {
+									Text info = new Text(130, 415, "Le Petit est sec !");
+									info.setFont(Font.loadFont("file:./ressources/font/Steampunk.otf", 100.));
+									root.getChildren().add(info);
+									try {
+										Thread.sleep(1500L);
+									} catch (InterruptedException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+									backToCenter().play();
+									c.resetGame();
+								} else {
+									for (Button b : choices) {
+										b.setVisible(true);
+									}
+								}
+							}
+						});
+						masterDistrib.play();
+					}
+				});	
+				back.play();
+			}
+		});
+		Platform.runLater(new Runnable() {
 
-		/*
-		 * SequentialTransition shuffle = animeShuffle();
-		 * shuffle.setOnFinished(new EventHandler<ActionEvent>() {
-		 * 
-		 * @Override public void handle(ActionEvent arg0) { SequentialTransition
-		 * masterDistrib = new SequentialTransition();
-		 * masterDistrib.getChildren().addAll(animeDistrib(),
-		 * lookCard(playerCards)); masterDistrib.setOnFinished(new
-		 * EventHandler<ActionEvent>() {
-		 * 
-		 * @Override public void handle(ActionEvent arg0) { c.triCards();
-		 * triCardsView().play(); if (c.testPetitSec()) { Text info = new
-		 * Text(130, 415, "Le Petit est sec !");
-		 * info.setFont(Font.loadFont("file:./ressources/font/Steampunk.otf",
-		 * 100.)); root.getChildren().add(info); try { Thread.sleep(1500L); }
-		 * catch (InterruptedException e) { // TODO Auto-generated catch block
-		 * e.printStackTrace(); } backToCenter().play(); c.resetGame();
-		 * 
-		 * } else { for (Button b : choices) { b.setVisible(true); }
-		 * 
-		 * } } }); masterDistrib.play(); }
-		 * 
-		 * }); shuffle.play();
-		 */
+			@Override
+			public void run() {
+				shuffle.play();
+			} 
+			
+		});
 
 		dropTarget = new Rectangle(800, 50, 300, 300);
 		dropTarget.getStrokeDashArray().add(10.);
@@ -162,9 +185,6 @@ public class Window extends Application implements Observer {
 		dropTarget.setStrokeWidth(5.);
 		dropTarget.setFill(Color.TRANSPARENT);
 		dropTarget.setStroke(Color.BLACK);
-
-		c.syncCards(allCards, this);
-		c.startGame();
 		c.distrib();
 		chienCards = new ArrayList<Card_View>();
 		playerCards = new ArrayList<Card_View>();
@@ -265,38 +285,7 @@ public class Window extends Application implements Observer {
 			root.getChildren().add(b);
 		}
 
-		SequentialTransition masterDistrib = new SequentialTransition();
-		masterDistrib.getChildren().addAll(animeDistrib(), lookCard(playerCards));
-		masterDistrib.setOnFinished(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent arg0) {
-				arg0.consume();
-				c.triCards();
-				triCardsView().play();
-				if (c.testPetitSec()) {
-					Text info = new Text(130, 415, "Le Petit est sec !");
-					info.setFont(Font.loadFont("file:./ressources/font/Steampunk.otf", 100.));
-					root.getChildren().add(info);
-					try {
-						Thread.sleep(1500L);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					backToCenter().play();
-					c.resetGame();
-
-				} else {
-					for (Button b : choices) {
-						b.setVisible(true);
-					}
-
-				}
-			}
-		});
-		masterDistrib.play();
-	}
+}
 
 	private ParallelTransition backToCenter() {
 		for (Card_View cV : allCards) {
@@ -313,15 +302,23 @@ public class Window extends Application implements Observer {
 		return master;
 	}
 
-	private SequentialTransition animeShuffle() {
-		SequentialTransition master = new SequentialTransition();
-		// master.getChildren()
+	private ParallelTransition comeBack() {
 		for (Card_View cV : allCards) {
 			Double X = 0.;
 			Double Y = 0.;
 			cV.setObjective(new Pair<Double, Double>(X, Y));
+			cV.setObjective(new Pair<Double, Double>(Card_View.START_X, Card_View.START_Y));
 		}
-		return moveCardsToObjSeq();
+		return moveCardsToObjParal();
+	}
+
+	private ParallelTransition goAway() {
+		for (Card_View cV : allCards) {
+			Double X = Math.random() * ( WIDTH - 0 );
+			Double Y = Math.random() * ( HEIGHT - 0 );
+			cV.setObjective(new Pair<Double, Double>(X, Y));			
+		}		
+		return moveCardsToObjParal();
 	}
 
 	private SequentialTransition animeDistrib() {
