@@ -245,7 +245,7 @@ public class Card_View implements Observer {
 		card_front.setOnMouseReleased(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				System.out.println(dropTarget.toString());
+				//System.out.println(dropTarget.toString());
 				Point2D mousePos =new Point2D(event.getSceneX(), event.getSceneY());	
 				if (dropTarget.contains(mousePos)) {
 					//ajouter les autres carte
@@ -256,6 +256,11 @@ public class Card_View implements Observer {
 				event.consume();
 			}
 		});
+	}
+
+	public boolean AuthorizedToChien(ArrayList<Integer> NoAuthorize) {	
+		
+		return !NoAuthorize.contains(id);
 	}
 
 }
