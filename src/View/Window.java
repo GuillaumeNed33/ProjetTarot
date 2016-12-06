@@ -85,6 +85,9 @@ public class Window extends Application implements Observer {
 		for (int i = 0; i < 78; i++) {
 			allCards.add(new Card_View());
 		}
+		c.syncCards(allCards, this);
+		c.startGame();
+		
 		LoadMenu(root, scene);
 
 		primaryStage.setScene(scene);
@@ -188,8 +191,6 @@ public class Window extends Application implements Observer {
 		dropTarget.setFill(Color.TRANSPARENT);
 		dropTarget.setStroke(Color.BLACK);
 
-		c.syncCards(allCards, this);
-		c.startGame();
 		c.distrib();
 		chienCards = new Vector<Card_View>();
 		playerCards = new Vector<Card_View>();
