@@ -33,6 +33,7 @@ public class Window extends Application implements Observer {
 
 	final static Double WIDTH = 1280.;
 	final static Double HEIGHT = 720.;
+	private static final long HalfDurationMove = 1000;
 
 	private String title;
 	private static Controller c;
@@ -360,12 +361,12 @@ public class Window extends Application implements Observer {
 			if (allCards.get(i).getIdOwner() != 5) {
 				ParallelTransition cards = new ParallelTransition();
 				for (int j = 0; j < 3; j++) {
-					cards.getChildren().add(allCards.get(i + j).moveAnimation());
+					cards.getChildren().add(allCards.get(i + j).moveAnimation(HalfDurationMove));
 				}
 				i += 3;
 				master.getChildren().add(cards);
 			} else {
-				master.getChildren().add(allCards.get(i).moveAnimation());
+				master.getChildren().add(allCards.get(i).moveAnimation(HalfDurationMove));
 				i++;
 			}
 		}
@@ -375,7 +376,7 @@ public class Window extends Application implements Observer {
 	public ParallelTransition moveCardsToObjParal() {
 		ParallelTransition master = new ParallelTransition();
 		for (Card_View cV : allCards) {
-			master.getChildren().add(cV.moveAnimation());
+			master.getChildren().add(cV.moveAnimation(HalfDurationMove));
 		}
 		return master;
 	}

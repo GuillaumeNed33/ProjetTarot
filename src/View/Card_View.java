@@ -81,7 +81,6 @@ public class Card_View implements Observer {
 				event.consume();
 				restoreByDefault();
 			}
-
 		});
 	}
 
@@ -129,16 +128,16 @@ public class Card_View implements Observer {
 		return new SequentialTransition(rotateOutBack, rotateInFront);
 	}
 
-	public TranslateTransition createMoveAnimation(ImageView iV) {
-		final TranslateTransition move = new TranslateTransition(Duration.millis(halfDistribDuration), iV);
+	public TranslateTransition createMoveAnimation(ImageView iV, long halfDurationMove) {
+		final TranslateTransition move = new TranslateTransition(Duration.millis(halfDurationMove), iV);
 		move.setToX(objX - iV.getX());
 		move.setToY(objY - iV.getY());
 		return move;
 	}
 
-	public Transition moveAnimation() {
+	public Transition moveAnimation(long halfDurationMove) {
 
-		return new ParallelTransition(createMoveAnimation(card_back), createMoveAnimation(card_front));
+		return new ParallelTransition(createMoveAnimation(card_back, halfDurationMove), createMoveAnimation(card_front, halfDurationMove));
 	}
 
 	public boolean isArrived() {
