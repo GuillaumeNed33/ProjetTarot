@@ -1,4 +1,4 @@
-package View; 
+package View;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -248,7 +248,7 @@ public class Window extends Application implements Observer {
 					}
 					backToCenter().play();
 					c.resetGame();
- 
+
 				} else {
 					for (Button b : choices) {
 						b.setVisible(true);
@@ -420,8 +420,8 @@ public class Window extends Application implements Observer {
 	private void allowDragAndDrop() {
 		for (Card_View cV : playerCards) {
 			System.out.println(cV.getId());
-			if(allowAtoutToBeDrag()) {
-				
+			if (allowAtoutToBeDrag()) {
+
 			}
 			if (!(cV.getId() == 13 || cV.getId() == 27 || cV.getId() == 28 || cV.getId() == 29 || cV.getId() == 30
 					|| cV.getId() == 49 || cV.getId() == 63 || cV.getId() == 77)) {
@@ -442,22 +442,22 @@ public class Window extends Application implements Observer {
 	public void constituteShift() {
 		root.getChildren().clear();
 		initSceneToConstituteShift();
-		//ParallelTransition move = setPosCardsForShift();
-		/*move.setOnFinished(new EventHandler<ActionEvent>() {
+		ParallelTransition move = setPosCardsForShift();
+		move.setOnFinished(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				allowDragAndDrop();
 			}
 		});
-		move.play();*/
+		move.play();
 	}
 
 	private ParallelTransition setPosCardsForShift() {
 		Double firstCard_X = 50.;
-		Double firstCard_Y = 150.; 
-		for(int i=0;i<playerCards.size();i++) {
-			playerCards.get(i).setObjective(new Pair<Double, Double>((i%8)*(Card_View.W_CARD+10)+ firstCard_X,
-					(Math.floorDiv(i, 8)*(Card_View.H_CARD+10)) + firstCard_Y));
+		Double firstCard_Y = 150.;
+		for (int i = 0; i < playerCards.size(); i++) {
+			playerCards.get(i).setObjective(new Pair<Double, Double>((i % 8) * (Card_View.W_CARD + 10) + firstCard_X,
+					(Math.floorDiv(i, 8) * (Card_View.H_CARD + 10)) + firstCard_Y));
 		}
 		return moveCardsToObjParal();
 	}
@@ -469,7 +469,7 @@ public class Window extends Application implements Observer {
 		btn.autosize();
 		btn.setLayoutX(900.);
 		btn.setLayoutY(600.);
-		btn.setOnAction(new EventHandler<ActionEvent>(){
+		btn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				System.out.println("fini");
