@@ -18,7 +18,7 @@ public class Controller {
 	}
 
 	public void startGame() {
-		game.initGame();
+		game.generateCards();
 	}
 	
 	public void syncCards(ArrayList<Card_View> cards_view,Window v) {

@@ -24,7 +24,7 @@ public class GameTest {
 		int nb_atout= 0;
 
 		Game g = new Game();
-		g.initGame();
+		g.generateCards();
 
 		for(Card c : g.getCards())
 		{
@@ -58,7 +58,7 @@ public class GameTest {
 	@Test
 	public void testDistribution(){
 		Game g = new Game();
-		g.initGame();
+		g.generateCards();
 		g.distribCard();
 		
 		for(Player p : g.getPlayers())
@@ -71,7 +71,7 @@ public class GameTest {
 	@Test
 	public void testPetitSec(){
 		Game g = new Game();
-		g.initGame();
+		g.generateCards();
 
 		for(int i = 0; i < g.getPlayers().size(); i++)
 		{
@@ -90,7 +90,7 @@ public class GameTest {
 
 
 		Game g2 = new Game();
-		g2.initGame();
+		g2.generateCards();
 
 		for(int j=0; j<17; j++)
 		{
