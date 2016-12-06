@@ -420,6 +420,9 @@ public class Window extends Application implements Observer {
 	private void allowDragAndDrop() {
 		for (Card_View cV : playerCards) {
 			System.out.println(cV.getId());
+			if(allowAtoutToBeDrag()) {
+				
+			}
 			if (!(cV.getId() == 13 || cV.getId() == 27 || cV.getId() == 28 || cV.getId() == 29 || cV.getId() == 30
 					|| cV.getId() == 49 || cV.getId() == 63 || cV.getId() == 77)) {
 				cV.openDragAndDrop(dropTarget);
@@ -428,20 +431,25 @@ public class Window extends Application implements Observer {
 		}
 	}
 
+	private boolean allowAtoutToBeDrag() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 	/**
 	 * 
 	 */
 	public void constituteShift() {
 		root.getChildren().clear();
 		initSceneToConstituteShift();
-		ParallelTransition move = setPosCardsForShift();
-		move.setOnFinished(new EventHandler<ActionEvent>() {
+		//ParallelTransition move = setPosCardsForShift();
+		/*move.setOnFinished(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				allowDragAndDrop();
 			}
 		});
-		move.play();
+		move.play();*/
 	}
 
 	private ParallelTransition setPosCardsForShift() {

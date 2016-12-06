@@ -57,12 +57,12 @@ public class Card_View implements Observer {
 	public Card_View() {
 		arrived = false;
 		card_back.setImage(image_back);
-		card_shape.setVisible(true);
 		card_shape.setFill(Color.TRANSPARENT);
 		card_front.setFitWidth(W_CARD);
 		card_front.setFitHeight(H_CARD);
 		card_back.setFitWidth(W_CARD);
 		card_back.setFitHeight(H_CARD);
+		card_back.toFront();
 		this.setX(START_X);
 		this.setY(START_Y);
 
@@ -212,13 +212,14 @@ public class Card_View implements Observer {
 	}
 
 	public void openDragAndDrop(Rectangle dropTarget) {
+		Double originX = card_front.getX();
+		Double originY = card_front.getY();
 		card_front.setOnDragDetected(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent me) {
 				if (me.isPrimaryButtonDown()) {
-					card_shape.setVisible(false);
-					Double shiftX = me.getX() - getX();
-					Double shiftY = me.getY() - getY();
+					Double shiftX = me.getX() - originX;
+					Double shiftY = me.getY() - originY;
 					card_front.setOnMouseDragged((new EventHandler<MouseEvent>() {
 						@Override
 						public void handle(MouseEvent me) {
@@ -231,16 +232,17 @@ public class Card_View implements Observer {
 			}
 		});
 
-		card_front.setOnDragDropped(new EventHandler<DragEvent>() {
+		card_front.setOnMouseReleased(new EventHandler<MouseEvent>() {
 			@Override
-			public void handle(DragEvent event) {
+			public void handle(MouseEvent event) {
 				if (dropTarget.contains(card_front.getX(), card_front.getY())
-						|| dropTarget.contains(card_front.getX(), card_front.getY()+H_CARD)
-						|| dropTarget.contains(card_front.getX() + W_CARD, card_front.getY())
-						|| dropTarget.contains(card_front.getX() + W_CARD, card_front.getY() + H_CARD)) {
-					event.setDropCompleted(true);
+						&& dropTarget.contains(card_front.getX(), card_front.getY()+H_CARD)
+						&& dropTarget.contains(card_front.getX() + W_CARD, card_front.getY())
+						&& dropTarget.contains(card_front.getX() + W_CARD, card_front.getY() + H_CARD)) {
+					
 				} else {
-					event.setDropCompleted(false);
+					setX(originX);
+					setY(originY);
 				}
 			}
 		});
