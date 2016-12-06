@@ -78,13 +78,7 @@ public class Window extends Application implements Observer {
 		scene = new Scene(root, WIDTH, HEIGHT, null);
 		primaryStage.setTitle(title);
 		allCards = new ArrayList<Card_View>();
-		dropTarget = new Rectangle(800, 50, 300, 300);
-		dropTarget.getStrokeDashArray().add(10.);
-		dropTarget.setStrokeLineJoin(StrokeLineJoin.ROUND);
-		dropTarget.setStrokeLineCap(StrokeLineCap.ROUND);
-		dropTarget.setStrokeWidth(5.);
-		dropTarget.setFill(Color.TRANSPARENT);
-		dropTarget.setStroke(Color.BLACK);
+		
 		for (int i = 0; i < 78; i++) {
 			allCards.add(new Card_View());
 		}
@@ -131,6 +125,55 @@ public class Window extends Application implements Observer {
 		root.getChildren().clear();
 		background.setImage(new Image(imageGame));
 		root.getChildren().add(background);
+		
+		/*SequentialTransition shuffle = animeShuffle();
+		shuffle.setOnFinished(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent arg0) {
+				SequentialTransition masterDistrib = new SequentialTransition();
+				masterDistrib.getChildren().addAll(animeDistrib(), lookCard(playerCards));
+				masterDistrib.setOnFinished(new EventHandler<ActionEvent>() {
+
+					@Override
+					public void handle(ActionEvent arg0) {
+						c.triCards();
+						triCardsView().play();
+						if (c.testPetitSec()) {
+							Text info = new Text(130, 415, "Le Petit est sec !");
+							info.setFont(Font.loadFont("file:./ressources/font/Steampunk.otf", 100.));
+							root.getChildren().add(info);
+							try {
+								Thread.sleep(1500L);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							backToCenter().play();
+							c.resetGame();
+
+						} else {
+							for (Button b : choices) {
+								b.setVisible(true);
+							}
+
+						}
+					}
+				});
+				masterDistrib.play();
+			}
+				
+		});
+		shuffle.play();*/
+		
+		dropTarget = new Rectangle(800, 50, 300, 300);
+		dropTarget.getStrokeDashArray().add(10.);
+		dropTarget.setStrokeLineJoin(StrokeLineJoin.ROUND);
+		dropTarget.setStrokeLineCap(StrokeLineCap.ROUND);
+		dropTarget.setStrokeWidth(5.);
+		dropTarget.setFill(Color.TRANSPARENT);
+		dropTarget.setStroke(Color.BLACK);
+		
 		c.syncCards(allCards, this);
 		c.startGame();
 		c.distrib();
@@ -226,10 +269,9 @@ public class Window extends Application implements Observer {
 		for (Button b : choices) {
 			root.getChildren().add(b);
 		}
-
+		
 		SequentialTransition masterDistrib = new SequentialTransition();
 		masterDistrib.getChildren().addAll(animeDistrib(), lookCard(playerCards));
-
 		masterDistrib.setOnFinished(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -258,7 +300,6 @@ public class Window extends Application implements Observer {
 			}
 		});
 		masterDistrib.play();
-
 	}
 
 	private ParallelTransition backToCenter() {
@@ -273,6 +314,17 @@ public class Window extends Application implements Observer {
 			}
 		});
 		return master;
+	}
+
+	private SequentialTransition animeShuffle() {
+		SequentialTransition master = new SequentialTransition();
+		//master.getChildren()
+		for (Card_View cV : allCards) {
+			Double X = 0.;
+			Double Y = 0.;
+			cV.setObjective(new Pair<Double, Double>(X, Y));			
+		}
+		return moveCardsToObjSeq();
 	}
 
 	private SequentialTransition animeDistrib() {
