@@ -325,7 +325,7 @@ public class Window extends Application implements Observer {
 			}
 		});
 		return master;
-	}
+	} 
 
 	private SequentialTransition animeShuffle() {
 		SequentialTransition master = new SequentialTransition();
