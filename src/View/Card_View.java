@@ -220,15 +220,16 @@ public class Card_View implements Observer {
 			@Override
 			public void handle(MouseEvent me) {
 				if (me.isPrimaryButtonDown()) {
-					Double shiftX = me.getX() - originX;
-					Double shiftY = me.getY() - originY;
+					Double shiftX = me.getSceneX() - originX;
+					Double shiftY = me.getSceneY() - originY;
+					
 					card_front.setOnMouseDragged((new EventHandler<MouseEvent>() {
 						@Override
 						public void handle(MouseEvent me) {
 							card_shape.setVisible(false);
-							setX(me.getX() - shiftX);
-							setY(me.getY() - shiftY);
-							me.consume();
+							setX(me.getSceneX() - shiftX);
+							setY(me.getSceneY() - shiftY);
+							me.consume();			
 						}
 					}));
 					me.consume();
@@ -239,11 +240,12 @@ public class Card_View implements Observer {
 		card_front.setOnMouseReleased(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				if (dropTarget.contains(card_front.getX(), card_front.getY())
-						&& dropTarget.contains(card_front.getX(), card_front.getY()+H_CARD)
-						&& dropTarget.contains(card_front.getX() + W_CARD, card_front.getY())
-						&& dropTarget.contains(card_front.getX() + W_CARD, card_front.getY() + H_CARD)) {
+				System.out.println(dropTarget.toString());
+				Point2D mousePos =new Point2D(event.getSceneX(), event.getSceneY());
+								
+				if (dropTarget.contains(mousePos)) {
 					
+					System.out.println(getId() + " : Je suis dedans.");
 				} else {
 					setX(originX);
 					setY(originY);
