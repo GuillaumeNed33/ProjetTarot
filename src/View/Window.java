@@ -478,7 +478,7 @@ public class Window extends Application implements Observer {
 				cV.openDragAndDrop(dropTarget, chienCards);
 			}
 			cV.allowZoom(false);
-		}
+		} 
 	}
 
 	private int allowAtoutToBeDrag() {
