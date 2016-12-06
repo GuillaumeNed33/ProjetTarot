@@ -20,6 +20,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeLineCap;
@@ -104,6 +105,7 @@ public class Window extends Application implements Observer {
 		btn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				StartGame(root, scene);
+				event.consume();
 			}
 		});
 		root.getChildren().add(btn);
@@ -115,6 +117,7 @@ public class Window extends Application implements Observer {
 		btnQuit.setText("QUIT");
 		btnQuit.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
+				event.consume();
 				System.exit(0);
 			}
 		});
@@ -192,6 +195,7 @@ public class Window extends Application implements Observer {
 				btn.setText("La prise");
 				btn.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {
+						event.consume();
 						SequentialTransition look = lookCard(chienCards);
 						look.setOnFinished(new EventHandler<ActionEvent>() {
 							@Override
@@ -202,6 +206,7 @@ public class Window extends Application implements Observer {
 								theGard.setOnFinished(new EventHandler<ActionEvent>() {
 									@Override
 									public void handle(ActionEvent event) {
+										event.consume();
 										constituteShift();
 									}
 								});
@@ -215,6 +220,7 @@ public class Window extends Application implements Observer {
 				btn.setText("La garde");
 				btn.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {
+						event.consume();
 						SequentialTransition look = lookCard(chienCards);
 						look.setOnFinished(new EventHandler<ActionEvent>() {
 							@Override
@@ -225,6 +231,7 @@ public class Window extends Application implements Observer {
 								theGard.setOnFinished(new EventHandler<ActionEvent>() {
 									@Override
 									public void handle(ActionEvent event) {
+										event.consume();
 										constituteShift();
 									}
 								});
@@ -238,6 +245,7 @@ public class Window extends Application implements Observer {
 				btn.setText("La garde sans le chien");
 				btn.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {
+						event.consume();
 						gardAgainstChien().play();
 					}
 
@@ -247,6 +255,7 @@ public class Window extends Application implements Observer {
 				btn.setText("La garde contre le chien");
 				btn.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {
+						event.consume();
 						goToEnemyAnim().play();
 					}
 
@@ -276,6 +285,7 @@ public class Window extends Application implements Observer {
 
 			@Override
 			public void handle(ActionEvent arg0) {
+				arg0.consume();
 				c.triCards();
 				triCardsView().play();
 				if (c.testPetitSec()) {
@@ -310,6 +320,7 @@ public class Window extends Application implements Observer {
 		master.setOnFinished(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
+				arg0.consume();
 				StartGame(root, scene);
 			}
 		});
@@ -498,6 +509,7 @@ public class Window extends Application implements Observer {
 		move.setOnFinished(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				event.consume();
 				allowDragAndDrop();
 			}
 		});
@@ -524,6 +536,7 @@ public class Window extends Application implements Observer {
 		btn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				event.consume();
 				System.out.println("fini");
 			}
 		});

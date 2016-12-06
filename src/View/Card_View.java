@@ -69,6 +69,7 @@ public class Card_View implements Observer {
 		card_shape.setOnMouseEntered(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+				event.consume();
 				transformeToBig(card_front);
 			}
 		});
@@ -76,6 +77,7 @@ public class Card_View implements Observer {
 
 			@Override
 			public void handle(MouseEvent event) {
+				event.consume();
 				restoreByDefault();
 			}
 
@@ -226,8 +228,10 @@ public class Card_View implements Observer {
 							card_shape.setVisible(false);
 							setX(me.getX() - shiftX);
 							setY(me.getY() - shiftY);
+							me.consume();
 						}
 					}));
+					me.consume();
 				}
 			}
 		});
@@ -244,6 +248,7 @@ public class Card_View implements Observer {
 					setX(originX);
 					setY(originY);
 				}
+				event.consume();
 			}
 		});
 	}
