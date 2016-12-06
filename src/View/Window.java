@@ -33,7 +33,9 @@ public class Window extends Application implements Observer {
 
 	final static Double WIDTH = 1280.;
 	final static Double HEIGHT = 720.;
-	private static final long HalfDurationMove = 1000;
+	private static final long HalfDurationMove = 350;
+	private static final long HalfDurationShuffle = 1500;
+
 
 	private String title;
 	private static Controller c;
@@ -299,7 +301,7 @@ public class Window extends Application implements Observer {
 			cV.setObjective(new Pair<Double, Double>(X, Y));
 			cV.setObjective(new Pair<Double, Double>(Card_View.START_X, Card_View.START_Y));
 		}
-		return moveCardsToObjParal();
+		return moveCardsToObjParal(HalfDurationShuffle);
 	}
 
 	private ParallelTransition goAway() {
@@ -308,7 +310,7 @@ public class Window extends Application implements Observer {
 			Double Y = Math.random() * ( HEIGHT - 0 );
 			cV.setObjective(new Pair<Double, Double>(X, Y));			
 		}		
-		return moveCardsToObjParal();
+		return moveCardsToObjParal(HalfDurationShuffle);
 	}
 
 	private SequentialTransition animeDistrib() {
@@ -351,32 +353,32 @@ public class Window extends Application implements Observer {
 				break;
 			}
 		}
-		return moveCardsToObjSeq();
+		return moveCardsToObjSeq(HalfDurationMove);
 	}
 
-	public SequentialTransition moveCardsToObjSeq() {
+	public SequentialTransition moveCardsToObjSeq(long halfDuration) {
 		SequentialTransition master = new SequentialTransition();
 		int i = 0;
 		while (i < allCards.size()) {
 			if (allCards.get(i).getIdOwner() != 5) {
 				ParallelTransition cards = new ParallelTransition();
 				for (int j = 0; j < 3; j++) {
-					cards.getChildren().add(allCards.get(i + j).moveAnimation(HalfDurationMove));
+					cards.getChildren().add(allCards.get(i + j).moveAnimation(halfDuration));
 				}
 				i += 3;
 				master.getChildren().add(cards);
 			} else {
-				master.getChildren().add(allCards.get(i).moveAnimation(HalfDurationMove));
+				master.getChildren().add(allCards.get(i).moveAnimation(halfDuration));
 				i++;
 			}
 		}
 		return master;
 	}
 
-	public ParallelTransition moveCardsToObjParal() {
+	public ParallelTransition moveCardsToObjParal(long halfDuration) {
 		ParallelTransition master = new ParallelTransition();
 		for (Card_View cV : allCards) {
-			master.getChildren().add(cV.moveAnimation(HalfDurationMove));
+			master.getChildren().add(cV.moveAnimation(halfDuration));
 		}
 		return master;
 	}
@@ -422,21 +424,21 @@ public class Window extends Application implements Observer {
 			playerCards.get(i).setObjective(new Pair<Double, Double>(X, Y));
 			playerCards.get(i).allowZoom(true);
 		}
-		return moveCardsToObjParal();
+		return moveCardsToObjParal(HalfDurationMove);
 	}
 
 	private ParallelTransition goToEnemyAnim() {
 		for (Card_View cV : chienCards) {
 			cV.setObjective(player_place3);
 		}
-		return moveCardsToObjParal();
+		return moveCardsToObjParal(HalfDurationMove);
 	}
 
 	private ParallelTransition gardAgainstChien() {
 		for (Card_View cV : chienCards) {
 			cV.setObjective(chien_player_place);
 		}
-		return moveCardsToObjParal();
+		return moveCardsToObjParal(HalfDurationMove);
 	}
 
 	private ParallelTransition goToMyHand() {
@@ -448,7 +450,7 @@ public class Window extends Application implements Observer {
 			playerCards.add(cV);
 
 		}
-		return moveCardsToObjParal();
+		return moveCardsToObjParal(HalfDurationMove);
 	}
 
 	private void allowDragAndDrop() {
@@ -500,7 +502,7 @@ public class Window extends Application implements Observer {
 			playerCards.get(i).setObjective(new Pair<Double, Double>((i % 8) * (Card_View.W_CARD + 10) + firstCard_X,
 					(Math.floorDiv(i, 8) * (Card_View.H_CARD + 10)) + firstCard_Y));
 		}
-		return moveCardsToObjParal();
+		return moveCardsToObjParal(HalfDurationMove);
 	}
 
 	private void initSceneToConstituteShift() {
