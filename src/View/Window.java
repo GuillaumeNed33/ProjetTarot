@@ -559,7 +559,7 @@ public class Window extends Application implements Observer {
 		if (nb_card > 6) {
 			System.out.println("Trop de cartes dans le chien");
 		} else if (nb_card < 6)
-			System.out.println("Trop de cartes dans le chien");
+			System.out.println("Pas assez de cartes dans le chien");
 		else
 			System.out.println("OK");
 	}
