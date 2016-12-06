@@ -9,8 +9,14 @@ import java.util.Observable;
 import Model.CardType;
 import View.Card_View;
 
+/**
+ * 
+ * Class correspondant au Model. Permet de gérer toute les actions sur les carte et sur les joueur. <br>
+ * Notamment La distribution et Test du PetitSec. 
+ *
+ */
 public class Game extends Observable {
-
+	//Constantes
 	public final static int NBPLAYER = 4;
 	public final static int NBCARDS = 78;
 	public final static int IDPLAYER = 1;
@@ -21,18 +27,40 @@ public class Game extends Observable {
 	private List<Card> cards;
 	private Chien chien;
 
+	/**
+	 * <i> <b> Constructeur </b> </i><br>
+	 * <br>
+	 * <code> public Game() </code> <br>
+	 * 
+	 * <p> Permet la construction du model en initialisant les Cartes et les Joueurs.</p>
+	 * 
+	 */
 	public Game() {
 		cards = new ArrayList<Card>();
 		for (int i = 0; i < NBCARDS; i++) {
 			cards.add(new Card());
 		}
 		players = new ArrayList<Player>();
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < NBPLAYER; i++) {
 			players.add(new Player(i + 1));
 		}
 	}
 
-	private void generateCards() {
+	/**
+	 * <i> <b> generateCards </b> </i><br>
+	 * <br>
+	 * <code> public void generateCards() </code> <br>
+	 * 
+	 * <p> Permet la génération des 78 Cartes du Tarot. Chaque carte est construite avec un ID unique Correspondant à sa valeur.<br>
+	 * ID de 0 à 13 correspond aux Piques (de As à Roi). <br>
+	 * ID de 14 à 27 correpond aux Coeurs (de As à Roi). <br>
+	 * ID de 28 à 49 correspond aux Atouts (de l'Excuse au 21). <br>
+	 * ID de 50 à 63 correspond aux Carreaux (de As à Roi). <br>
+	 * ID de 64 à 77 correspond aux Trefles (de As à Roi). <br>
+	 * </p>
+	 * 
+	 */
+	public void generateCards() {
 		for (int i = 0; i < NBCARDS; i++) {
 			if (i >= 0 && i < NB_CARD_COLOR) {
 				cards.get(i).initCard(CardType.PIQUE, i + 1, i);
@@ -48,10 +76,15 @@ public class Game extends Observable {
 		}
 	}
 
-	public void initGame() {
-		generateCards();
-	}
-
+	/**
+	 * <i> <b> triCards </b> </i><br>
+	 * <br>
+	 * <code> public void triCards() </code> <br>
+	 * 
+	 * <p> Permet le tri des cartes du Joueur principal (d'ID 0). <br>
+	 * Le tri se fait à l'aide de l'id des cartes.</p>
+	 * 
+	 */
 	public void triCards() {
 		players.get(0).getHand().getGame().sort(new Comparator<Card>() {
 			public int compare(Card c1, Card c2) {
@@ -60,6 +93,16 @@ public class Game extends Observable {
 		});
 	}
 
+	/**
+	 * <i> <b> testPetitSec </b> </i><br>
+	 * <br>
+	 * <code> public boolean testPetitSec() </code> <br>
+	 * 
+	 * <p> Permet de savoir si le petit est sec. <br>
+	 * Cela se passe lorsque l'un des joueurs ne possède que l'Atout 1 (Le Petit).
+	 * </p>
+	 * @return Retourne vrai si le petit est sec et faux sinon.
+	 */
 	public boolean testPetitSec() { 
 		boolean sec = false;
 		
@@ -77,10 +120,19 @@ public class Game extends Observable {
 			sec = gameSec;
 			i++;
 		}
-		//return true;
 		return sec;
 	}
 
+	/**
+	 * <i> <b> distribCard </b> </i><br>
+	 * <br>
+	 * <code> public void distribCard() </code> <br>
+	 * 
+	 * <p> Gère la distribution des cartes aux joueurs (3 par 3) et des 6 cartes au Chien. <br>
+	 * Procède a un <code> Collections.shuffle() </code> qui mélange la listes des carte<br>puis les distribue aux Joueur
+	 * </p>
+	 * 
+	 */
 	public void distribCard() {
 		chien = new Chien();
 		int id_player = 0;
@@ -120,22 +172,17 @@ public class Game extends Observable {
 		notifyObservers(cards);
 	}
 
-	public void displayCardGame() {
-
-		System.out.println("------------------ AFFICHAGE CARTE ------------------");
-		System.out.println("Le Chien : " + chien.size());
-		for (Card c : chien.getCards()) {
-			System.out.println(c.getValue() + " " + c.getType().toString());
-		}
-		for (int i = 0; i < players.size(); i++) {
-			System.out.println("\nLe joueur " + i + " : " + players.get(i).getHand().getGame().size());
-			for (Card c : players.get(i).getHand().getGame()) {
-				System.out.println(c.getValue() + " " + c.getType().toString() + " ID : " + c.getId());
-			}
-		}
-
-	}
-
+	/**
+	 * <i> <b> addCardObserver </b> </i><br>
+	 * <br>
+	 * <code> public void addCardObserver(ArrayList<Card_View> cards_view) </code> <br>
+	 * 
+	 * <p> Ajoute à chaque Carte de la classe Model un observer de la Classe Vue.
+	 * </p>
+	 * 
+	 * @param Correspond à la liste des observers à ajouter.
+	 * 
+	 */
 	public void addCardObserver(ArrayList<Card_View> cards_view) {
 		int i = 0;
 		for (Card c : cards) {
@@ -144,21 +191,60 @@ public class Game extends Observable {
 		}
 	}
 
+	/**
+	 * <i> <b> getCards </b> </i><br>
+	 * <br>
+	 * <code> public List<Card> getCards() </code> <br>
+	 * 
+	 * <p> Récupères la liste des cartes.
+	 * </p>
+	 * @return List de Card.
+	 * 
+	 */
 	public List<Card> getCards()
 	{
 		return cards;
 	}
 
+	/**
+	 * <i> <b> getPlayers </b> </i><br>
+	 * <br>
+	 * <code> public List getPlayers() </code> <br>
+	 * 
+	 * <p> Récupères la liste des joueurs.
+	 * </p>
+	 * @return List de Player.
+	 * 
+	 */
 	public List<Player> getPlayers()
 	{
 		return players;
 	}
 
+	/**
+	 * <i> <b> getChien </b> </i><br>
+	 * <br>
+	 * <code> public Chien getChien() </code> <br>
+	 * 
+	 * <p> Récupères le chien du model.
+	 * </p>
+	 * @return Chien.
+	 * 
+	 */
 	public Chien getChien()
 	{
 		return chien;
 	}
 
+	/**
+	 * <i> <b> reset </b> </i><br>
+	 * <br>
+	 * <code> public void reset() </code> <br>
+	 * 
+	 * <p> Réinitialise la partie et supprime la totalité du jeux avant de le relancer.
+	 * </p>
+	 * 
+	 */
 	public void reset()
 	{
 		cards.removeAll(cards);
