@@ -59,6 +59,8 @@ public class Window extends Application implements Observer {
 	Scene scene;
 
 	private ImageView background = new ImageView();
+	ArrayList<Integer> NoAuthorize;
+
 
 	public Window() {
 		title = "Tarot NEDELEC NORMAND S3C";
@@ -72,6 +74,14 @@ public class Window extends Application implements Observer {
 		chien_player_place = new Pair<Double, Double>(1100., 500.);
 		background.setFitHeight(HEIGHT);
 		background.setFitWidth(WIDTH);
+
+		NoAuthorize = new ArrayList<Integer>();//Tableau des Id non autorisés à mettre dans le chien
+		NoAuthorize.add(27); //Id des Rois
+		NoAuthorize.add(63);
+		NoAuthorize.add(77);
+		NoAuthorize.add(13);
+		for(int i = 28; i<= 49; i++) //Id des Atouts et de l'excuse
+			NoAuthorize.add(i);	
 	}
 
 	@Override
@@ -454,10 +464,14 @@ public class Window extends Application implements Observer {
 	}
 
 	private void allowDragAndDrop() {
+		int atouts = allowAtoutToBeDrag();
 		for (Card_View cV : playerCards) {
-			System.out.println(cV.getId());
-			if (allowAtoutToBeDrag()) {
-
+			//System.out.println(cV.getId());
+			if (atouts > 0) {
+				if(!NoAuthorize.contains(cV.getId()))
+				{
+					cV.openDragAndDrop(dropTarget, chienCards);
+				}
 			}
 			if (!(cV.getId() == 13 || cV.getId() == 27 || cV.getId() == 28 || cV.getId() == 29 || cV.getId() == 30
 					|| cV.getId() == 49 || cV.getId() == 63 || cV.getId() == 77)) {
@@ -467,9 +481,17 @@ public class Window extends Application implements Observer {
 		}
 	}
 
-	private boolean allowAtoutToBeDrag() {
-		// TODO Auto-generated method stub
-		return false;
+	private int allowAtoutToBeDrag() {
+		int AuthorizedCards = 0;
+		int i=0;
+		while (AuthorizedCards < 6 && i< playerCards.size()) {
+			if(playerCards.get(i).AuthorizedToChien(NoAuthorize))
+			{
+				AuthorizedCards++;
+			}
+			i++;
+		}
+		return 6-AuthorizedCards;
 	}
 
 	public void constituteShift() {
@@ -516,7 +538,7 @@ public class Window extends Application implements Observer {
 			@Override
 			public void handle(ActionEvent event) {
 				event.consume();
-				System.out.println("fini");
+				lockChien();
 			}
 		});
 		root.getChildren().add(background);
@@ -526,5 +548,26 @@ public class Window extends Application implements Observer {
 		}
 		root.getChildren().add(title);
 		root.getChildren().add(btn);
+	}
+
+	private void lockChien() {
+		int nb_card = 0;
+		System.out.println(playerCards.size());
+
+		for(Card_View c : playerCards)
+		{
+			if(dropTarget.contains(c.getX(), c.getY()))
+			{
+				nb_card++;
+			}
+		}
+		if(nb_card>6)
+		{
+			System.out.println("Trop de cartes dans le chien");
+		}
+		else if(nb_card <6)
+			System.out.println("Trop de cartes dans le chien");
+		else
+			System.out.println("OK");
 	}
 }
