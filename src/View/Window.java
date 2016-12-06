@@ -12,6 +12,7 @@ import javafx.animation.Animation;
 import javafx.animation.ParallelTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
+import javafx.animation.Transition;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -39,8 +40,8 @@ public class Window extends Application implements Observer {
 	private String title;
 	private static Controller c;
 	private ArrayList<Card_View> allCards;
-	private Vector<Card_View> playerCards;
-	private Vector<Card_View> chienCards;
+	private ArrayList<Card_View> playerCards;
+	private ArrayList<Card_View> chienCards;
 	private Pair<Double, Double> player_place;
 	private Pair<Double, Double> player_place2;
 	private Pair<Double, Double> player_place3;
@@ -79,7 +80,7 @@ public class Window extends Application implements Observer {
 		scene = new Scene(root, WIDTH, HEIGHT, null);
 		primaryStage.setTitle(title);
 		allCards = new ArrayList<Card_View>();
-		
+
 		for (int i = 0; i < 78; i++) {
 			allCards.add(new Card_View());
 		}
@@ -128,47 +129,32 @@ public class Window extends Application implements Observer {
 		root.getChildren().clear();
 		background.setImage(new Image(imageGame));
 		root.getChildren().add(background);
-		
-		/*SequentialTransition shuffle = animeShuffle();
-		shuffle.setOnFinished(new EventHandler<ActionEvent>() {
 
-			@Override
-			public void handle(ActionEvent arg0) {
-				SequentialTransition masterDistrib = new SequentialTransition();
-				masterDistrib.getChildren().addAll(animeDistrib(), lookCard(playerCards));
-				masterDistrib.setOnFinished(new EventHandler<ActionEvent>() {
+		/*
+		 * SequentialTransition shuffle = animeShuffle();
+		 * shuffle.setOnFinished(new EventHandler<ActionEvent>() {
+		 * 
+		 * @Override public void handle(ActionEvent arg0) { SequentialTransition
+		 * masterDistrib = new SequentialTransition();
+		 * masterDistrib.getChildren().addAll(animeDistrib(),
+		 * lookCard(playerCards)); masterDistrib.setOnFinished(new
+		 * EventHandler<ActionEvent>() {
+		 * 
+		 * @Override public void handle(ActionEvent arg0) { c.triCards();
+		 * triCardsView().play(); if (c.testPetitSec()) { Text info = new
+		 * Text(130, 415, "Le Petit est sec !");
+		 * info.setFont(Font.loadFont("file:./ressources/font/Steampunk.otf",
+		 * 100.)); root.getChildren().add(info); try { Thread.sleep(1500L); }
+		 * catch (InterruptedException e) { // TODO Auto-generated catch block
+		 * e.printStackTrace(); } backToCenter().play(); c.resetGame();
+		 * 
+		 * } else { for (Button b : choices) { b.setVisible(true); }
+		 * 
+		 * } } }); masterDistrib.play(); }
+		 * 
+		 * }); shuffle.play();
+		 */
 
-					@Override
-					public void handle(ActionEvent arg0) {
-						c.triCards();
-						triCardsView().play();
-						if (c.testPetitSec()) {
-							Text info = new Text(130, 415, "Le Petit est sec !");
-							info.setFont(Font.loadFont("file:./ressources/font/Steampunk.otf", 100.));
-							root.getChildren().add(info);
-							try {
-								Thread.sleep(1500L);
-							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-							backToCenter().play();
-							c.resetGame();
-
-						} else {
-							for (Button b : choices) {
-								b.setVisible(true);
-							}
-
-						}
-					}
-				});
-				masterDistrib.play();
-			}
-				
-		});
-		shuffle.play();*/
-		
 		dropTarget = new Rectangle(800, 50, 300, 300);
 		dropTarget.getStrokeDashArray().add(10.);
 		dropTarget.setStrokeLineJoin(StrokeLineJoin.ROUND);
@@ -176,12 +162,12 @@ public class Window extends Application implements Observer {
 		dropTarget.setStrokeWidth(5.);
 		dropTarget.setFill(Color.TRANSPARENT);
 		dropTarget.setStroke(Color.BLACK);
-		
+
 		c.syncCards(allCards, this);
 		c.startGame();
 		c.distrib();
-		chienCards = new Vector<Card_View>();
-		playerCards = new Vector<Card_View>();
+		chienCards = new ArrayList<Card_View>();
+		playerCards = new ArrayList<Card_View>();
 
 		choices = new Vector<Button>();
 		for (int i = 0; i < 5; i++) {
@@ -278,7 +264,7 @@ public class Window extends Application implements Observer {
 		for (Button b : choices) {
 			root.getChildren().add(b);
 		}
-		
+
 		SequentialTransition masterDistrib = new SequentialTransition();
 		masterDistrib.getChildren().addAll(animeDistrib(), lookCard(playerCards));
 		masterDistrib.setOnFinished(new EventHandler<ActionEvent>() {
@@ -325,15 +311,15 @@ public class Window extends Application implements Observer {
 			}
 		});
 		return master;
-	} 
+	}
 
 	private SequentialTransition animeShuffle() {
 		SequentialTransition master = new SequentialTransition();
-		//master.getChildren()
+		// master.getChildren()
 		for (Card_View cV : allCards) {
 			Double X = 0.;
 			Double Y = 0.;
-			cV.setObjective(new Pair<Double, Double>(X, Y));			
+			cV.setObjective(new Pair<Double, Double>(X, Y));
 		}
 		return moveCardsToObjSeq();
 	}
@@ -408,10 +394,11 @@ public class Window extends Application implements Observer {
 		return master;
 	}
 
-	protected SequentialTransition lookCard(Vector<Card_View> cards) {
+	protected SequentialTransition lookCard(ArrayList<Card_View> cards) {
 		SequentialTransition master = new SequentialTransition();
 		for (Card_View cV : cards) {
-			master.getChildren().add(cV.flip());
+			Transition flipCard = cV.flip();
+			master.getChildren().add(flipCard);
 		}
 		return master;
 	}
@@ -446,7 +433,7 @@ public class Window extends Application implements Observer {
 			Double X = player_place.getKey() + (i * (Card_View.W_CARD / 2));
 			Double Y = player_place.getValue();
 			playerCards.get(i).setObjective(new Pair<Double, Double>(X, Y));
-			playerCards.get(i).setToFrontCard();
+			playerCards.get(i).allowZoom(true);
 		}
 		return moveCardsToObjParal();
 	}
@@ -488,9 +475,9 @@ public class Window extends Application implements Observer {
 			}
 			if (!(cV.getId() == 13 || cV.getId() == 27 || cV.getId() == 28 || cV.getId() == 29 || cV.getId() == 30
 					|| cV.getId() == 49 || cV.getId() == 63 || cV.getId() == 77)) {
-				cV.openDragAndDrop(dropTarget);
+				cV.openDragAndDrop(dropTarget, chienCards);
 			}
-			cV.blockZoom();
+			cV.allowZoom(false);
 		}
 	}
 

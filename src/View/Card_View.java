@@ -63,6 +63,7 @@ public class Card_View implements Observer {
 		card_back.setFitWidth(W_CARD);
 		card_back.setFitHeight(H_CARD);
 		card_back.toFront();
+		allowZoom(false);
 		this.setX(START_X);
 		this.setY(START_Y);
 
@@ -209,14 +210,19 @@ public class Card_View implements Observer {
 		card_shape.toFront();
 	}
 
-	public void blockZoom() {
-		card_shape.toBack();
+	public void allowZoom(boolean isAllowed) {
+		card_shape.setVisible(isAllowed);
+		if(isAllowed) {
+			setToFrontCard();
+		} else {
+			card_back.toFront();
+		}
 	}
 
-	public void openDragAndDrop(Rectangle dropTarget) {
+	public void openDragAndDrop(Rectangle dropTarget,ArrayList<Card_View> n_chienCards) {
 		Double originX = card_front.getX();
 		Double originY = card_front.getY();
-		card_front.setOnDragDetected(new EventHandler<MouseEvent>() {
+		card_front.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent me) {
 				if (me.isPrimaryButtonDown()) {
@@ -241,11 +247,9 @@ public class Card_View implements Observer {
 			@Override
 			public void handle(MouseEvent event) {
 				System.out.println(dropTarget.toString());
-				Point2D mousePos =new Point2D(event.getSceneX(), event.getSceneY());
-								
+				Point2D mousePos =new Point2D(event.getSceneX(), event.getSceneY());	
 				if (dropTarget.contains(mousePos)) {
-					
-					System.out.println(getId() + " : Je suis dedans.");
+					//ajouter les autres carte
 				} else {
 					setX(originX);
 					setY(originY);
