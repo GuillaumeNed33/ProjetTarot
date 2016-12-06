@@ -83,7 +83,7 @@ public class Window extends Application implements Observer {
 		}
 		c.syncCards(allCards, this);
 		c.startGame();
-		
+
 		LoadMenu(root, scene);
 
 		primaryStage.setScene(scene);
@@ -98,6 +98,10 @@ public class Window extends Application implements Observer {
 		mainTitle.setFont(Font.loadFont("file:./ressources/font/Steampunk.otf", 125.));
 		root.getChildren().add(mainTitle);
 
+		addButtonToMenu();
+	}
+
+	private void addButtonToMenu() {
 		Button btn = new Button();
 		btn.setLayoutX(500);
 		btn.setLayoutY(350);
@@ -122,13 +126,14 @@ public class Window extends Application implements Observer {
 				System.exit(0);
 			}
 		});
-		root.getChildren().add(btnQuit);
+		root.getChildren().add(btnQuit);		
 	}
 
 	private void StartGame(Group root, Scene scene) {
 		root.getChildren().clear();
 		background.setImage(new Image(imageGame));
 		root.getChildren().add(background);
+
 		ParallelTransition shuffle = goAway();
 		shuffle.setOnFinished(new EventHandler<ActionEvent>() {
 			@Override
@@ -137,58 +142,72 @@ public class Window extends Application implements Observer {
 				back.setOnFinished(new EventHandler<ActionEvent>() {					
 					@Override
 					public void handle(ActionEvent arg0) {
-						SequentialTransition masterDistrib = new SequentialTransition();
-						masterDistrib.getChildren().addAll(animeDistrib(), lookCard(playerCards));
-						masterDistrib.setOnFinished(new EventHandler<ActionEvent>() {
-							@Override
-							public void handle(ActionEvent arg0) {
-								c.triCards();
-								triCardsView().play();
-								if (c.testPetitSec()) {
-									Text info = new Text(130, 415, "Le Petit est sec !");
-									info.setFont(Font.loadFont("file:./ressources/font/Steampunk.otf", 100.));
-									root.getChildren().add(info);
-									try {
-										Thread.sleep(1500L);
-									} catch (InterruptedException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									}
-									backToCenter().play();
-									c.resetGame();
-								} else {
-									for (Button b : choices) {
-										b.setVisible(true);
-									}
-								}
-							}
-						});
-						masterDistrib.play();
-					}
+						distribCard();						
+					}					
 				});	
 				back.play();
 			}
 		});
 		Platform.runLater(new Runnable() {
-
 			@Override
 			public void run() {
 				shuffle.play();
 			} 
-			
 		});
 
-		dropTarget = new Rectangle(800, 50, 300, 300);
-		dropTarget.getStrokeDashArray().add(10.);
-		dropTarget.setStrokeLineJoin(StrokeLineJoin.ROUND);
-		dropTarget.setStrokeLineCap(StrokeLineCap.ROUND);
-		dropTarget.setStrokeWidth(5.);
-		dropTarget.setFill(Color.TRANSPARENT);
-		dropTarget.setStroke(Color.BLACK);
 		c.distrib();
 		chienCards = new ArrayList<Card_View>();
 		playerCards = new ArrayList<Card_View>();
+		addChoicesButtons();
 
+		for (Card_View cV : allCards) {
+			root.getChildren().addAll(cV.getNodes());
+		}
+	}
+
+	private void distribCard() {
+		SequentialTransition masterDistrib = new SequentialTransition();
+		masterDistrib.getChildren().addAll(animeDistrib(), lookCard(playerCards));
+		masterDistrib.setOnFinished(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				c.triCards();
+				triCardsView().play();
+
+				if (c.testPetitSec()) {
+					resetGame();
+				} else {
+					for (Button b : choices) {
+						b.setVisible(true);
+					}
+				}
+			}
+		});
+		masterDistrib.play();		
+	}
+
+	private void resetGame() {
+		Text info = new Text(130, 415, "Le Petit est sec !");
+		info.setFont(Font.loadFont("file:./ressources/font/Steampunk.otf", 100.));
+		root.getChildren().add(info);
+		try {
+			Thread.sleep(1500L);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		ParallelTransition goToInitialPos = comeBack();
+		goToInitialPos.setOnFinished(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				arg0.consume();
+				StartGame(root, scene);
+			}
+		});
+		c.resetGame();	
+		goToInitialPos.play();				
+	}
+
+	private void addChoicesButtons() {
 		choices = new Vector<Button>();
 		for (int i = 0; i < 5; i++) {
 			Button btn = new Button();
@@ -200,26 +219,11 @@ public class Window extends Application implements Observer {
 			case 0:
 				btn.setText("La prise");
 				btn.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
 					public void handle(ActionEvent event) {
 						event.consume();
-						SequentialTransition look = lookCard(chienCards);
-						look.setOnFinished(new EventHandler<ActionEvent>() {
-							@Override
-							public void handle(ActionEvent event) {
-								SequentialTransition theGard = new SequentialTransition();
-								theGard.getChildren().addAll(goToMyHand(), triCardsView());
-								theGard.play();
-								theGard.setOnFinished(new EventHandler<ActionEvent>() {
-									@Override
-									public void handle(ActionEvent event) {
-										event.consume();
-										constituteShift();
-									}
-								});
-							}
-						});
-						look.play();
-					}
+						priseAndGuardAction();
+					}					
 				});
 				break;
 			case 1:
@@ -227,23 +231,7 @@ public class Window extends Application implements Observer {
 				btn.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {
 						event.consume();
-						SequentialTransition look = lookCard(chienCards);
-						look.setOnFinished(new EventHandler<ActionEvent>() {
-							@Override
-							public void handle(ActionEvent event) {
-								SequentialTransition theGard = new SequentialTransition();
-								theGard.getChildren().addAll(goToMyHand(), triCardsView());
-								theGard.play();
-								theGard.setOnFinished(new EventHandler<ActionEvent>() {
-									@Override
-									public void handle(ActionEvent event) {
-										event.consume();
-										constituteShift();
-									}
-								});
-							}
-						});
-						look.play();
+						priseAndGuardAction();
 					}
 				});
 				break;
@@ -278,28 +266,29 @@ public class Window extends Application implements Observer {
 			}
 			choices.add(btn);
 		}
-		for (Card_View cV : allCards) {
-			root.getChildren().addAll(cV.getNodes());
-		}
 		for (Button b : choices) {
 			root.getChildren().add(b);
-		}
+		}		
+	}
 
-}
-
-	private ParallelTransition backToCenter() {
-		for (Card_View cV : allCards) {
-			cV.setObjective(new Pair<Double, Double>(Card_View.START_X, Card_View.START_Y));
-		}
-		ParallelTransition master = moveCardsToObjParal();
-		master.setOnFinished(new EventHandler<ActionEvent>() {
+	private void priseAndGuardAction() {
+		SequentialTransition look = lookCard(chienCards);
+		look.setOnFinished(new EventHandler<ActionEvent>() {
 			@Override
-			public void handle(ActionEvent arg0) {
-				arg0.consume();
-				StartGame(root, scene);
+			public void handle(ActionEvent event) {
+				SequentialTransition master = new SequentialTransition();
+				master.getChildren().addAll(goToMyHand(), triCardsView());
+				master.play();
+				master.setOnFinished(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent event) {
+						event.consume();
+						constituteShift();
+					}
+				});
 			}
 		});
-		return master;
+		look.play();						
 	}
 
 	private ParallelTransition comeBack() {
@@ -461,9 +450,6 @@ public class Window extends Application implements Observer {
 		return moveCardsToObjParal();
 	}
 
-	/**
-	 * 
-	 */
 	private void allowDragAndDrop() {
 		for (Card_View cV : playerCards) {
 			System.out.println(cV.getId());
@@ -483,11 +469,17 @@ public class Window extends Application implements Observer {
 		return false;
 	}
 
-	/**
-	 * 
-	 */
 	public void constituteShift() {
 		root.getChildren().clear();
+
+		dropTarget = new Rectangle(800, 50, 300, 300);
+		dropTarget.getStrokeDashArray().add(10.);
+		dropTarget.setStrokeLineJoin(StrokeLineJoin.ROUND);
+		dropTarget.setStrokeLineCap(StrokeLineCap.ROUND);
+		dropTarget.setStrokeWidth(5.);
+		dropTarget.setFill(Color.TRANSPARENT);
+		dropTarget.setStroke(Color.BLACK);
+
 		initSceneToConstituteShift();
 		ParallelTransition move = setPosCardsForShift();
 		move.setOnFinished(new EventHandler<ActionEvent>() {
