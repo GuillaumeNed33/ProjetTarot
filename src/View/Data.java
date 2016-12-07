@@ -11,62 +11,46 @@ import Model.CardType;
 import Model.CardValue;
 
 public class Data {
-	final String path_file = "./ressources/link.csv";
-	final int MAX_ATOUT = 21;
+	final String file = "./ressources/link.csv";
+	final int MAX_ATOUT = 23;
 	final int MAX_BASIC = 14;
 	private HashMap<Integer, String> path_images = new HashMap<Integer, String>();
-	private Vector<String> texts = new Vector<String>();
-	private Vector<String> path_sounds = new Vector<String>();
 
-	// Excuse = 0
-	// Atout = 1 to 21
-	// Trefle = 22 to 35 (As to Roi)
-	// Pique = 36 to 49
-	// Carreau = 50 to 63
-	// Coeur = 64 to 77
+	/**
+	 * <i> <b> Constructeur de la classe data </b> </i><br>
+	 * <br>
+	 * <code> Data() </code> <br>
+	 * 
+	 * <p>
+	 * Initialise la classe data en récupérant les informations du fichier contenu dans la variable file.
+	 * </p>
+	 * 
+	 * 
+	 */
 	Data() {
 		take_info();
 	}
 	
-	private enum Read_State {
-		IMAGE, TEXT, SOUND
-	}
-
+	/**
+	 * <i> <b> take_info </b> </i><br>
+	 * <br>
+	 * <code> public void take_info() </code> <br>
+	 * 
+	 * <p>
+	 * Récupère les chemin d'accès des images en fonction de leur identifiants contenu dans le ficheir link.csv.
+	 * </p>
+	 * 
+	 * 
+	 */
 	public void take_info() {
-		Read_State state = null;
 		try {
-			InputStream ips = new FileInputStream(path_file);
+			InputStream ips = new FileInputStream(file);
 			InputStreamReader ipsr = new InputStreamReader(ips);
 			BufferedReader br = new BufferedReader(ipsr);
 			String line = br.readLine();
 			while (line != null) {
-				switch (line) {
-				case "IMAGE":
-					state = Read_State.IMAGE;
-					break;
-				case "TEXT":
-					state = Read_State.TEXT;
-					break;
-				case "SOUND":
-					state = Read_State.SOUND;
-					break;
-				default:
-					switch (state) {
-					case IMAGE:
-						path_images.put(Integer.parseInt(line.split(":")[0]), line.split(":")[1]);
-						break;
-					case SOUND:
-						path_sounds.add(line);
-						break;
-					case TEXT:
-						texts.add(line);
-						break;
-					default:
-						break;
-					}
-					break;
-				}
 				line = br.readLine();
+				path_images.put(Integer.parseInt(line.split(":")[0]), line.split(":")[1]);
 			}
 			br.close();
 		} catch (Exception e) {
@@ -75,14 +59,19 @@ public class Data {
 		}
 	}
 
-	public String getSound(int i) {
-		return path_sounds.get(i);
-	}
-
-	public String getText(int i) {
-		return texts.get(i);
-	}
-
+	/**
+	 * <i> <b> getImage </b> </i><br>
+	 * <br>
+	 * <code> public void getImage() </code> <br>
+	 * 
+	 * <p>
+	 * Retourne le chemin d'accès de l'image d'identifiant id.
+	 * </p>
+	 * 
+	 * @param id : Identifiant de l'image.
+	 * @return le chemin d'accès de l'image d'ID .
+	 * 
+	 */ 
 	public String getImage(int id) {
 		return path_images.get(id);
 	}
