@@ -525,11 +525,22 @@ public class Window extends Application implements Observer {
 		chienCards.clear();
 		Text title = new Text(100., 100., "Constitute the shift.");
 		title.setFont(Font.loadFont("file:./ressources/font/Steampunk.otf", 50.));
-		Button btn = new Button("Confirm");
-		btn.autosize();
-		btn.setLayoutX(900.);
-		btn.setLayoutY(600.);
-		btn.setOnAction(new EventHandler<ActionEvent>() {
+		Button btnConfirm = new Button("Confirm");
+		btnConfirm.autosize();
+		btnConfirm.setLayoutX(900.);
+		btnConfirm.setLayoutY(600.);
+		btnConfirm.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				event.consume();
+				lockChien();
+			}
+		});
+		Button btnCancel = new Button("Cancel");
+		btnCancel.autosize();
+		btnCancel.setLayoutX(900.);
+		btnCancel.setLayoutY(600.);
+		btnCancel.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				event.consume();
@@ -542,7 +553,8 @@ public class Window extends Application implements Observer {
 			root.getChildren().addAll(cV.getNodes());
 		}
 		root.getChildren().add(title);
-		root.getChildren().add(btn);
+		root.getChildren().add(btnConfirm);
+		root.getChildren().add(btnCancel);
 	}
 
 	private void lockChien() {
