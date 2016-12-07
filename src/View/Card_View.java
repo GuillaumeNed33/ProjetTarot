@@ -14,6 +14,7 @@ import javafx.animation.ScaleTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
@@ -222,8 +223,8 @@ public class Card_View implements Observer {
 	}
 
 	public void openDragAndDrop(Rectangle dropTarget, ArrayList<Card_View> new_Chien) {
-		originX = card_front.getX();
-		originY = card_front.getY();
+		originX = card_front.getBoundsInParent().getMinX();
+		originY = card_front.getBoundsInParent().getMinY();
 		card_front.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent me) {
@@ -234,9 +235,9 @@ public class Card_View implements Observer {
 					card_front.setOnMouseDragged((new EventHandler<MouseEvent>() {
 						@Override
 						public void handle(MouseEvent me) {
-							card_shape.setVisible(false);
-							setX(me.getSceneX() - shiftX);
-							setY(me.getSceneY() - shiftY);
+							objX = me.getSceneX()-shiftX;
+							objY = me.getSceneY()-shiftY;
+							moveAnimation(1).play();;
 							me.consume();
 						}
 					}));
@@ -249,15 +250,17 @@ public class Card_View implements Observer {
 			@Override
 			public void handle(MouseEvent event) {
 				Point2D mousePos = new Point2D(event.getSceneX(), event.getSceneY());
-				if (dropTarget.contains(mousePos) && new_Chien.size() <6) {
+				System.out.println("Dans le release : " + originX + " : " + originY);
+				if (dropTarget.contains(mousePos) && new_Chien.size() < 6) {
 					objX = dropTarget.getX() + 30 + ((new_Chien.size() % 3) * W_CARD);
 					objY = dropTarget.getY() + 30 + ((new_Chien.size() / 3) * H_CARD);
 					moveAnimation(350).play();
 					new_Chien.add(Card_View.this);
 
 				} else {
-					setX(originX);
-					setY(originY);
+					objX = originX;
+					objY = originY;
+					moveAnimation(100).play();
 				}
 				event.consume();
 			}
@@ -265,9 +268,11 @@ public class Card_View implements Observer {
 	}
 
 	public void cancelCardShift() {
-		setX(originX);
-		setY(originY);
+		objX = originX;
+		objY = originY;
+		moveAnimation(100).play();
 	}
+
 	public boolean AuthorizedToChien(ArrayList<Integer> NoAuthorize) {
 
 		return !NoAuthorize.contains(id);

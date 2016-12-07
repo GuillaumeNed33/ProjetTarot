@@ -34,8 +34,8 @@ public class Window extends Application implements Observer {
 
 	final static Double WIDTH = 1280.;
 	final static Double HEIGHT = 720.;
-	private static final long HalfDurationMove = 1;
-	private static final long HalfDurationShuffle = 1;
+	private static final long HalfDurationMove = 100;
+	private static final long HalfDurationShuffle = 100;
 
 	private String title;
 	private static Controller c;
@@ -538,13 +538,16 @@ public class Window extends Application implements Observer {
 		});
 		Button btnCancel = new Button("Cancel");
 		btnCancel.autosize();
-		btnCancel.setLayoutX(900.);
+		btnCancel.setLayoutX(1100.);
 		btnCancel.setLayoutY(600.);
 		btnCancel.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				event.consume();
-				lockChien();
+				if(chienCards.size() >0) {
+					chienCards.get(chienCards.size()-1).cancelCardShift();
+					chienCards.remove(chienCards.size()-1);
+				}
 			}
 		});
 		root.getChildren().add(background);
