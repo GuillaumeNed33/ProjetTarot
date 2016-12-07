@@ -41,6 +41,8 @@ public class Card_View implements Observer {
 	final static Double BIG_POS_Y = 200.;
 	private Double objX;
 	private Double objY;
+	Double originX;
+	Double originY;
 
 	private boolean arrived;
 	private int id;
@@ -219,9 +221,9 @@ public class Card_View implements Observer {
 		}
 	}
 
-	public void openDragAndDrop(Rectangle dropTarget, ArrayList<Card_View> n_chienCards) {
-		Double originX = card_front.getX();
-		Double originY = card_front.getY();
+	public void openDragAndDrop(Rectangle dropTarget, ArrayList<Card_View> new_Chien) {
+		originX = card_front.getX();
+		originY = card_front.getY();
 		card_front.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent me) {
@@ -246,10 +248,13 @@ public class Card_View implements Observer {
 		card_front.setOnMouseReleased(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				// System.out.println(dropTarget.toString());
 				Point2D mousePos = new Point2D(event.getSceneX(), event.getSceneY());
-				if (dropTarget.contains(mousePos)) {
-					// ajouter les autres carte
+				if (dropTarget.contains(mousePos) && new_Chien.size() <6) {
+					objX = dropTarget.getX() + 30 + ((new_Chien.size() % 3) * W_CARD);
+					objY = dropTarget.getY() + 30 + ((new_Chien.size() / 3) * H_CARD);
+					moveAnimation(350).play();
+					new_Chien.add(Card_View.this);
+
 				} else {
 					setX(originX);
 					setY(originY);
@@ -259,6 +264,10 @@ public class Card_View implements Observer {
 		});
 	}
 
+	public void cancelCardShift() {
+		setX(originX);
+		setY(originY);
+	}
 	public boolean AuthorizedToChien(ArrayList<Integer> NoAuthorize) {
 
 		return !NoAuthorize.contains(id);

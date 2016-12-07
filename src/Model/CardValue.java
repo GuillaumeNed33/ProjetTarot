@@ -44,7 +44,7 @@ public class CardValue {
 	 * </p>
 	 * 
 	 * @param v
-	 *            : value de CardValue
+	 *            : value de CardValue²	
 	 */
 	public void setValue(int v) {
 		this.value = v;

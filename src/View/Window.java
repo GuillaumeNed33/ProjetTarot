@@ -8,6 +8,7 @@ import java.util.Vector;
 
 import Controler.Controller;
 import Model.Card;
+import javafx.animation.AnimationTimer;
 import javafx.animation.ParallelTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Transition;
@@ -33,8 +34,8 @@ public class Window extends Application implements Observer {
 
 	final static Double WIDTH = 1280.;
 	final static Double HEIGHT = 720.;
-	private static final long HalfDurationMove = 350;
-	private static final long HalfDurationShuffle = 1500;
+	private static final long HalfDurationMove = 1;
+	private static final long HalfDurationShuffle = 1;
 
 	private String title;
 	private static Controller c;
@@ -50,7 +51,6 @@ public class Window extends Application implements Observer {
 	private Rectangle dropTarget;
 	Vector<Button> choices;
 	public static Data data;
-
 	static String imageMenu = "file:./ressources/img/background.jpg";
 	static String imageGame = "file:./ressources/img/background2.jpg";
 
@@ -74,12 +74,8 @@ public class Window extends Application implements Observer {
 		background.setFitWidth(WIDTH);
 
 		NoAuthorize = new ArrayList<Integer>();// Tableau des Id non autorisés à
-												// mettre dans le chien
-		NoAuthorize.add(27); // Id des Rois
-		NoAuthorize.add(63);
-		NoAuthorize.add(77);
-		NoAuthorize.add(13);
-		for (int i = 28; i <= 49; i++) // Id des Atouts et de l'excuse
+		// mettre dans le chien
+		for (int i = 30; i <= 48; i++) // Id des Atouts sans les bous
 			NoAuthorize.add(i);
 	}
 
@@ -463,18 +459,19 @@ public class Window extends Application implements Observer {
 	}
 
 	private void allowDragAndDrop() {
-		int atouts = allowAtoutToBeDrag();
+		int nbAtoutAcceptOnShift =  allowAtoutToBeDrag();
 		for (Card_View cV : playerCards) {
-			// System.out.println(cV.getId());
-			if (atouts > 0) {
-				if (!NoAuthorize.contains(cV.getId())) {
+			if (!(cV.getId() == 13 || cV.getId() == 27 || cV.getId() == 28 || cV.getId() == 29
+					|| cV.getId() == 49 || cV.getId() == 63 || cV.getId() == 77)) {
+				if(NoAuthorize.contains(cV.getId()) && nbAtoutAcceptOnShift > 0)
+				{
 					cV.openDragAndDrop(dropTarget, chienCards);
 				}
-			}
-			if (!(cV.getId() == 13 || cV.getId() == 27 || cV.getId() == 28 || cV.getId() == 29 || cV.getId() == 30
-					|| cV.getId() == 49 || cV.getId() == 63 || cV.getId() == 77)) {
-				cV.openDragAndDrop(dropTarget, chienCards);
-			}
+				else if(!NoAuthorize.contains(cV.getId()))
+				{
+					cV.openDragAndDrop(dropTarget, chienCards);
+				}
+			}			
 			cV.allowZoom(false);
 		}
 	}
@@ -494,7 +491,7 @@ public class Window extends Application implements Observer {
 	public void constituteShift() {
 		root.getChildren().clear();
 
-		dropTarget = new Rectangle(800, 50, 300, 300);
+		dropTarget = new Rectangle(850, 150, 300, 300);
 		dropTarget.getStrokeDashArray().add(10.);
 		dropTarget.setStrokeLineJoin(StrokeLineJoin.ROUND);
 		dropTarget.setStrokeLineCap(StrokeLineCap.ROUND);
@@ -525,6 +522,7 @@ public class Window extends Application implements Observer {
 	}
 
 	private void initSceneToConstituteShift() {
+		chienCards.clear();
 		Text title = new Text(100., 100., "Constitute the shift.");
 		title.setFont(Font.loadFont("file:./ressources/font/Steampunk.otf", 50.));
 		Button btn = new Button("Confirm");
