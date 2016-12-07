@@ -230,6 +230,7 @@ public class Window extends Application implements Observer {
 					@Override
 					public void handle(ActionEvent event) {
 						event.consume();
+						disabledButton();
 						priseAndGuardAction();
 					}
 				});
@@ -239,6 +240,7 @@ public class Window extends Application implements Observer {
 				btn.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {
 						event.consume();
+						disabledButton();
 						priseAndGuardAction();
 					}
 				});
@@ -248,6 +250,7 @@ public class Window extends Application implements Observer {
 				btn.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {
 						event.consume();
+						disabledButton();
 						gardAgainstChien().play();
 					}
 
@@ -258,6 +261,7 @@ public class Window extends Application implements Observer {
 				btn.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {
 						event.consume();
+						disabledButton();
 						goToEnemyAnim().play();
 					}
 
@@ -267,6 +271,7 @@ public class Window extends Application implements Observer {
 				btn.setText("Passe");
 				btn.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {
+						disabledButton();
 						lookCard(chienCards).play();
 					}
 				});
@@ -465,11 +470,11 @@ public class Window extends Application implements Observer {
 					|| cV.getId() == 49 || cV.getId() == 63 || cV.getId() == 77)) {
 				if(NoAuthorize.contains(cV.getId()) && nbAtoutAcceptOnShift > 0)
 				{
-					cV.openDragAndDrop(dropTarget, chienCards);
+					cV.openDragAndDrop(dropTarget, chienCards, playerCards);
 				}
 				else if(!NoAuthorize.contains(cV.getId()))
 				{
-					cV.openDragAndDrop(dropTarget, chienCards);
+					cV.openDragAndDrop(dropTarget, chienCards, playerCards);
 				}
 			}			
 			cV.allowZoom(false);
@@ -525,17 +530,7 @@ public class Window extends Application implements Observer {
 		chienCards.clear();
 		Text title = new Text(100., 100., "Constitute the shift.");
 		title.setFont(Font.loadFont("file:./ressources/font/Steampunk.otf", 50.));
-		Button btnConfirm = new Button("Confirm");
-		btnConfirm.autosize();
-		btnConfirm.setLayoutX(900.);
-		btnConfirm.setLayoutY(600.);
-		btnConfirm.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				event.consume();
-				lockChien();
-			}
-		});
+
 		Button btnCancel = new Button("Cancel");
 		btnCancel.autosize();
 		btnCancel.setLayoutX(1100.);
@@ -546,10 +541,29 @@ public class Window extends Application implements Observer {
 				event.consume();
 				if(chienCards.size() >0) {
 					chienCards.get(chienCards.size()-1).cancelCardShift();
+					playerCards.add(chienCards.get(chienCards.size()-1));
 					chienCards.remove(chienCards.size()-1);
 				}
 			}
 		});
+
+		Button btnConfirm = new Button("Confirm");
+		btnConfirm.autosize();
+		btnConfirm.setLayoutX(900.);
+		btnConfirm.setLayoutY(600.);
+		btnConfirm.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				event.consume();
+				lockChien();
+				if(chienCards.size() == 6) {
+					root.getChildren().remove(title);
+					root.getChildren().remove(btnConfirm);
+					root.getChildren().remove(btnCancel);
+				}
+			}
+		});
+
 		root.getChildren().add(background);
 		root.getChildren().add(dropTarget);
 		for (Card_View cV : playerCards) {
@@ -561,19 +575,46 @@ public class Window extends Application implements Observer {
 	}
 
 	private void lockChien() {
-		int nb_card = 0;
-		System.out.println(playerCards.size());
+		Text info = new Text(770., 540., "Too few Cards in the Chien.");
+		info.setFont(Font.loadFont("file:./ressources/font/Steampunk.otf", 40.));
 
-		for (Card_View c : playerCards) {
-			if (dropTarget.contains(c.getX(), c.getY())) {
-				nb_card++;
-			}
-		}
-		if (nb_card > 6) {
-			System.out.println("Trop de cartes dans le chien");
-		} else if (nb_card < 6)
-			System.out.println("Pas assez de cartes dans le chien");
+		if (chienCards.size()<6) {
+
+			root.getChildren().add(info);
+		} 
 		else
-			System.out.println("OK");
+		{
+			if(root.getChildren().contains(info))
+				root.getChildren().remove(info);
+			restoreView();
+		}
+
+
+
+	}
+
+	private void restoreView() {
+		int nb_carte = 0;
+		System.out.println(playerCards.size());
+		System.out.println(chienCards.size());
+		for(Card_View c : playerCards)		
+		{
+			Double X = 0.;
+			Double Y = 0.;
+			X = player_place.getKey() + (nb_carte * (Card_View.W_CARD / 2));
+			Y = player_place.getValue();
+			c.setObjective(new Pair<Double, Double>(X, Y));
+			nb_carte++;
+		}
+
+		gardAgainstChien().play();
+		moveCardsToObjSeq(HalfDurationMove).play();
+		dropTarget.setVisible(false);
+	}
+
+	private void disabledButton() {
+		for (Button b : choices) {
+			b.setVisible(false);
+		}		
 	}
 }

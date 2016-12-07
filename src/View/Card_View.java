@@ -222,7 +222,7 @@ public class Card_View implements Observer {
 		}
 	}
 
-	public void openDragAndDrop(Rectangle dropTarget, ArrayList<Card_View> new_Chien) {
+	public void openDragAndDrop(Rectangle dropTarget, ArrayList<Card_View> new_Chien, ArrayList<Card_View> playerCards) {
 		originX = card_front.getBoundsInParent().getMinX();
 		originY = card_front.getBoundsInParent().getMinY();
 		card_front.setOnMousePressed(new EventHandler<MouseEvent>() {
@@ -256,6 +256,7 @@ public class Card_View implements Observer {
 					objY = dropTarget.getY() + 30 + ((new_Chien.size() / 3) * H_CARD);
 					moveAnimation(350).play();
 					new_Chien.add(Card_View.this);
+					playerCards.remove(Card_View.this);
 
 				} else {
 					objX = originX;
