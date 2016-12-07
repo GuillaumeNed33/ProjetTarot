@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.Vector;
 
 import Model.CardType;
-import Model.CardValue;
 
 public class Data {
 	final String file = "./ressources/link.csv";
