@@ -83,6 +83,7 @@ public class Window extends Application implements Observer {
 
 		root = new Group();
 		scene = new Scene(root, WIDTH, HEIGHT, null);
+		scene.getStylesheets().add("file:./ressources/style.css");
 		initSceneWindow();
 
 		primaryStage.setTitle(title);
@@ -90,6 +91,7 @@ public class Window extends Application implements Observer {
 		primaryStage.setResizable(false);
 		primaryStage.show();
 	}
+	
 	private void initSceneWindow() {
 		allCards = new ArrayList<Card_View>();
 
@@ -120,6 +122,7 @@ public class Window extends Application implements Observer {
 		btn.setLayoutY(350);
 		btn.setPrefSize(250, 100);
 		btn.setText("LET'S PLAY TAROT !");
+		btn.getStyleClass().add("buttonMenu");
 		btn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				StartGame(root, scene);
