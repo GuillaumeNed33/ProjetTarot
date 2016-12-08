@@ -34,8 +34,8 @@ import javafx.util.Pair;
 
 public class Card_View implements Observer {
 	/// Constantes
-	final static int H_CARD = 112;// 85
-	final static int W_CARD = 80;// 48
+	final static int H_CARD = 112;
+	final static int W_CARD = 80;
 	final static Double START_X = 600.;
 	final static Double START_Y = 275.;
 	final static Double BIG_POS_X = 150.;
@@ -45,7 +45,6 @@ public class Card_View implements Observer {
 	private Double originX;
 	private Double originY;
 
-	//private boolean arrived;
 	private int id;
 	private int idOwner;
 
@@ -54,8 +53,7 @@ public class Card_View implements Observer {
 	private ImageView card_back = new ImageView();
 	private ImageView card_front = new ImageView();
 	private Rectangle card_shape = new Rectangle(START_X, START_Y, W_CARD, H_CARD);
-	static long halfFlipDuration = 100;
-	static long halfDistribDuration = 350;
+	private final static long HALF_FLIP_DURATION = 100;
 
 	/**
 	 * 
@@ -186,13 +184,13 @@ public class Card_View implements Observer {
 	 * @return La transition du retournement.
 	 */
 	public Transition flipToFront() {
-		final RotateTransition rotateOutBack = new RotateTransition(Duration.millis(halfFlipDuration), card_back);
+		final RotateTransition rotateOutBack = new RotateTransition(Duration.millis(HALF_FLIP_DURATION), card_back);
 		rotateOutBack.setInterpolator(Interpolator.LINEAR);
 		rotateOutBack.setAxis(Rotate.Y_AXIS);
 		rotateOutBack.setFromAngle(0);
 		rotateOutBack.setToAngle(-90);
 
-		final RotateTransition rotateInFront = new RotateTransition(Duration.millis(halfFlipDuration), card_front);
+		final RotateTransition rotateInFront = new RotateTransition(Duration.millis(HALF_FLIP_DURATION), card_front);
 		rotateInFront.setInterpolator(Interpolator.LINEAR);
 		rotateInFront.setAxis(Rotate.Y_AXIS);
 		rotateInFront.setFromAngle(90);
@@ -213,13 +211,13 @@ public class Card_View implements Observer {
 	 * @return La transition du retournement.
 	 */
 	public Transition flipToBack() {
-		final RotateTransition rotateOutBack = new RotateTransition(Duration.millis(halfFlipDuration), card_front);
+		final RotateTransition rotateOutBack = new RotateTransition(Duration.millis(HALF_FLIP_DURATION), card_front);
 		rotateOutBack.setInterpolator(Interpolator.LINEAR);
 		rotateOutBack.setAxis(Rotate.Y_AXIS);
 		rotateOutBack.setFromAngle(0);
 		rotateOutBack.setToAngle(-90);
 
-		final RotateTransition rotateInFront = new RotateTransition(Duration.millis(halfFlipDuration), card_back);
+		final RotateTransition rotateInFront = new RotateTransition(Duration.millis(HALF_FLIP_DURATION), card_back);
 		rotateInFront.setInterpolator(Interpolator.LINEAR);
 		rotateInFront.setAxis(Rotate.Y_AXIS);
 		rotateInFront.setFromAngle(90);
@@ -323,10 +321,10 @@ public class Card_View implements Observer {
 	 * 
 	 */
 	private void transformeToBig() {
-		final ScaleTransition zoomFront = new ScaleTransition(Duration.millis(halfFlipDuration), card_front);
+		final ScaleTransition zoomFront = new ScaleTransition(Duration.millis(HALF_FLIP_DURATION), card_front);
 		zoomFront.setToX(2.);
 		zoomFront.setToY(2.);
-		final TranslateTransition moveFront = new TranslateTransition(Duration.millis(halfFlipDuration), card_front);
+		final TranslateTransition moveFront = new TranslateTransition(Duration.millis(HALF_FLIP_DURATION), card_front);
 		moveFront.setToX(BIG_POS_X - card_front.getX());
 		moveFront.setToY(BIG_POS_Y - card_front.getY());
 		final ParallelTransition master = new ParallelTransition(moveFront, zoomFront);
@@ -345,10 +343,10 @@ public class Card_View implements Observer {
 	 * 
 	 */
 	private void restoreByDefault() {
-		final ScaleTransition zoomFront = new ScaleTransition(Duration.millis(halfFlipDuration), card_front);
+		final ScaleTransition zoomFront = new ScaleTransition(Duration.millis(HALF_FLIP_DURATION), card_front);
 		zoomFront.setToX(1.);
 		zoomFront.setToY(1.);
-		final TranslateTransition moveFront = new TranslateTransition(Duration.millis(halfFlipDuration), card_front);
+		final TranslateTransition moveFront = new TranslateTransition(Duration.millis(HALF_FLIP_DURATION), card_front);
 		moveFront.setToX(objX - card_front.getX());
 		moveFront.setToY(objY - card_front.getY());
 		final ParallelTransition master = new ParallelTransition(moveFront, zoomFront);
