@@ -37,7 +37,7 @@ public class Window extends Application implements Observer {
 	final static Double HEIGHT = 720.;
 	private static final long HalfDurationMove = 400;
 	private static final long HalfDurationShuffle = 1000;
-
+ 
 	private String title;
 	private static Controller c;
 	private ArrayList<Card_View> allCards;
