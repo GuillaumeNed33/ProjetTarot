@@ -79,9 +79,18 @@ public class Window extends Application implements Observer {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		
+
 		root = new Group();
 		scene = new Scene(root, WIDTH, HEIGHT, null);
+		initSceneWindow();
+		
 		primaryStage.setTitle(title);
+		primaryStage.setScene(scene);
+	    primaryStage.setResizable(false);
+		primaryStage.show();
+	}
+	private void initSceneWindow() {
 		allCards = new ArrayList<Card_View>();
 
 		for (int i = 0; i < 78; i++) {
@@ -91,10 +100,6 @@ public class Window extends Application implements Observer {
 		c.startGame();
 
 		LoadMenu(root, scene);
-
-		primaryStage.setScene(scene);
-	    primaryStage.setResizable(false);
-		primaryStage.show();
 	}
 
 	private void LoadMenu(Group root, Scene scene) {
@@ -648,10 +653,10 @@ public class Window extends Application implements Observer {
 					c.flipToBack().play();
 				
 				c.resetGame();
+				initSceneWindow();
 				event.consume();
-				LoadMenu(root, scene);
 			}
 		});
 		root.getChildren().add(btn);
 	}
-}
+} 
