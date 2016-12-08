@@ -50,7 +50,7 @@ public class Window extends Application implements Observer {
 	private Pair<Double, Double> chien_player_place;
 	private Rectangle dropTarget;
 	Vector<Button> choices;
-	public static Data data;
+	public static Data data = new Data();
 	static String imageMenu = "file:./ressources/img/background.jpg";
 	static String imageGame = "file:./ressources/img/background2.jpg";
 
@@ -62,7 +62,6 @@ public class Window extends Application implements Observer {
 
 	public Window() {
 		title = "Tarot NEDELEC NORMAND S3C";
-		data = new Data();
 		allCards = new ArrayList<Card_View>();
 		player_place = new Pair<Double, Double>(150., 450.);
 		player_place2 = new Pair<Double, Double>(-200., 300.);

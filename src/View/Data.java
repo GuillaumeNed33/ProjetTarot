@@ -48,8 +48,9 @@ public class Data {
 			BufferedReader br = new BufferedReader(ipsr);
 			String line = br.readLine();
 			while (line != null) {
-				line = br.readLine();
+				System.out.println(line);
 				path_images.put(Integer.parseInt(line.split(":")[0]), line.split(":")[1]);
+				line = br.readLine();
 			}
 			br.close();
 		} catch (Exception e) {
