@@ -1,0 +1,6 @@
+.buttonMenu {
+	-fx-font-size: 36;
+}
+.buttonMenu:hover {
+	fx-background-color : black;
+}
