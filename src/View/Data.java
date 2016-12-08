@@ -10,7 +10,7 @@ import java.util.Vector;
 import Model.CardType;
 
 public class Data {
-	final String file = "./ressources/link.csv";
+	final String FILE = "./ressources/link.csv";
 	final int MAX_ATOUT = 23;
 	final int MAX_BASIC = 14;
 	private HashMap<Integer, String> path_images = new HashMap<Integer, String>();
@@ -43,7 +43,7 @@ public class Data {
 	 */
 	public void take_info() {
 		try {
-			InputStream ips = new FileInputStream(file);
+			InputStream ips = new FileInputStream(FILE);
 			InputStreamReader ipsr = new InputStreamReader(ips);
 			BufferedReader br = new BufferedReader(ipsr);
 			String line = br.readLine();
