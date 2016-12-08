@@ -120,7 +120,7 @@ public class Game extends Observable {
 			sec = gameSec;
 			i++;
 		}
-		return true;//return sec;
+		return false;//return sec;
 	}
 
 	/**

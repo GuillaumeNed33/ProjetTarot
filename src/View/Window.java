@@ -62,14 +62,14 @@ public class Window extends Application implements Observer {
 	public Window() {
 		title = "Tarot NEDELEC NORMAND S3C";
 		allCards = new ArrayList<Card_View>();
-		player_place = new Pair<Double, Double>(150., 450.);
+		player_place = new Pair<Double, Double>(275., 450.);
 		player_place2 = new Pair<Double, Double>(-200., 300.);
-		player_place3 = new Pair<Double, Double>(460., -200.);
+		player_place3 = new Pair<Double, Double>(600., -200.);
 		player_place4 = new Pair<Double, Double>(1400., 300.);
-		chien_place = new Pair<Double, Double>(500., 45.);
+		chien_place = new Pair<Double, Double>(735., 50.);
 		chien_player_place = new Pair<Double, Double>(1100., 500.);
-		background.setFitHeight(HEIGHT);
-		background.setFitWidth(WIDTH);
+		background.setFitHeight(HEIGHT+10);
+		background.setFitWidth(WIDTH+10);
 
 		NoAuthorize = new ArrayList<Integer>();// Tableau des Id non autorisés à
 		// mettre dans le chien
@@ -93,6 +93,7 @@ public class Window extends Application implements Observer {
 		LoadMenu(root, scene);
 
 		primaryStage.setScene(scene);
+	    primaryStage.setResizable(false);
 		primaryStage.show();
 	}
 
@@ -100,7 +101,7 @@ public class Window extends Application implements Observer {
 		background.setImage(new Image(imageMenu));
 		root.getChildren().add(background);
 
-		Text mainTitle = new Text(120, 200, "SteamPunk Tarot");
+		Text mainTitle = new Text(220, 220, "SteamPunk Tarot");
 		mainTitle.setFont(Font.loadFont("file:./ressources/font/Steampunk.otf", 125.));
 		root.getChildren().add(mainTitle);
 
@@ -216,7 +217,7 @@ public class Window extends Application implements Observer {
 		choices = new Vector<Button>();
 		for (int i = 0; i < 5; i++) {
 			Button btn = new Button();
-			btn.setLayoutX(175 * i + 100);
+			btn.setLayoutX(250 * i + 100);
 			btn.setLayoutY(10);
 			btn.setPrefSize(150, 25);
 			btn.setVisible(false);
@@ -439,7 +440,7 @@ public class Window extends Application implements Observer {
 
 	private ParallelTransition goToEnemyAnim() {
 		for (Card_View cV : chienCards) {
-			cV.setObjective(new Pair<Double, Double>(1100., 40.));
+			cV.setObjective(new Pair<Double, Double>(1100., 50.));
 		}
 		return moveCardsToObjParal(HalfDurationMove);
 	}
@@ -622,6 +623,10 @@ public class Window extends Application implements Observer {
 	}
 
 	private void disabledButton() {
+		for(Button b : choices)
+		{
+			b.setVisible(false);
+		}
 		choices.clear();
 	}
 	

@@ -36,8 +36,8 @@ public class Card_View implements Observer {
 	/// Constantes
 	final static int H_CARD = 112;// 85
 	final static int W_CARD = 80;// 48
-	final static Double START_X = 460.;
-	final static Double START_Y = 200.;
+	final static Double START_X = 600.;
+	final static Double START_Y = 275.;
 	final static Double BIG_POS_X = 150.;
 	final static Double BIG_POS_Y = 200.;
 	private Double objX;
@@ -189,13 +189,13 @@ public class Card_View implements Observer {
 	public Transition flipToFront() {
 		final RotateTransition rotateOutBack = new RotateTransition(Duration.millis(halfFlipDuration), card_back);
 		rotateOutBack.setInterpolator(Interpolator.LINEAR);
-		rotateOutBack.setAxis(Rotate.X_AXIS);
+		rotateOutBack.setAxis(Rotate.Y_AXIS);
 		rotateOutBack.setFromAngle(0);
 		rotateOutBack.setToAngle(-90);
 
 		final RotateTransition rotateInFront = new RotateTransition(Duration.millis(halfFlipDuration), card_front);
 		rotateInFront.setInterpolator(Interpolator.LINEAR);
-		rotateInFront.setAxis(Rotate.X_AXIS);
+		rotateInFront.setAxis(Rotate.Y_AXIS);
 		rotateInFront.setFromAngle(90);
 		rotateInFront.setToAngle(0);
 
