@@ -94,6 +94,15 @@ public class Window extends Application implements Observer {
 		primaryStage.show();
 	}
 	
+	/**
+	 * <i> <b> initSceneWindow </b> </i><br>
+	 * <br>
+	 * <code> public void initSceneWindow() </code> <br>
+	 * 
+	 * <p>
+	 * Permet d'initialiser la première scène en créant les carte de la vue et en les asscociant aux model.
+	 * </p> 
+	 */
 	private void initSceneWindow() {
 		allCards = new ArrayList<Card_View>();
 
@@ -103,10 +112,19 @@ public class Window extends Application implements Observer {
 		c.syncCards(allCards, this);
 		c.startGame();
 
-		LoadMenu(root, scene);
+		LoadMenu();
 	}
 
-	private void LoadMenu(Group root, Scene scene) {
+	/**
+	 * <i> <b> LoadMenu </b> </i><br>
+	 * <br>
+	 * <code> public void LoadMenu() </code> <br>
+	 * 
+	 * <p>
+	 * Permet créer le menu du projet.
+	 * </p> 
+	 */
+	private void LoadMenu() {
 		root.getChildren().clear();
 		background.setImage(new Image(imageMenu));
 		root.getChildren().add(background);
@@ -118,12 +136,21 @@ public class Window extends Application implements Observer {
 		addButtonToMenu();
 	}
 
+	/**
+	 * <i> <b> addButtonToMenu </b> </i><br>
+	 * <br>
+	 * <code> public void addButtonToMenu() </code> <br>
+	 * 
+	 * <p>
+	 * Permet d'ajouter le bouton Quit et le bouton Play au menu.
+	 * </p> 
+	 */
 	private void addButtonToMenu() {
 		ButtonView btn = new ButtonView(500.,350.,100.,300.,"Let's Play Tarot");
 		
 		btn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				StartGame(root, scene);
+				StartGame();
 				event.consume();
 			}
 		});
@@ -139,7 +166,16 @@ public class Window extends Application implements Observer {
 		root.getChildren().add(btnQuit);
 	}
 
-	private void StartGame(Group root, Scene scene) {
+	/**
+	 * <i> <b> StartGame </b> </i><br>
+	 * <br>
+	 * <code> public void StartGame() </code> <br>
+	 * 
+	 * <p>
+	 * Permet de démarrer le jeu et de s'occuper du traitement de toute les animation.
+	 * </p> 
+	 */
+	private void StartGame() {
 		root.getChildren().clear();
 		background.setImage(new Image(imageGame));
 		root.getChildren().add(background);
@@ -169,12 +205,20 @@ public class Window extends Application implements Observer {
 		chienCards = new ArrayList<Card_View>();
 		playerCards = new ArrayList<Card_View>();
 		addChoicesButtons();
-
 		for (Card_View cV : allCards) {
 			root.getChildren().addAll(cV.getNodes());
 		}
 	}
 
+	/**
+	 * <i> <b> distribCard </b> </i><br>
+	 * <br>
+	 * <code> public void distribCard() </code> <br>
+	 * 
+	 * <p>
+	 * Permet de lancer l'animation de la distribution des cartes et de tester si le Petit est Sec.
+	 * </p> 
+	 */
 	private void distribCard() {
 		SequentialTransition masterDistrib = new SequentialTransition();
 		masterDistrib.getChildren().addAll(animeDistrib(), lookCard(playerCards));
@@ -196,6 +240,15 @@ public class Window extends Application implements Observer {
 		masterDistrib.play();
 	}
 
+	/**
+	 * <i> <b> resetGame </b> </i><br>
+	 * <br>
+	 * <code> public void resetGame() </code> <br>
+	 * 
+	 * <p>
+	 * Permet de relancer la game lorsque le Petit est Sec.
+	 * </p> 
+	 */
 	private void resetGame() {
 		Text info = new Text(400, 475, "Le Petit est sec !");
 		info.setFont(Font.loadFont("file:./ressources/font/Steampunk.otf", 75.));
@@ -211,12 +264,22 @@ public class Window extends Application implements Observer {
 			public void handle(ActionEvent arg0) {
 				arg0.consume();
 				initSceneWindow();
-				StartGame(root, scene);
+				StartGame();
 			}
 		});
 		goToInitialPos.play();
 	}
 
+	/**
+	 * <i> <b> addChoicesButtons </b> </i><br>
+	 * <br>
+	 * <code> public void addChoicesButtons() </code> <br>
+	 * 
+	 * <p>
+	 * Permet d'ajouter les boutons pour le choix de la mise.<br>
+	 *  (Prise / Garde / Garde sans le chien / Garde contre le chien / Passe)
+	 * </p> 
+	 */
 	private void addChoicesButtons() {
 		choices = new Vector<ButtonView>();
 		for (int i = 0; i < 5; i++) {
@@ -286,6 +349,15 @@ public class Window extends Application implements Observer {
 		}
 	}
 
+	/**
+	 * <i> <b> priseAndGuardAction </b> </i><br>
+	 * <br>
+	 * <code> public void priseAndGuardAction() </code> <br>
+	 * 
+	 * <p>
+	 * Permet de gérer le changement d'écran lors de la prise et de la garde afin de pouvoir constituer l'écart.
+	 * </p> 
+	 */
 	private void priseAndGuardAction() {
 		SequentialTransition look = lookCard(chienCards);
 		look.setOnFinished(new EventHandler<ActionEvent>() {
@@ -306,6 +378,17 @@ public class Window extends Application implements Observer {
 		look.play();
 	}
 
+	/**
+	 * <i> <b> comeBack </b> </i><br>
+	 * <br>
+	 * <code> public void comeBack() </code> <br>
+	 * 
+	 * <p>
+	 * Permet de faire revenir les cartes a leur point central après l'animation du mélange.
+	 * </p> 
+	 * 
+	 * @return {@link ParallelTransition} de l'animation.
+	 */
 	private ParallelTransition comeBack() {
 		for (Card_View cV : allCards) {
 			Double X = 0.;
@@ -316,6 +399,16 @@ public class Window extends Application implements Observer {
 		return moveCardsToObjParal(HalfDurationShuffle);
 	}
 
+	/**
+	 * <i> <b> goAway </b> </i><br>
+	 * <br>
+	 * <code> public void goAway() </code> <br>
+	 * 
+	 * <p>
+	 * Permet de faire faire partir les cartes a une position aléatoire pour simuler un mélange.
+	 * </p> 
+	 * @return {@link ParallelTransition} de l'animation.
+	 */
 	private ParallelTransition goAway() {
 		for (Card_View cV : allCards) {
 			Double X = Math.random() * (WIDTH - 0);
