@@ -28,6 +28,9 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+/**
+ * 
+ */
 public class Window extends Application implements Observer {
 
 	final static Double WIDTH = 1280.;

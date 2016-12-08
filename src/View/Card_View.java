@@ -411,10 +411,12 @@ public class Card_View implements Observer {
 	 * <code> public void openDragAndDrop(Rectangle dropTarget, ArrayList new_Chien,ArrayList playerCards) </code> <br>
 	 * 
 	 * <p>
-	 * Permet d'accepter le zoom sur la carte en fonction du paramètre.
+	 * Permet d'implementer les actions de drag and drop sur la carte. 
 	 * </p>
 	 * 
-	 * @param isAllowed : Boolean Si vrai : accepte le zoom. Si faux : refuse le zoom.
+	 * @param dropTarget : Rectangle de la cible du Drag'n Drop.
+	 * @param new_chien : La liste des carte du nouveau chien.
+	 * @param playersCards : Liste des carte du joueur.
 	 */
 	public void openDragAndDrop(Rectangle dropTarget, ArrayList<Card_View> new_Chien,
 			ArrayList<Card_View> playerCards) {
