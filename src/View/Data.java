@@ -54,7 +54,6 @@ public class Data {
 			}
 			br.close();
 		} catch (Exception e) {
-			System.out.println(e.toString());
 			e.printStackTrace();
 		}
 	}
