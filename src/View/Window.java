@@ -48,7 +48,7 @@ public class Window extends Application implements Observer {
 	private Pair<Double, Double> chien_place;
 	private Pair<Double, Double> chien_player_place;
 	private Rectangle dropTarget;
-	Vector<Button> choices;
+	Vector<ButtonView> choices;
 	public static Data data = new Data();
 	static String imageMenu = "file:./ressources/img/background.jpg";
 	static String imageGame = "file:./ressources/img/background2.jpg";
@@ -62,11 +62,11 @@ public class Window extends Application implements Observer {
 	public Window() {
 		title = "Tarot NEDELEC NORMAND S3C";
 		allCards = new ArrayList<Card_View>();
-		player_place = new Pair<Double, Double>(275., 450.);
+		player_place = new Pair<Double, Double>(250., 525.);
 		player_place2 = new Pair<Double, Double>(-200., 300.);
 		player_place3 = new Pair<Double, Double>(600., -200.);
 		player_place4 = new Pair<Double, Double>(1400., 300.);
-		chien_place = new Pair<Double, Double>(735., 50.);
+		chien_place = new Pair<Double, Double>(735., 100.);
 		chien_player_place = new Pair<Double, Double>(1100., 500.);
 		background.setFitHeight(HEIGHT+10);
 		background.setFitWidth(WIDTH+10);
@@ -117,12 +117,8 @@ public class Window extends Application implements Observer {
 	}
 
 	private void addButtonToMenu() {
-		Button btn = new Button();
-		btn.setLayoutX(500);
-		btn.setLayoutY(350);
-		btn.setPrefSize(250, 100);
-		btn.setText("LET'S PLAY TAROT !");
-		btn.getStyleClass().add("buttonMenu");
+		ButtonView btn = new ButtonView(500.,350.,100.,300.,"Let's Play Tarot");
+		
 		btn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				StartGame(root, scene);
@@ -131,11 +127,7 @@ public class Window extends Application implements Observer {
 		});
 		root.getChildren().add(btn);
 
-		Button btnQuit = new Button();
-		btnQuit.setLayoutX(500);
-		btnQuit.setLayoutY(500);
-		btnQuit.setPrefSize(250, 50);
-		btnQuit.setText("QUIT");
+		ButtonView btnQuit = new ButtonView(500.,500.,50.,300.,"Quit");
 		btnQuit.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				event.consume();
@@ -193,7 +185,7 @@ public class Window extends Application implements Observer {
 				if (c.testPetitSec()) {
 					resetGame();
 				} else {
-					for (Button b : choices) {
+					for (ButtonView b : choices) {
 						b.setVisible(true);
 					}
 				}
@@ -224,16 +216,12 @@ public class Window extends Application implements Observer {
 	}
 
 	private void addChoicesButtons() {
-		choices = new Vector<Button>();
+		choices = new Vector<ButtonView>();
 		for (int i = 0; i < 5; i++) {
-			Button btn = new Button();
-			btn.setLayoutX(250 * i + 100);
-			btn.setLayoutY(10);
-			btn.setPrefSize(150, 25);
-			btn.setVisible(false);
+			ButtonView btn = null;
 			switch (i) {
 			case 0:
-				btn.setText("La prise");
+				btn = new ButtonView(250*i+100.,10.,25.,150.,"La prise");
 				btn.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent event) {
@@ -244,7 +232,7 @@ public class Window extends Application implements Observer {
 				});
 				break;
 			case 1:
-				btn.setText("La garde");
+				btn = new ButtonView(250*i+100.,10.,25.,150.,"La Garde");
 				btn.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {
 						event.consume();
@@ -254,7 +242,7 @@ public class Window extends Application implements Observer {
 				});
 				break;
 			case 2:
-				btn.setText("La garde sans le chien");
+				btn = new ButtonView(250*i+100.,10.,25.,150.,"La garde sans le chien");
 				btn.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {
 						event.consume();
@@ -266,7 +254,7 @@ public class Window extends Application implements Observer {
 				});
 				break;
 			case 3:
-				btn.setText("La garde contre le chien");
+				btn = new ButtonView(250*i+100.,10.,25.,150.,"La garde contre le chien");
 				btn.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {
 						event.consume();
@@ -278,7 +266,7 @@ public class Window extends Application implements Observer {
 				});
 				break;
 			case 4:
-				btn.setText("Passe");
+				btn = new ButtonView(250*i+100.,10.,25.,150.,"Passe");
 				btn.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {
 						disabledButton();
@@ -290,7 +278,8 @@ public class Window extends Application implements Observer {
 			}
 			choices.add(btn);
 		}
-		for (Button b : choices) {
+		for (ButtonView b : choices) {
+			b.setVisible(false);
 			root.getChildren().add(b);
 		}
 	}
@@ -542,10 +531,7 @@ public class Window extends Application implements Observer {
 		Text title = new Text(100., 100., "Constitute the shift.");
 		title.setFont(Font.loadFont("file:./ressources/font/Steampunk.otf", 50.));
 
-		Button btnCancel = new Button("Cancel");
-		btnCancel.autosize();
-		btnCancel.setLayoutX(1100.);
-		btnCancel.setLayoutY(600.);
+		ButtonView btnCancel = new ButtonView(1100.,600.,50.,100.,"Cancel");
 		btnCancel.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -558,10 +544,7 @@ public class Window extends Application implements Observer {
 			}
 		});
 
-		Button btnConfirm = new Button("Confirm");
-		btnConfirm.autosize();
-		btnConfirm.setLayoutX(900.);
-		btnConfirm.setLayoutY(600.);
+		ButtonView btnConfirm = new ButtonView(900.,600.,50.,100.,"Confirm");
 		btnConfirm.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -633,7 +616,7 @@ public class Window extends Application implements Observer {
 	}
 
 	private void disabledButton() {
-		for(Button b : choices)
+		for(ButtonView b : choices)
 		{
 			b.setVisible(false);
 		}
@@ -646,10 +629,7 @@ public class Window extends Application implements Observer {
 		end.setFont(Font.loadFont("file:./ressources/font/Steampunk.otf", 120.));
 		root.getChildren().add(end);
 
-		Button btn = new Button("Back to Menu");
-		btn.autosize();
-		btn.setLayoutX(575.);
-		btn.setLayoutY(10);
+		ButtonView btn = new ButtonView(575.,25.,50.,100.,"Back to Menu");
 		btn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {

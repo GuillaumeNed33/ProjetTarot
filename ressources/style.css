@@ -1,5 +1,11 @@
+@font-face {
+    font-family: "Steampunk";
+    src: url('font/Steampunk.otf');
+}
+
 .buttonMenu {
 	-fx-font-size: 36;
+	-fx-font-family :"Steampunk";
 }
 .buttonMenu:hover {
 	fx-background-color : black;
