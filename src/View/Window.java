@@ -292,7 +292,7 @@ public class Window extends Application implements Observer {
 	}
 
 	private void priseAndGuardAction() {
-		SequentialTransition look = lookCard(chienCards);
+		ParallelTransition look = lookCard(chienCards);
 		look.setOnFinished(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -400,8 +400,8 @@ public class Window extends Application implements Observer {
 		return master;
 	}
 
-	protected SequentialTransition lookCard(ArrayList<Card_View> cards) {
-		SequentialTransition master = new SequentialTransition();
+	protected ParallelTransition lookCard(ArrayList<Card_View> cards) {
+		ParallelTransition master = new ParallelTransition();
 		for (Card_View cV : cards) {
 			Transition flipCard = cV.flip();
 			master.getChildren().add(flipCard);

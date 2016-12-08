@@ -118,13 +118,13 @@ public class Card_View implements Observer {
 	public Transition flip() {
 		final RotateTransition rotateOutBack = new RotateTransition(Duration.millis(halfFlipDuration), card_back);
 		rotateOutBack.setInterpolator(Interpolator.LINEAR);
-		rotateOutBack.setAxis(Rotate.Y_AXIS);
+		rotateOutBack.setAxis(Rotate.X_AXIS);
 		rotateOutBack.setFromAngle(0);
 		rotateOutBack.setToAngle(-90);
 
 		final RotateTransition rotateInFront = new RotateTransition(Duration.millis(halfFlipDuration), card_front);
 		rotateInFront.setInterpolator(Interpolator.LINEAR);
-		rotateInFront.setAxis(Rotate.Y_AXIS);
+		rotateInFront.setAxis(Rotate.X_AXIS);
 		rotateInFront.setFromAngle(90);
 		rotateInFront.setToAngle(0);
 
@@ -146,7 +146,7 @@ public class Card_View implements Observer {
 
 		return new SequentialTransition(rotateOutBack, rotateInFront);
 	}
-	
+
 	public TranslateTransition createMoveAnimation(ImageView iV, long halfDurationMove) {
 		final TranslateTransition move = new TranslateTransition(Duration.millis(halfDurationMove), iV);
 		move.setToX(objX - iV.getX());
@@ -238,25 +238,30 @@ public class Card_View implements Observer {
 		}
 	}
 
-	public void openDragAndDrop(Rectangle dropTarget, ArrayList<Card_View> new_Chien, ArrayList<Card_View> playerCards) {
+	public void openDragAndDrop(Rectangle dropTarget, ArrayList<Card_View> new_Chien,
+			ArrayList<Card_View> playerCards) {
 		originX = card_front.getBoundsInParent().getMinX();
 		originY = card_front.getBoundsInParent().getMinY();
 		card_front.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent me) {
 				if (me.isPrimaryButtonDown()) {
-					Double shiftX = me.getSceneX() - originX;
-					Double shiftY = me.getSceneY() - originY;
-
-					card_front.setOnMouseDragged((new EventHandler<MouseEvent>() {
-						@Override
-						public void handle(MouseEvent me) {
-							objX = me.getSceneX()-shiftX;
-							objY = me.getSceneY()-shiftY;
-							moveAnimation(1).play();;
-							me.consume();
-						}
-					}));
+					if (!dropTarget.contains(me.getSceneX(), me.getSceneY())) {
+						Double shiftX = me.getSceneX() - originX;
+						Double shiftY = me.getSceneY() - originY;
+						card_front.setOnMouseDragged((new EventHandler<MouseEvent>() {
+							@Override
+							public void handle(MouseEvent me) {
+								objX = me.getSceneX() - shiftX;
+								objY = me.getSceneY() - shiftY;
+								moveAnimation(1).play();
+								;
+								me.consume();
+							}
+						}));
+					} else {
+						card_front.setOnMouseDragged(null);
+					}
 					me.consume();
 				}
 			}
@@ -266,18 +271,19 @@ public class Card_View implements Observer {
 			@Override
 			public void handle(MouseEvent event) {
 				Point2D mousePos = new Point2D(event.getSceneX(), event.getSceneY());
-				System.out.println("Dans le release : " + originX + " : " + originY);
-				if (dropTarget.contains(mousePos) && new_Chien.size() < 6) {
-					objX = dropTarget.getX() + 30 + ((new_Chien.size() % 3) * W_CARD);
-					objY = dropTarget.getY() + 30 + ((new_Chien.size() / 3) * H_CARD);
-					moveAnimation(350).play();
-					new_Chien.add(Card_View.this);
-					playerCards.remove(Card_View.this);
+				if (card_front.getOnMouseDragged() != null) {
+					if (dropTarget.contains(mousePos) && new_Chien.size() < 6) {
+						objX = dropTarget.getX() + 30 + ((new_Chien.size() % 3) * W_CARD);
+						objY = dropTarget.getY() + 30 + ((new_Chien.size() / 3) * H_CARD);
+						moveAnimation(350).play();
+						new_Chien.add(Card_View.this);
+						playerCards.remove(Card_View.this);
 
-				} else {
-					objX = originX;
-					objY = originY;
-					moveAnimation(100).play();
+					} else {
+						objX = originX;
+						objY = originY;
+						moveAnimation(100).play();
+					}
 				}
 				event.consume();
 			}
