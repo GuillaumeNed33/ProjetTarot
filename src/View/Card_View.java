@@ -42,8 +42,8 @@ public class Card_View implements Observer {
 	final static Double BIG_POS_Y = 200.;
 	private Double objX;
 	private Double objY;
-	Double originX;
-	Double originY;
+	private Double originX;
+	private Double originY;
 
 	//private boolean arrived;
 	private int id;
