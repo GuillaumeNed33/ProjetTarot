@@ -131,6 +131,22 @@ public class Card_View implements Observer {
 		return new SequentialTransition(rotateOutBack, rotateInFront);
 	}
 
+	public Transition flipToBack() {
+		final RotateTransition rotateOutBack = new RotateTransition(Duration.millis(halfFlipDuration), card_front);
+		rotateOutBack.setInterpolator(Interpolator.LINEAR);
+		rotateOutBack.setAxis(Rotate.Y_AXIS);
+		rotateOutBack.setFromAngle(0);
+		rotateOutBack.setToAngle(-90);
+
+		final RotateTransition rotateInFront = new RotateTransition(Duration.millis(halfFlipDuration), card_back);
+		rotateInFront.setInterpolator(Interpolator.LINEAR);
+		rotateInFront.setAxis(Rotate.Y_AXIS);
+		rotateInFront.setFromAngle(90);
+		rotateInFront.setToAngle(0);
+
+		return new SequentialTransition(rotateOutBack, rotateInFront);
+	}
+	
 	public TranslateTransition createMoveAnimation(ImageView iV, long halfDurationMove) {
 		final TranslateTransition move = new TranslateTransition(Duration.millis(halfDurationMove), iV);
 		move.setToX(objX - iV.getX());

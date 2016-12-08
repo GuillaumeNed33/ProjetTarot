@@ -4,16 +4,20 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Timer;
 import java.util.Vector;
 
 import Controler.Controller;
 import Model.Card;
 import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
 import javafx.animation.ParallelTransition;
 import javafx.animation.SequentialTransition;
+import javafx.animation.Timeline;
 import javafx.animation.Transition;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -28,6 +32,7 @@ import javafx.scene.shape.StrokeLineJoin;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import javafx.util.Pair;
 
 public class Window extends Application implements Observer {
@@ -201,6 +206,9 @@ public class Window extends Application implements Observer {
 			Thread.sleep(1500L);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
+		}
+		for(Card_View cV : playerCards) {
+			cV.flipToBack().play();
 		}
 		ParallelTransition goToInitialPos = comeBack();
 		goToInitialPos.setOnFinished(new EventHandler<ActionEvent>() {
@@ -576,20 +584,27 @@ public class Window extends Application implements Observer {
 	private void lockChien() {
 		Text info = new Text(770., 540., "Too few Cards in the Chien.");
 		info.setFont(Font.loadFont("file:./ressources/font/Steampunk.otf", 40.));
+		final Task task = new Task<Void>() {
+	        @Override
+	        protected Void call() throws Exception {
+	        	Thread.sleep(1000);
+	        	info.setVisible(false);
+	            return null;
+	        }
+	    };
 
 		if (chienCards.size()<6) {
+			info.setVisible(true);
+			new Thread(task).start();
 
-			root.getChildren().add(info);
 		} 
 		else
 		{
-			if(root.getChildren().contains(info))
-				root.getChildren().remove(info);
+			info.setVisible(false);
 			restoreView();
 		}
-
-
-
+		root.getChildren().add(info);
+		
 	}
 
 	private void restoreView() {
@@ -604,6 +619,9 @@ public class Window extends Application implements Observer {
 			Y = player_place.getValue();
 			c.setObjective(new Pair<Double, Double>(X, Y));
 			nb_carte++;
+		}
+		for(Card_View cV : chienCards) {
+			cV.flipToBack().play();
 		}
 
 		gardAgainstChien().play();
