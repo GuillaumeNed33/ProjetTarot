@@ -79,15 +79,15 @@ public class Window extends Application implements Observer {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		
+
 
 		root = new Group();
 		scene = new Scene(root, WIDTH, HEIGHT, null);
 		initSceneWindow();
-		
+
 		primaryStage.setTitle(title);
 		primaryStage.setScene(scene);
-	    primaryStage.setResizable(false);
+		primaryStage.setResizable(false);
 		primaryStage.show();
 	}
 	private void initSceneWindow() {
@@ -200,8 +200,8 @@ public class Window extends Application implements Observer {
 	}
 
 	private void resetGame() {
-		Text info = new Text(130, 415, "Le Petit est sec !");
-		info.setFont(Font.loadFont("file:./ressources/font/Steampunk.otf", 100.));
+		Text info = new Text(400, 475, "Le Petit est sec !");
+		info.setFont(Font.loadFont("file:./ressources/font/Steampunk.otf", 75.));
 		root.getChildren().add(info);
 
 		for(Card_View cV : playerCards) {
@@ -213,6 +213,7 @@ public class Window extends Application implements Observer {
 			@Override
 			public void handle(ActionEvent arg0) {
 				arg0.consume();
+				initSceneWindow();
 				StartGame(root, scene);
 			}
 		});
@@ -585,13 +586,13 @@ public class Window extends Application implements Observer {
 		Text info = new Text(770., 540., "Too few Cards in the Chien.");
 		info.setFont(Font.loadFont("file:./ressources/font/Steampunk.otf", 40.));
 		final Task task = new Task<Void>() {
-	        @Override
-	        protected Void call() throws Exception {
-	        	Thread.sleep(1000);
-	        	info.setVisible(false);
-	            return null;
-	        }
-	    };
+			@Override
+			protected Void call() throws Exception {
+				Thread.sleep(1000);
+				info.setVisible(false);
+				return null;
+			}
+		};
 
 		if (chienCards.size()<6) {
 			info.setVisible(true);
@@ -604,7 +605,7 @@ public class Window extends Application implements Observer {
 			restoreView();
 		}
 		root.getChildren().add(info);
-		
+
 	}
 
 	private void restoreView() {
@@ -635,13 +636,13 @@ public class Window extends Application implements Observer {
 		}
 		choices.clear();
 	}
-	
+
 	private void ending()
 	{
 		Text end = new Text(175., 300., "Let s start the Game !");
 		end.setFont(Font.loadFont("file:./ressources/font/Steampunk.otf", 120.));
 		root.getChildren().add(end);
-		
+
 		Button btn = new Button("Back to Menu");
 		btn.autosize();
 		btn.setLayoutX(575.);
@@ -651,7 +652,7 @@ public class Window extends Application implements Observer {
 			public void handle(ActionEvent event) {
 				for(Card_View c : allCards)
 					c.flipToBack().play();
-				
+
 				c.resetGame();
 				initSceneWindow();
 				event.consume();
