@@ -65,7 +65,7 @@ public class Window extends Application implements Observer {
 		player_place2 = new Pair<Double, Double>(-200., 300.);
 		player_place3 = new Pair<Double, Double>(600., -200.);
 		player_place4 = new Pair<Double, Double>(1400., 300.);
-		chien_place = new Pair<Double, Double>(735., 100.);
+		chien_place = new Pair<Double, Double>(675., 100.);
 		chien_player_place = new Pair<Double, Double>(1100., 500.);
 		background.setFitHeight(HEIGHT+10);
 		background.setFitWidth(WIDTH+10);
@@ -527,10 +527,10 @@ public class Window extends Application implements Observer {
 
 	private void initSceneToConstituteShift() {
 		chienCards.clear();
-		Text title = new Text(100., 100., "Constitute the shift.");
-		title.setFont(Font.loadFont("file:./ressources/font/Steampunk.otf", 50.));
+		Text title = new Text(150., 100., "Constitute the shift.");
+		title.setFont(Font.loadFont("file:./ressources/font/Steampunk.otf", 55.));
 
-		ButtonView btnCancel = new ButtonView(1100.,600.,50.,100.,"Cancel");
+		ButtonView btnCancel = new ButtonView(1050.,600.,50.,200.,"Cancel");
 		btnCancel.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -543,7 +543,7 @@ public class Window extends Application implements Observer {
 			}
 		});
 
-		ButtonView btnConfirm = new ButtonView(900.,600.,50.,100.,"Confirm");
+		ButtonView btnConfirm = new ButtonView(750.,600.,50.,200.,"Confirm");
 		btnConfirm.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
