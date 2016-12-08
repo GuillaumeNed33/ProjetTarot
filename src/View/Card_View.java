@@ -61,7 +61,6 @@ public class Card_View implements Observer {
 	 * 
 	 */
 	public Card_View() {
-		//arrived = false;
 		card_back.setImage(image_back);
 		card_shape.setFill(Color.TRANSPARENT);
 		card_front.setFitWidth(W_CARD);
@@ -477,12 +476,35 @@ public class Card_View implements Observer {
 		});
 	}
 
+	/**
+	 * <i> <b> cancelCardShift </b> </i><br>
+	 * <br>
+	 * <code> public void cancelCardShift() </code> <br>
+	 * 
+	 * <p>
+	 * Deplace la carte a sa position d'origine (dans le jeu du joueur)
+	 * </p> 
+	 */
 	public void cancelCardShift() {
 		objX = originX;
 		objY = originY;
 		moveAnimation(100).play();
 	}
 
+	/**
+	 * 
+	 * <i> <b> AuthorizedToChien </b> </i><br>
+	 * <br>
+	 * <code> public void AuthorizedToChien(ArrayList<Integer> NoAuthorize) </code> <br>
+	 * 
+	 * <p>
+	 * Retourne Si l'id de la carte est autorisé à être mis dans le chien (ce n'est pas un atout)
+	 * </p>
+	 * 
+	 * @param NoAuthorize : Liste des identifiants des atouts du jeu (sans les bous).
+	 * @return true si l'id n'est pas un atout, sinon false.
+	 * 
+	 */ 
 	public boolean AuthorizedToChien(ArrayList<Integer> NoAuthorize) {
 
 		return !NoAuthorize.contains(id);

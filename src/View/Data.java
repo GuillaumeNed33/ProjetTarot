@@ -60,7 +60,7 @@ public class Data {
 	/**
 	 * <i> <b> getImage </b> </i><br>
 	 * <br>
-	 * <code> public void getImage() </code> <br>
+	 * <code> public void getImage(int id) </code> <br>
 	 * 
 	 * <p>
 	 * Retourne le chemin d'accès de l'image d'identifiant id.

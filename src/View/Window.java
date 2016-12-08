@@ -98,6 +98,7 @@ public class Window extends Application implements Observer {
 	}
 
 	private void LoadMenu(Group root, Scene scene) {
+		root.getChildren().clear();
 		background.setImage(new Image(imageMenu));
 		root.getChildren().add(background);
 
@@ -635,5 +636,22 @@ public class Window extends Application implements Observer {
 		Text end = new Text(175., 300., "Let s start the Game !");
 		end.setFont(Font.loadFont("file:./ressources/font/Steampunk.otf", 120.));
 		root.getChildren().add(end);
+		
+		Button btn = new Button("Back to Menu");
+		btn.autosize();
+		btn.setLayoutX(575.);
+		btn.setLayoutY(10);
+		btn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				for(Card_View c : allCards)
+					c.flipToBack().play();
+				
+				c.resetGame();
+				event.consume();
+				LoadMenu(root, scene);
+			}
+		});
+		root.getChildren().add(btn);
 	}
 }
