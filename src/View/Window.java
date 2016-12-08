@@ -39,8 +39,8 @@ public class Window extends Application implements Observer {
 
 	final static Double WIDTH = 1280.;
 	final static Double HEIGHT = 720.;
-	private static final long HalfDurationMove = 100;
-	private static final long HalfDurationShuffle = 100;
+	private static final long HalfDurationMove = 350;
+	private static final long HalfDurationShuffle = 650;
 
 	private String title;
 	private static Controller c;
@@ -403,7 +403,7 @@ public class Window extends Application implements Observer {
 	protected ParallelTransition lookCard(ArrayList<Card_View> cards) {
 		ParallelTransition master = new ParallelTransition();
 		for (Card_View cV : cards) {
-			Transition flipCard = cV.flip();
+			Transition flipCard = cV.flipToFront();
 			master.getChildren().add(flipCard);
 		}
 		return master;

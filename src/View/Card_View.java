@@ -57,6 +57,9 @@ public class Card_View implements Observer {
 	static long halfFlipDuration = 100;
 	static long halfDistribDuration = 350;
 
+	/**
+	 * 
+	 */
 	public Card_View() {
 		arrived = false;
 		card_back.setImage(image_back);
@@ -87,18 +90,53 @@ public class Card_View implements Observer {
 		});
 	}
 
+	/**
+	 * <i> <b> setX </b> </i><br>
+	 * <br>
+	 * <code> public void setX(Double x) </code> <br>
+	 * 
+	 * <p>
+	 * Modifie la valeur de la position de la carte en X.
+	 * </p>
+	 * 
+	 * @param x
+	 *            : Valeur de la postition x a mettre.
+	 */
 	public void setX(Double x) {
 		card_back.setX(x);
 		card_front.setX(x);
 		card_shape.setX(x);
 	}
 
+	/**
+	 * <i> <b> setY </b> </i><br>
+	 * <br>
+	 * <code> public void setY(Double y) </code> <br>
+	 * 
+	 * <p>
+	 * Modifie la valeur de la position de la carte en Y.
+	 * </p>
+	 * 
+	 * @param y
+	 *            : Valeur de la postition y a mettre.
+	 */
 	public void setY(Double y) {
 		card_back.setY(y);
 		card_front.setY(y);
 		card_shape.setY(y);
 	}
 
+	/**
+	 * <i> <b> getNodes </b> </i><br>
+	 * <br>
+	 * <code> public Collection getNodes() </code> <br>
+	 * 
+	 * <p>
+	 * Retourne l'ensemble des Node de Card_View
+	 * </p>
+	 * 
+	 * @return Collection de Node.
+	 */
 	public Collection<Node> getNodes() {
 		ArrayList<Node> al = new ArrayList<>();
 		al.add(card_front);
@@ -107,15 +145,48 @@ public class Card_View implements Observer {
 		return al;
 	}
 
+	/**
+	 * <i> <b> getBackCard </b> </i><br>
+	 * <br>
+	 * <code> public Node getBackCard()  </code> <br>
+	 * 
+	 * <p>
+	 * Retourne la Node correspondant à la carte arrière.
+	 * </p>
+	 * 
+	 * @return Node de la carte arrière.
+	 */
 	public Node getBackCard() {
 		return card_back;
 	}
 
+	/**
+	 * <i> <b> getFrontCard </b> </i><br>
+	 * <br>
+	 * <code> public Node getFrontCard() </code> <br>
+	 * 
+	 * <p>
+	 * Retourne la Node correspondant à la carte avant.
+	 * </p>
+	 * 
+	 * @return Node de la carte avant.
+	 */
 	public Node getFrontCard() {
 		return card_front;
 	}
 
-	public Transition flip() {
+	/**
+	 * <i> <b> flipToFront </b> </i><br>
+	 * <br>
+	 * <code> public Transition flipToFront() </code> <br>
+	 * 
+	 * <p>
+	 * Retourne une transition permettant de retourner la carte. La transition passe de la carte avant à la carte arrière
+	 * </p>
+	 * 
+	 * @return La transition du retournement.
+	 */
+	public Transition flipToFront() {
 		final RotateTransition rotateOutBack = new RotateTransition(Duration.millis(halfFlipDuration), card_back);
 		rotateOutBack.setInterpolator(Interpolator.LINEAR);
 		rotateOutBack.setAxis(Rotate.X_AXIS);
@@ -131,6 +202,17 @@ public class Card_View implements Observer {
 		return new SequentialTransition(rotateOutBack, rotateInFront);
 	}
 
+	/**
+	 * <i> <b> flipToBack </b> </i><br>
+	 * <br>
+	 * <code> public Transition flipToBack() </code> <br>
+	 * 
+	 * <p>
+	 * Retourne une transition permettant de retourner la carte. La transition passe de la carte arrière à la carte avant
+	 * </p>
+	 * 
+	 * @return La transition du retournement.
+	 */
 	public Transition flipToBack() {
 		final RotateTransition rotateOutBack = new RotateTransition(Duration.millis(halfFlipDuration), card_front);
 		rotateOutBack.setInterpolator(Interpolator.LINEAR);
@@ -147,6 +229,18 @@ public class Card_View implements Observer {
 		return new SequentialTransition(rotateOutBack, rotateInFront);
 	}
 
+	/**
+	 * <i> <b> createMoveAnimation </b> </i><br>
+	 * <br>
+	 * <code> public TranslateTransition createMoveAnimation(ImageView iV, long halfDurationMove) </code> <br>
+	 * 
+	 * <p>
+	 * Permet de créer une Transition de déplacement pour déplacer une image vers son objectif.
+	 * </p>
+	 * @param iV : ImageView à déplacer
+	 * @param halfDurationMove : Durée de l'animation
+	 * @return La transition du déplacement vers l'objectif.
+	 */
 	public TranslateTransition createMoveAnimation(ImageView iV, long halfDurationMove) {
 		final TranslateTransition move = new TranslateTransition(Duration.millis(halfDurationMove), iV);
 		move.setToX(objX - iV.getX());
@@ -154,14 +248,22 @@ public class Card_View implements Observer {
 		return move;
 	}
 
-	public Transition moveAnimation(long halfDurationMove) {
+	/**
+	 * <i> <b> moveAnimation </b> </i><br>
+	 * <br>
+	 * <code> public ParallelTransition moveAnimation(long halfDurationMove) </code> <br>
+	 * 
+	 * <p>
+	 * Permet de créer une Transition parallèle composé du mouvement de tout les éléments de la carte vers l'objectif.
+	 * </p>
+	 * 
+	 * @param halfDurationMove : Durée de l'animation
+	 * @return La ParallelTransition de tout les éléments de la Card_View.
+	 */
+	public ParallelTransition moveAnimation(long halfDurationMove) {
 
 		return new ParallelTransition(createMoveAnimation(card_back, halfDurationMove),
 				createMoveAnimation(card_front, halfDurationMove));
-	}
-
-	public boolean isArrived() {
-		return arrived;
 	}
 
 	public int getId() {
@@ -255,7 +357,6 @@ public class Card_View implements Observer {
 								objX = me.getSceneX() - shiftX;
 								objY = me.getSceneY() - shiftY;
 								moveAnimation(1).play();
-								;
 								me.consume();
 							}
 						}));
