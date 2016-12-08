@@ -5,9 +5,6 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
-import java.util.Vector;
-
-import Model.CardType;
 
 public class Data {
 	final String FILE = "./ressources/link.csv";
