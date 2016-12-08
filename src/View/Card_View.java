@@ -77,7 +77,7 @@ public class Card_View implements Observer {
 			@Override
 			public void handle(MouseEvent event) {
 				event.consume();
-				transformeToBig(card_front);
+				transformeToBig();
 			}
 		});
 		card_shape.setOnMouseExited(new EventHandler<MouseEvent>() {
@@ -266,6 +266,17 @@ public class Card_View implements Observer {
 				createMoveAnimation(card_front, halfDurationMove));
 	}
 
+	/**
+	 * <i> <b> getId </b> </i><br>
+	 * <br>
+	 * <code> public int getId() </code> <br>
+	 * 
+	 * <p>
+	 * Permet de récupérer l'id de la carte correspondant à sa valeur.
+	 * </p>
+	 * 
+	 * @return l'ID de Card_View.
+	 */
 	public int getId() {
 		return id;
 	}
@@ -283,30 +294,57 @@ public class Card_View implements Observer {
 		}
 	}
 
+
+	/**
+	 * <i> <b> getIdOwner </b> </i><br>
+	 * <br>
+	 * <code> public int getIdOwner() </code> <br>
+	 * 
+	 * <p>
+	 * Permet de récupérer l'identifiant correspondant au joueur (ou Chien) possédant la carte.
+	 * </p>
+	 * 
+	 * @return l'ID du possésseur de la Card_View.
+	 * 
+	 */
 	public int getIdOwner() {
 
 		return idOwner;
 	}
 
-	public Double getX() {
-		return card_back.getX();
-	}
-
-	public Double getY() {
-		return card_back.getY();
-	}
-
-	private void transformeToBig(ImageView node) {
-		final ScaleTransition zoomFront = new ScaleTransition(Duration.millis(halfFlipDuration), node);
+	/**
+	 * <i> <b> transformeToBig </b> </i><br>
+	 * <br>
+	 * <code> private void transformeToBig() </code> <br>
+	 * 
+	 * <p>
+	 * Permet de faire l'animation du zoom sur la carte afin d'avoir une meilleur vision de la carte. <br>
+	 * Cette animation la déplace également vers une position prédéfini.
+	 * </p>
+	 * 
+	 */
+	private void transformeToBig() {
+		final ScaleTransition zoomFront = new ScaleTransition(Duration.millis(halfFlipDuration), card_front);
 		zoomFront.setToX(2.);
 		zoomFront.setToY(2.);
-		final TranslateTransition moveFront = new TranslateTransition(Duration.millis(halfFlipDuration), node);
-		moveFront.setToX(BIG_POS_X - node.getX());
-		moveFront.setToY(BIG_POS_Y - node.getY());
+		final TranslateTransition moveFront = new TranslateTransition(Duration.millis(halfFlipDuration), card_front);
+		moveFront.setToX(BIG_POS_X - card_front.getX());
+		moveFront.setToY(BIG_POS_Y - card_front.getY());
 		final ParallelTransition master = new ParallelTransition(moveFront, zoomFront);
 		master.play();
 	}
 
+	/**
+	 * <i> <b> restoreByDefault </b> </i><br>
+	 * <br>
+	 * <code> private void restoreByDefault() </code> <br>
+	 * 
+	 * <p>
+	 * Permet de faire revenir la carte a ses paramètre par défaut.<br>
+	 * Utilisé après l'utilisation de <code> tranformToBig() <code>
+	 * </p>
+	 * 
+	 */
 	private void restoreByDefault() {
 		final ScaleTransition zoomFront = new ScaleTransition(Duration.millis(halfFlipDuration), card_front);
 		zoomFront.setToX(1.);
@@ -318,19 +356,55 @@ public class Card_View implements Observer {
 		master.play();
 	}
 
-	public void setObjective(Pair<Double, Double> pair) {
-		objX = pair.getKey();
-		objY = pair.getValue();
+	/**
+	 * <i> <b> setObjective </b> </i><br>
+	 * <br>
+	 * <code> public void setObjective(Pair objective) </code> <br>
+	 * 
+	 * <p>
+	 * Permet de mettre a jour la valeur de l'objectif de la carte.<br>
+	 *  Cette objectif est utilisé pour faire le déplacement de la carte.
+	 * </p>
+	 * 
+	 * @param objectve : Pair de Double correspondant aux coordonnée de l'objectif (X,Y).
+	 */
+	public void setObjective(Pair<Double, Double> objective) {
+		objX = objective.getKey();
+		objY = objective.getValue();
 		card_shape.setX(objX);
 		card_shape.setY(objY);
 	}
-
+	
+	/**
+	 * <i> <b> setToFrontCard </b> </i><br>
+	 * <br>
+	 * <code> public void setToFrontCard() </code> <br>
+	 * 
+	 * <p>
+	 * Modifie l'affichage des différents objets de la classe sur l'axe Z. <br>
+	 * Carte arrière : Z = 0 <br>
+	 * Carte avant : Z = 1 <br>
+	 * Rectangle de la carte : Z = 2 <br>
+	 * </p>
+	 * 
+	 */
 	public void setToFrontCard() {
 		card_back.toBack();
 		card_front.toFront();
 		card_shape.toFront();
 	}
 
+	/**
+	 * <i> <b> setToFrontCard </b> </i><br>
+	 * <br>
+	 * <code> public void setToFrontCard() </code> <br>
+	 * 
+	 * <p>
+	 * Permet d'accepter le zoom sur la carte en fonction du paramètre.
+	 * </p>
+	 * 
+	 * @param isAllowed : Boolean Si vrai : accepte le zoom. Si faux : refuse le zoom.
+	 */
 	public void allowZoom(boolean isAllowed) {
 		card_shape.setVisible(isAllowed);
 		if (isAllowed) {
@@ -340,6 +414,17 @@ public class Card_View implements Observer {
 		}
 	}
 
+	/**
+	 * <i> <b> openDragAndDrop </b> </i><br>
+	 * <br>
+	 * <code> public void openDragAndDrop(Rectangle dropTarget, ArrayList new_Chien,ArrayList playerCards) </code> <br>
+	 * 
+	 * <p>
+	 * Permet d'accepter le zoom sur la carte en fonction du paramètre.
+	 * </p>
+	 * 
+	 * @param isAllowed : Boolean Si vrai : accepte le zoom. Si faux : refuse le zoom.
+	 */
 	public void openDragAndDrop(Rectangle dropTarget, ArrayList<Card_View> new_Chien,
 			ArrayList<Card_View> playerCards) {
 		originX = card_front.getBoundsInParent().getMinX();
