@@ -45,12 +45,12 @@ public class Card_View implements Observer {
 	Double originX;
 	Double originY;
 
-	private boolean arrived;
+	//private boolean arrived;
 	private int id;
 	private int idOwner;
 
 	private Image image_front;
-	private static Image image_back = new Image("file:./ressources/cards/cachee.jpg");
+	private static Image image_back = new Image("file:./ressources/img/Cartes/back.jpg");
 	private ImageView card_back = new ImageView();
 	private ImageView card_front = new ImageView();
 	private Rectangle card_shape = new Rectangle(START_X, START_Y, W_CARD, H_CARD);
@@ -61,7 +61,7 @@ public class Card_View implements Observer {
 	 * 
 	 */
 	public Card_View() {
-		arrived = false;
+		//arrived = false;
 		card_back.setImage(image_back);
 		card_shape.setFill(Color.TRANSPARENT);
 		card_front.setFitWidth(W_CARD);

@@ -4,16 +4,11 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Timer;
 import java.util.Vector;
-
 import Controler.Controller;
 import Model.Card;
-import javafx.animation.AnimationTimer;
-import javafx.animation.KeyFrame;
 import javafx.animation.ParallelTransition;
 import javafx.animation.SequentialTransition;
-import javafx.animation.Timeline;
 import javafx.animation.Transition;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -32,15 +27,14 @@ import javafx.scene.shape.StrokeLineJoin;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import javafx.util.Pair;
 
 public class Window extends Application implements Observer {
 
 	final static Double WIDTH = 1280.;
 	final static Double HEIGHT = 720.;
-	private static final long HalfDurationMove = 350;
-	private static final long HalfDurationShuffle = 650;
+	private static final long HalfDurationMove = 400;
+	private static final long HalfDurationShuffle = 1000;
 
 	private String title;
 	private static Controller c;
@@ -202,14 +196,11 @@ public class Window extends Application implements Observer {
 		Text info = new Text(130, 415, "Le Petit est sec !");
 		info.setFont(Font.loadFont("file:./ressources/font/Steampunk.otf", 100.));
 		root.getChildren().add(info);
-		try {
-			Thread.sleep(1500L);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+
 		for(Card_View cV : playerCards) {
 			cV.flipToBack().play();
 		}
+		c.resetGame();
 		ParallelTransition goToInitialPos = comeBack();
 		goToInitialPos.setOnFinished(new EventHandler<ActionEvent>() {
 			@Override
@@ -218,7 +209,6 @@ public class Window extends Application implements Observer {
 				StartGame(root, scene);
 			}
 		});
-		c.resetGame();
 		goToInitialPos.play();
 	}
 
@@ -259,6 +249,7 @@ public class Window extends Application implements Observer {
 						event.consume();
 						disabledButton();
 						gardAgainstChien().play();
+						ending();
 					}
 
 				});
@@ -270,6 +261,7 @@ public class Window extends Application implements Observer {
 						event.consume();
 						disabledButton();
 						goToEnemyAnim().play();
+						ending();
 					}
 
 				});
@@ -280,6 +272,7 @@ public class Window extends Application implements Observer {
 					public void handle(ActionEvent event) {
 						disabledButton();
 						lookCard(chienCards).play();
+						ending();
 					}
 				});
 				break;
@@ -292,7 +285,7 @@ public class Window extends Application implements Observer {
 	}
 
 	private void priseAndGuardAction() {
-		ParallelTransition look = lookCard(chienCards);
+		SequentialTransition look = lookCard(chienCards);
 		look.setOnFinished(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -400,8 +393,8 @@ public class Window extends Application implements Observer {
 		return master;
 	}
 
-	protected ParallelTransition lookCard(ArrayList<Card_View> cards) {
-		ParallelTransition master = new ParallelTransition();
+	protected SequentialTransition lookCard(ArrayList<Card_View> cards) {
+		SequentialTransition master = new SequentialTransition();
 		for (Card_View cV : cards) {
 			Transition flipCard = cV.flipToFront();
 			master.getChildren().add(flipCard);
@@ -446,7 +439,7 @@ public class Window extends Application implements Observer {
 
 	private ParallelTransition goToEnemyAnim() {
 		for (Card_View cV : chienCards) {
-			cV.setObjective(player_place3);
+			cV.setObjective(new Pair<Double, Double>(1100., 40.));
 		}
 		return moveCardsToObjParal(HalfDurationMove);
 	}
@@ -609,8 +602,6 @@ public class Window extends Application implements Observer {
 
 	private void restoreView() {
 		int nb_carte = 0;
-		System.out.println(playerCards.size());
-		System.out.println(chienCards.size());
 		for(Card_View c : playerCards)		
 		{
 			Double X = 0.;
@@ -627,11 +618,17 @@ public class Window extends Application implements Observer {
 		gardAgainstChien().play();
 		moveCardsToObjSeq(HalfDurationMove).play();
 		dropTarget.setVisible(false);
+		ending();
 	}
 
 	private void disabledButton() {
-		for (Button b : choices) {
-			b.setVisible(false);
-		}		
+		choices.clear();
+	}
+	
+	private void ending()
+	{
+		Text end = new Text(175., 300., "Let s start the Game !");
+		end.setFont(Font.loadFont("file:./ressources/font/Steampunk.otf", 120.));
+		root.getChildren().add(end);
 	}
 }
