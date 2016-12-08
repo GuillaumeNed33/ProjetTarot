@@ -470,6 +470,7 @@ public class Card_View implements Observer {
 						objY = originY;
 						moveAnimation(100).play();
 					}
+					card_front.setOnMouseDragged(null);
 				}
 				event.consume();
 			}
