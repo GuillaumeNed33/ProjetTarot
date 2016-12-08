@@ -2,16 +2,18 @@ package View;
 
 import javafx.scene.control.Button;
 import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 
 public class ButtonView extends Button {
 
 	final static String FONT_BUTTON_TEXT = "file:./ressources/font/Steampunk.otf";
-	ButtonView(Double x, Double y, Double h, Double w, String text) {
+	ButtonView(Double x, Double y, Double h, Double w, String text, Double size) {
 		this.setLayoutX(x);
 		this.setLayoutY(y);
 		this.setPrefSize(w, h);
 		this.setText(text);
-		this.setFont(Font.loadFont(FONT_BUTTON_TEXT,30.));
+		this.setTextAlignment(TextAlignment.CENTER);
+		this.setFont(Font.loadFont(FONT_BUTTON_TEXT,size));
 	}
 	
 }

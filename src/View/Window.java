@@ -119,7 +119,7 @@ public class Window extends Application implements Observer {
 	}
 
 	private void addButtonToMenu() {
-		ButtonView btn = new ButtonView(500.,350.,100.,300.,"Let's Play Tarot");
+		ButtonView btn = new ButtonView(500.,350.,100.,300.,"Let s Play Tarot",30.);
 		
 		btn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
@@ -129,7 +129,7 @@ public class Window extends Application implements Observer {
 		});
 		root.getChildren().add(btn);
 
-		ButtonView btnQuit = new ButtonView(500.,500.,50.,300.,"Quit");
+		ButtonView btnQuit = new ButtonView(500.,500.,50.,300.,"Quit",30.);
 		btnQuit.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				event.consume();
@@ -223,7 +223,7 @@ public class Window extends Application implements Observer {
 			ButtonView btn = null;
 			switch (i) {
 			case 0:
-				btn = new ButtonView(250*i+100.,10.,25.,150.,"La prise");
+				btn = new ButtonView(300*i+100.,15.,30.,150.,"La prise",30.);
 				btn.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent event) {
@@ -234,7 +234,7 @@ public class Window extends Application implements Observer {
 				});
 				break;
 			case 1:
-				btn = new ButtonView(250*i+100.,10.,25.,150.,"La Garde");
+				btn = new ButtonView(250*i+100.,15.,40.,150.,"La Garde",30.);
 				btn.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {
 						event.consume();
@@ -244,7 +244,7 @@ public class Window extends Application implements Observer {
 				});
 				break;
 			case 2:
-				btn = new ButtonView(250*i+100.,10.,25.,150.,"La garde sans le chien");
+				btn = new ButtonView(250*i+100.,10.,60.,150.,"La garde\nsans le chien",20.);
 				btn.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {
 						event.consume();
@@ -256,7 +256,7 @@ public class Window extends Application implements Observer {
 				});
 				break;
 			case 3:
-				btn = new ButtonView(250*i+100.,10.,25.,150.,"La garde contre le chien");
+				btn = new ButtonView(250*i+100.,10.,60.,150.,"La garde \ncontre le chien",20.);
 				btn.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {
 						event.consume();
@@ -268,7 +268,7 @@ public class Window extends Application implements Observer {
 				});
 				break;
 			case 4:
-				btn = new ButtonView(250*i+100.,10.,25.,150.,"Passe");
+				btn = new ButtonView(250*i+100.,15.,35.,150.,"Passe",30.);
 				btn.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {
 						disabledButton();
@@ -533,7 +533,7 @@ public class Window extends Application implements Observer {
 		Text title = new Text(150., 100., "Constitute the shift.");
 		title.setFont(Font.loadFont("file:./ressources/font/Steampunk.otf", 55.));
 
-		ButtonView btnCancel = new ButtonView(1050.,600.,50.,200.,"Cancel");
+		ButtonView btnCancel = new ButtonView(1050.,600.,50.,200.,"Cancel",30.);
 		btnCancel.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -546,7 +546,7 @@ public class Window extends Application implements Observer {
 			}
 		});
 
-		ButtonView btnConfirm = new ButtonView(750.,600.,50.,200.,"Confirm");
+		ButtonView btnConfirm = new ButtonView(750.,600.,50.,200.,"Confirm",30.);
 		btnConfirm.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -631,7 +631,7 @@ public class Window extends Application implements Observer {
 		end.setFont(Font.loadFont("file:./ressources/font/Steampunk.otf", 120.));
 		root.getChildren().add(end);
 
-		ButtonView btn = new ButtonView(575.,25.,50.,100.,"Back to Menu");
+		ButtonView btn = new ButtonView(500.,15.,50.,300.,"Back to Menu",30.);
 		btn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
