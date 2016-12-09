@@ -13,7 +13,9 @@ import javafx.animation.Transition;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.scene.Cursor;
 import javafx.scene.Group;
+import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -52,6 +54,7 @@ public class Window extends Application implements Observer {
 	public static Data data = new Data();
 	private final static String IMAGE_MENU = "file:./ressources/img/background.jpg";
 	private final static String IMAGE_GAME = "file:./ressources/img/background2.jpg";
+	private final static String IMAGE_CURSOR = "file:./ressources/img/Cursor_Steampunk.png";
 
 	private Group root;
 	private Scene scene;
@@ -82,7 +85,7 @@ public class Window extends Application implements Observer {
 
 		root = new Group();
 		scene = new Scene(root, WIDTH, HEIGHT, null);
-		scene.getStylesheets().add("file:./ressources/style.css");
+		scene.setCursor(new ImageCursor(new Image(IMAGE_CURSOR)));
 		initSceneWindow();
 
 		primaryStage.setTitle(title);
