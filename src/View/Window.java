@@ -53,7 +53,7 @@ public class Window extends Application implements Observer {
 	private Vector<ButtonView> choices;
 	public static Data data = new Data();
 	private final static String IMAGE_MENU = "file:./ressources/img/background.jpg";
-	private final static String IMAGE_GAME = "file:./ressources/img/background2.jpg";
+	private final static String IMAGE_GAME = "file:./ressources/img/background_game.jpg";
 	private final static String IMAGE_CURSOR = "file:./ressources/img/Cursor_Steampunk.png";
 
 	private Group root;
@@ -73,7 +73,7 @@ public class Window extends Application implements Observer {
 		background.setFitHeight(HEIGHT + 10);
 		background.setFitWidth(WIDTH + 10);
 
-		NoAuthorize = new ArrayList<Integer>();// Tableau des Id non autorisés à
+		NoAuthorize = new ArrayList<Integer>();// Tableau des Id non autorisï¿½s ï¿½
 		// mettre dans le chien
 		for (int i = 30; i <= 48; i++) // Id des Atouts sans les bous
 			NoAuthorize.add(i);
@@ -99,7 +99,7 @@ public class Window extends Application implements Observer {
 	 * <code> public void initSceneWindow() </code> <br>
 	 * 
 	 * <p>
-	 * Permet d'initialiser la première scène en créant les carte de la vue et
+	 * Permet d'initialiser la premiï¿½re scï¿½ne en crï¿½ant les carte de la vue et
 	 * en les asscociant aux model.
 	 * </p>
 	 */
@@ -121,7 +121,7 @@ public class Window extends Application implements Observer {
 	 * <code> public void LoadMenu() </code> <br>
 	 * 
 	 * <p>
-	 * Permet créer le menu du projet.
+	 * Permet crï¿½er le menu du projet.
 	 * </p>
 	 */
 	private void LoadMenu() {
@@ -147,7 +147,7 @@ public class Window extends Application implements Observer {
 	 * </p>
 	 */
 	private void addButtonToMenu() {
-		ButtonView btn = new ButtonView(500., 350., 100., 300., "Let s Play Tarot", 30.);
+		ButtonView btn = new ButtonView(500., 350., 100., 300., "Play Game", 30.);
 
 		btn.setOnAction(event -> {
 			StartGame();
@@ -167,7 +167,7 @@ public class Window extends Application implements Observer {
 	 * <code> public void StartGame() </code> <br>
 	 * 
 	 * <p>
-	 * Permet de démarrer le jeu et de s'occuper du traitement de toute les
+	 * Permet de dï¿½marrer le jeu et de s'occuper du traitement de toute les
 	 * animation.
 	 * </p>
 	 */
@@ -239,6 +239,7 @@ public class Window extends Application implements Observer {
 	 */
 	private void resetGame() {
 		Text info = new Text(400, 475, "Le Petit est sec !");
+		info.setFill(Color.WHITE);
 		info.setFont(Font.loadFont("file:./ressources/font/Steampunk.otf", 75.));
 		root.getChildren().add(info);
 
@@ -324,8 +325,8 @@ public class Window extends Application implements Observer {
 	 * <code> public void priseAndGuardAction() </code> <br>
 	 * 
 	 * <p>
-	 * Permet de gérer le changement d'écran lors de la prise et de la garde
-	 * afin de pouvoir constituer l'écart.
+	 * Permet de gï¿½rer le changement d'ï¿½cran lors de la prise et de la garde
+	 * afin de pouvoir constituer l'ï¿½cart.
 	 * </p>
 	 */
 	private void priseAndGuardAction() {
@@ -347,8 +348,8 @@ public class Window extends Application implements Observer {
 	 * <code> public void comeBack() </code> <br>
 	 * 
 	 * <p>
-	 * Permet de faire revenir les cartes a leur point central après l'animation
-	 * du mélange.
+	 * Permet de faire revenir les cartes a leur point central aprï¿½s l'animation
+	 * du mï¿½lange.
 	 * </p>
 	 * 
 	 * @return {@link ParallelTransition} de l'animation.
@@ -369,8 +370,8 @@ public class Window extends Application implements Observer {
 	 * <code> public void goAway() </code> <br>
 	 * 
 	 * <p>
-	 * Permet de faire faire partir les cartes a une position aléatoire pour
-	 * simuler un mélange.
+	 * Permet de faire faire partir les cartes a une position alï¿½atoire pour
+	 * simuler un mï¿½lange.
 	 * </p>
 	 * 
 	 * @return {@link ParallelTransition} de l'animation.
@@ -390,7 +391,7 @@ public class Window extends Application implements Observer {
 	 * <code> public SequentialTransition animeDistrib() </code> <br>
 	 * 
 	 * <p>
-	 * Permet de récupéerer l'animation séquentiel de la distribution qui envoie les carte a chaque joueur 3 par 3. 
+	 * Permet de rï¿½cupï¿½erer l'animation sï¿½quentiel de la distribution qui envoie les carte a chaque joueur 3 par 3. 
 	 * </p>
 	 * 
 	 * @return {@link SequentialTransition} de l'animation.
@@ -444,10 +445,10 @@ public class Window extends Application implements Observer {
 	 * <code> public void moveCardsToObjSeq()long halfDuration </code> <br>
 	 * 
 	 * <p>
-	 * Permet de récupérer l'animation séquentielle de mouvement des cartes vers un objectif.
+	 * Permet de rï¿½cupï¿½rer l'animation sï¿½quentielle de mouvement des cartes vers un objectif.
 	 * </p>
 	 * 
-	 * @param halfDuration : Correspond à la durée d'un mouvement de carte.
+	 * @param halfDuration : Correspond ï¿½ la durï¿½e d'un mouvement de carte.
 	 * @return {@link SequentialTransition} de l'animation.
 	 */
 	public SequentialTransition moveCardsToObjSeq(long halfDuration) {
@@ -475,10 +476,10 @@ public class Window extends Application implements Observer {
 	 * <code> public void moveCardsToObjParal(long halfDuration) </code> <br>
 	 * 
 	 * <p>
-	 * Permet de récupérer l'animation parallele du mouvement des cartes vers un objectif.
+	 * Permet de rï¿½cupï¿½rer l'animation parallele du mouvement des cartes vers un objectif.
 	 * </p>
 	 * 
-	 * @param halfDuration : Correspond à la durée de l'animation.
+	 * @param halfDuration : Correspond ï¿½ la durï¿½e de l'animation.
 	 * @return {@link ParallelTransition} de l'animation.
 	 */
 	public ParallelTransition moveCardsToObjParal(long halfDuration) {
@@ -495,7 +496,7 @@ public class Window extends Application implements Observer {
 	 * <code> public void lookCard(ArrayList cards) </code> <br>
 	 * 
 	 * <p>
-	 * Permet de récupérer la transition séquentielle du retournement une liste de carte afin d'afficher la carte de devant.
+	 * Permet de rï¿½cupï¿½rer la transition sÃ©quentielle du retournement une liste de carte afin d'afficher la carte de devant.
 	 * </p>
 	 * 
 	 * @param cards : Liste des cartes a retourner.
@@ -601,13 +602,13 @@ public class Window extends Application implements Observer {
 	public void constituteShift() {
 		root.getChildren().clear();
 
-		dropTarget = new Rectangle(850, 150, 300, 300);
+		dropTarget = new Rectangle(850, 200, 300, 300);
 		dropTarget.getStrokeDashArray().add(10.);
 		dropTarget.setStrokeLineJoin(StrokeLineJoin.ROUND);
 		dropTarget.setStrokeLineCap(StrokeLineCap.ROUND);
 		dropTarget.setStrokeWidth(5.);
 		dropTarget.setFill(Color.TRANSPARENT);
-		dropTarget.setStroke(Color.BLACK);
+		dropTarget.setStroke(Color.WHITE);
 
 		initSceneToConstituteShift();
 		ParallelTransition move = setPosCardsForShift();
@@ -630,9 +631,10 @@ public class Window extends Application implements Observer {
 	private void initSceneToConstituteShift() {
 		chienCards.clear();
 		Text title = new Text(150., 100., "Constitute the shift.");
+		title.setFill(Color.WHITE);
 		title.setFont(Font.loadFont("file:./ressources/font/Steampunk.otf", 55.));
 
-		ButtonView btnCancel = new ButtonView(1050., 600., 50., 200., "Cancel", 30.);
+		ButtonView btnCancel = new ButtonView(1025., 540., 50., 150., "Cancel", 30.);
 		btnCancel.setOnAction(event -> {
 			if (chienCards.size() > 0) {
 				chienCards.get(chienCards.size() - 1).cancelCardShift();
@@ -641,7 +643,7 @@ public class Window extends Application implements Observer {
 			}
 		});
 
-		ButtonView btnConfirm = new ButtonView(750., 600., 50., 200., "Confirm", 30.);
+		ButtonView btnConfirm = new ButtonView(825., 540., 50., 150., "Confirm", 30.);
 		btnConfirm.setOnAction(event -> {
 			lockChien();
 			if (chienCards.size() == 6) {
@@ -662,8 +664,10 @@ public class Window extends Application implements Observer {
 	}
 
 	private void lockChien() {
-		Text info = new Text(770., 540., "Too few Cards in the Chien.");
+		Text info = new Text(770., 150., "Too few Cards in the Chien.");
 		info.setFont(Font.loadFont("file:./ressources/font/Steampunk.otf", 40.));
+		info.setFill(Color.WHITE);
+
 		final Task task = new Task<Void>() {
 			@Override
 			protected Void call() throws Exception {
@@ -714,7 +718,8 @@ public class Window extends Application implements Observer {
 	}
 
 	private void ending() {
-		Text end = new Text(175., 300., "Let s start the Game !");
+		Text end = new Text(230., 300., "The game begin !");
+		end.setFill(Color.WHITE);
 		end.setFont(Font.loadFont("file:./ressources/font/Steampunk.otf", 120.));
 		root.getChildren().add(end);
 

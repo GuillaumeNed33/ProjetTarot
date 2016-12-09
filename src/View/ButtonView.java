@@ -7,7 +7,7 @@ import javafx.scene.text.TextAlignment;
 /**
  *  <i> <b> ButtonView </b> </i><br>
  *  
- * Classe permettant la construction d'un bouton. Hérite de la classe {@link Button} de JavaFX.
+ * Classe permettant la construction d'un bouton. Hï¿½rite de la classe {@link Button} de JavaFX.
  */
 public class ButtonView extends Button {
 
@@ -18,14 +18,6 @@ public class ButtonView extends Button {
 		this.setPrefSize(w, h);
 		this.setText(text);
 		this.setTextAlignment(TextAlignment.CENTER);
-		this.setFont(Font.loadFont(FONT_BUTTON_TEXT,size));
-		this.setOnMouseEntered(event -> {
-			
-		});
-		this.setOnMouseExited(event -> {
-			
-		});
-		
+		this.setFont(Font.loadFont(FONT_BUTTON_TEXT,size));		
 	}
-	
 }
