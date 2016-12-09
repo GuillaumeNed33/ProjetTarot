@@ -33,10 +33,10 @@ import javafx.util.Pair;
  */
 public class Window extends Application implements Observer {
 
-	final static Double WIDTH = 1280.;
-	final static Double HEIGHT = 720.;
-	private static final long HalfDurationMove = 400;
-	private static final long HalfDurationShuffle = 1000;
+	private final static Double WIDTH = 1280.;
+	private final static Double HEIGHT = 720.;
+	private static final long HALF_DURATION_MOVE = 400;
+	private static final long HALF_DURATION_SHUFFLE = 1000;
  
 	private String title;
 	private static Controller c;
@@ -50,16 +50,16 @@ public class Window extends Application implements Observer {
 	private Pair<Double, Double> chien_place;
 	private Pair<Double, Double> chien_player_place;
 	private Rectangle dropTarget;
-	Vector<ButtonView> choices;
+	private Vector<ButtonView> choices;
 	public static Data data = new Data();
-	static String imageMenu = "file:./ressources/img/background.jpg";
-	static String imageGame = "file:./ressources/img/background2.jpg";
+	private final static String IMAGE_MENU = "file:./ressources/img/background.jpg";
+	private final static String IMAGE_GAME = "file:./ressources/img/background2.jpg";
 
-	Group root;
-	Scene scene;
+	private Group root;
+	private Scene scene;
 
 	private ImageView background = new ImageView();
-	ArrayList<Integer> NoAuthorize;
+	private ArrayList<Integer> NoAuthorize;
 
 	public Window() {
 		title = "Tarot NEDELEC NORMAND S3C";
@@ -126,7 +126,7 @@ public class Window extends Application implements Observer {
 	 */
 	private void LoadMenu() {
 		root.getChildren().clear();
-		background.setImage(new Image(imageMenu));
+		background.setImage(new Image(IMAGE_MENU));
 		root.getChildren().add(background);
 
 		Text mainTitle = new Text(220, 220, "SteamPunk Tarot");
@@ -177,7 +177,7 @@ public class Window extends Application implements Observer {
 	 */
 	private void StartGame() {
 		root.getChildren().clear();
-		background.setImage(new Image(imageGame));
+		background.setImage(new Image(IMAGE_GAME));
 		root.getChildren().add(background);
 
 		ParallelTransition shuffle = goAway();
@@ -396,7 +396,7 @@ public class Window extends Application implements Observer {
 			cV.setObjective(new Pair<Double, Double>(X, Y));
 			cV.setObjective(new Pair<Double, Double>(Card_View.START_X, Card_View.START_Y));
 		}
-		return moveCardsToObjParal(HalfDurationShuffle);
+		return moveCardsToObjParal(HALF_DURATION_SHUFFLE);
 	}
 
 	/**
@@ -415,7 +415,7 @@ public class Window extends Application implements Observer {
 			Double Y = Math.random() * (HEIGHT - 0);
 			cV.setObjective(new Pair<Double, Double>(X, Y));
 		}
-		return moveCardsToObjParal(HalfDurationShuffle);
+		return moveCardsToObjParal(HALF_DURATION_SHUFFLE);
 	}
 
 	private SequentialTransition animeDistrib() {
@@ -458,7 +458,7 @@ public class Window extends Application implements Observer {
 				break;
 			}
 		}
-		return moveCardsToObjSeq(HalfDurationMove);
+		return moveCardsToObjSeq(HALF_DURATION_MOVE);
 	}
 
 	public SequentialTransition moveCardsToObjSeq(long halfDuration) {
@@ -529,21 +529,21 @@ public class Window extends Application implements Observer {
 			playerCards.get(i).setObjective(new Pair<Double, Double>(X, Y));
 			playerCards.get(i).allowZoom(true);
 		}
-		return moveCardsToObjParal(HalfDurationMove);
+		return moveCardsToObjParal(HALF_DURATION_MOVE);
 	}
 
 	private ParallelTransition goToEnemyAnim() {
 		for (Card_View cV : chienCards) {
 			cV.setObjective(new Pair<Double, Double>(1100., 50.));
 		}
-		return moveCardsToObjParal(HalfDurationMove);
+		return moveCardsToObjParal(HALF_DURATION_MOVE);
 	}
 
 	private ParallelTransition gardAgainstChien() {
 		for (Card_View cV : chienCards) {
 			cV.setObjective(chien_player_place);
 		}
-		return moveCardsToObjParal(HalfDurationMove);
+		return moveCardsToObjParal(HALF_DURATION_MOVE);
 	}
 
 	private ParallelTransition goToMyHand() {
@@ -555,7 +555,7 @@ public class Window extends Application implements Observer {
 			playerCards.add(cV);
 
 		}
-		return moveCardsToObjParal(HalfDurationMove);
+		return moveCardsToObjParal(HALF_DURATION_MOVE);
 	}
 
 	private void allowDragAndDrop() {
@@ -618,7 +618,7 @@ public class Window extends Application implements Observer {
 			playerCards.get(i).setObjective(new Pair<Double, Double>((i % 8) * (Card_View.W_CARD + 10) + firstCard_X,
 					(Math.floorDiv(i, 8) * (Card_View.H_CARD + 10)) + firstCard_Y));
 		}
-		return moveCardsToObjParal(HalfDurationMove);
+		return moveCardsToObjParal(HALF_DURATION_MOVE);
 	}
 
 	private void initSceneToConstituteShift() {
@@ -705,7 +705,7 @@ public class Window extends Application implements Observer {
 		}
 
 		gardAgainstChien().play();
-		moveCardsToObjSeq(HalfDurationMove).play();
+		moveCardsToObjSeq(HALF_DURATION_MOVE).play();
 		dropTarget.setVisible(false);
 		ending();
 	}
