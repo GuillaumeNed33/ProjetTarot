@@ -646,6 +646,7 @@ public class Window extends Application implements Observer {
 			X = player_place.getKey() + (nb_carte * (Card_View.W_CARD / 2));
 			Y = player_place.getValue();
 			c.setObjective(new Pair<Double, Double>(X, Y));
+			c.setToFrontCard();
 			nb_carte++;
 		}
 		for (Card_View cV : chienCards) {
@@ -672,9 +673,6 @@ public class Window extends Application implements Observer {
 
 		ButtonView btn = new ButtonView(500., 15., 50., 300., "Back to Menu", 30.);
 		btn.setOnAction(event -> {
-			for (Card_View c : allCards)
-				c.flipToBack().play();
-
 			c.resetGame();
 			initSceneWindow();
 		});

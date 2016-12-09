@@ -434,6 +434,7 @@ public class Card_View implements Observer {
 		card_front.setOnMousePressed(event -> {
 			if (event.isPrimaryButtonDown()) {
 				if (!dropTarget.contains(event.getSceneX(), event.getSceneY())) {
+					card_front.toFront();
 					Double shiftX = event.getSceneX() - originX;
 					Double shiftY = event.getSceneY() - originY;
 					card_front.setOnMouseDragged(event2 -> {
