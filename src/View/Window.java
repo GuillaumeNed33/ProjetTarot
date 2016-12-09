@@ -59,7 +59,7 @@ public class Window extends Application implements Observer {
 	private Scene scene;
 	private ImageView background = new ImageView();
 	private ArrayList<Integer> NoAuthorize;
-
+ 
 	public Window() {
 		title = "Tarot NEDELEC NORMAND S3C";
 		allCards = new ArrayList<Card_View>();
