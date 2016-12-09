@@ -510,10 +510,31 @@ public class Window extends Application implements Observer {
 		return master;
 	}
 
+	/**
+	 * <i> <b> run </b> </i><br>
+	 * <br>
+	 * <code> public void run() </code> <br>
+	 * 
+	 * <p>
+	 * Lance la méthode launch de {@link Application}.
+	 * </p>
+	 * 
+	 */
 	public void run() {
 		launch();
 	}
 
+	/**
+	 * <i> <b> setController </b> </i><br>
+	 * <br>
+	 * <code> public void setController(Controller c) </code> <br>
+	 * 
+	 * <p>
+	 * Permet d'initialiser le controleur de la vue.
+	 * </p>
+	 * 
+	 * @param c : {@link Controller} a mettre.
+	 */
 	public void setController(Controller c) {
 		Window.c = c;
 	}
@@ -529,6 +550,17 @@ public class Window extends Application implements Observer {
 		}
 	}
 
+	/**
+	 * <i> <b> triCardsView </b> </i><br>
+	 * <br>
+	 * <code> private ParallelTransition triCardsView() </code> <br>
+	 * 
+	 * <p>
+	 * Permet de récupérer la transition parallele de tri des cartes dans la vue.
+	 * </p>
+	 * 
+	 * @return {@link ParallelTransition} de l'animation du tri
+	 */
 	private ParallelTransition triCardsView() {
 		playerCards.sort(new Comparator<Card_View>() {
 			@Override
@@ -545,6 +577,17 @@ public class Window extends Application implements Observer {
 		return moveCardsToObjParal(HALF_DURATION_MOVE);
 	}
 
+	/**
+	 * <i> <b> goToEnemyAnim </b> </i><br>
+	 * <br>
+	 * <code> private ParallelTransition goToEnemyAnim() </code> <br>
+	 * 
+	 * <p>
+	 * Retourne l'animation parallele utilisé lors de la garde contre le chien.
+	 * </p>
+	 * 
+	 * @return {@link ParallelTransition} de l'animation.
+	 */
 	private ParallelTransition goToEnemyAnim() {
 		for (Card_View cV : chienCards) {
 			cV.setObjective(new Pair<Double, Double>(1100., 50.));
@@ -552,6 +595,17 @@ public class Window extends Application implements Observer {
 		return moveCardsToObjParal(HALF_DURATION_MOVE);
 	}
 
+	/**
+	 * <i> <b> gardAgainstChien </b> </i><br>
+	 * <br>
+	 * <code> private ParallelTransition gardAgainstChien() </code> <br>
+	 * 
+	 * <p>
+	 * Retourne l'animation parallele utilisé lors de la garde sans le chien.
+	 * </p>
+	 * 
+	 * @return {@link ParallelTransition} de l'animation.
+	 */
 	private ParallelTransition gardAgainstChien() {
 		for (Card_View cV : chienCards) {
 			cV.setObjective(chien_player_place);
@@ -559,6 +613,17 @@ public class Window extends Application implements Observer {
 		return moveCardsToObjParal(HALF_DURATION_MOVE);
 	}
 
+	/**
+	 * <i> <b> goToMyHand </b> </i><br>
+	 * <br>
+	 * <code> private ParallelTransition goToMyHand() </code> <br>
+	 * 
+	 * <p>
+	 * Retourne l'animation parallele utilisé lors de l'ajout des cartes du chien dans la main du joueur. 
+	 * </p>
+	 * 
+	 * @return {@link ParallelTransition} de l'animation.
+	 */
 	private ParallelTransition goToMyHand() {
 		Double X = player_place.getKey() + playerCards.size() * (Card_View.W_CARD / 2);
 		Double Y = player_place.getValue();
@@ -571,6 +636,19 @@ public class Window extends Application implements Observer {
 		return moveCardsToObjParal(HALF_DURATION_MOVE);
 	}
 
+	/**
+	 * <i> <b> allowDragAndDrop </b> </i><br>
+	 * <br>
+	 * <code> private void allowDragAndDrop() </code> <br>
+	 * 
+	 * <p>
+	 * Methode permettant d'initialiser le drag and drop aux carte qui le peuvent. <br>
+	 * Interdit pour le 1, le 21, l'excuse et les rois. <br>
+	 * Autoriser pour les atouts si, parmis les 24 cartes, il n'y a pas assez d'autre carte. <br>
+	 * Autoriser pour toute les autres cartes.
+	 * </p>
+	 * 
+	 */
 	private void allowDragAndDrop() {
 		int nbAtoutAcceptOnShift = allowAtoutToBeDrag();
 		for (Card_View cV : playerCards) {
@@ -586,6 +664,17 @@ public class Window extends Application implements Observer {
 		}
 	}
 
+	/**
+	 * <i> <b> allowAtoutToBeDrag </b> </i><br>
+	 * <br>
+	 * <code> private void allowAtoutToBeDrag() </code> <br>
+	 * 
+	 * <p>
+	 * Permet de récupérer le nombre de carte autorisé (c'est a dire sans les atouts) <br>
+	 * Afin de pouvoir savoir si les atouts peuvent ou pas etre drag and drop.
+	 * </p>
+	 * 
+	 */
 	private int allowAtoutToBeDrag() {
 		int AuthorizedCards = 0;
 		int i = 0;
@@ -598,6 +687,17 @@ public class Window extends Application implements Observer {
 		return 6 - AuthorizedCards;
 	}
 
+	/**
+	 * <i> <b> constituteShift </b> </i><br>
+	 * <br>
+	 * <code> private void constituteShift() </code> <br>
+	 * 
+	 * <p>
+	 * Permet d'initialiser l'écran pour constituer l'écart. Pour cela on replace les cartes <br>
+	 * On creer un rectangle pour le drag and drop et on autorise les bonnes cartes.
+	 * </p>
+	 * 
+	 */
 	private void constituteShift() {
 		root.getChildren().clear();
 
@@ -617,6 +717,17 @@ public class Window extends Application implements Observer {
 		move.play();
 	}
 
+	/**
+	 * <i> <b> setPosCardsForShift </b> </i><br>
+	 * <br>
+	 * <code> private ParallelTransition setPosCardsForShift() </code> <br>
+	 * 
+	 * <p>
+	 * Recupere la transition parallele pour repositionner les carte afin de pouvoir constituer l'écart.
+	 * </p>
+	 * 
+	 * @return {@link ParallelTransition} de l'animation.
+	 */
 	private ParallelTransition setPosCardsForShift() {
 		Double firstCard_X = 50.;
 		Double firstCard_Y = 150.;
@@ -626,7 +737,17 @@ public class Window extends Application implements Observer {
 		}
 		return moveCardsToObjParal(HALF_DURATION_MOVE);
 	}
-
+	
+	/**
+	 * <i> <b> initSceneToConstituteShift </b> </i><br>
+	 * <br>
+	 * <code> private void initSceneToConstituteShift() </code> <br>
+	 * 
+	 * <p>
+	 * Permet d'initialiser les composant de la scene pour la constitution de l'écart. 
+	 * </p>
+	 * 
+	 */
 	private void initSceneToConstituteShift() {
 		chienCards.clear();
 		Text title = new Text(150., 100., "Constitute the shift.");
@@ -662,6 +783,16 @@ public class Window extends Application implements Observer {
 		root.getChildren().add(btnCancel);
 	}
 
+	/**
+	 * <i> <b> lockChien </b> </i><br>
+	 * <br>
+	 * <code> private void lockChien() </code> <br>
+	 * 
+	 * <p>
+	 * Permet de vérifier le nombre de carte dans le chien. Et affiche un message d'erreur sinon.
+	 * </p>
+	 * 
+	 */
 	private void lockChien() {
 		Text info = new Text(770., 150., "Too few Cards in the Chien.");
 		info.setFont(Font.loadFont("file:./ressources/font/Steampunk.otf", 40.));
@@ -688,6 +819,16 @@ public class Window extends Application implements Observer {
 
 	}
 
+	/**
+	 * <i> <b> restoreView </b> </i><br>
+	 * <br>
+	 * <code> private void restoreView() </code> <br>
+	 * 
+	 * <p>
+	 * Permet de remettre la vue a son état d'origine pour afficher la fin de la distribution et des enchere.
+	 * </p>
+	 * 
+	 */
 	private void restoreView() {
 		int nb_carte = 0;
 		for (Card_View c : playerCards) {
@@ -709,6 +850,16 @@ public class Window extends Application implements Observer {
 		ending();
 	}
 
+	/**
+	 * <i> <b> disabledButton </b> </i><br>
+	 * <br>
+	 * <code> private void disabledButton() </code> <br>
+	 * 
+	 * <p>
+	 * Permet de desactiver les boutons des encheres après avoir fais le choix.
+	 * </p>
+	 * 
+	 */
 	private void disabledButton() {
 		for (ButtonView b : choices) {
 			b.setVisible(false);
@@ -716,6 +867,16 @@ public class Window extends Application implements Observer {
 		choices.clear();
 	}
 
+	/**
+	 * <i> <b> ending </b> </i><br>
+	 * <br>
+	 * <code> private void ending() </code> <br>
+	 * 
+	 * <p>
+	 * Affiche l'écran de fin du projet Et permet de faire un retour au menu principal.
+	 * </p>
+	 * 
+	 */
 	private void ending() {
 		Text end = new Text(230., 300., "The game begin !");
 		end.setFill(Color.WHITE);
