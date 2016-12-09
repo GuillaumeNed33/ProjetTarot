@@ -667,7 +667,7 @@ public class Window extends Application implements Observer {
 		info.setFont(Font.loadFont("file:./ressources/font/Steampunk.otf", 40.));
 		info.setFill(Color.WHITE);
 
-		final Task task = new Task<Void>() {
+		final Task<Void> task = new Task<Void>() {
 			@Override
 			protected Void call() throws Exception {
 				Thread.sleep(1000);

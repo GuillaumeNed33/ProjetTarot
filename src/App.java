@@ -12,8 +12,7 @@ public class App {
 	{
 		game = new Game();
 		win = new Window();
-		control = new Controller(game, win);
-		
+		control = new Controller(game, win);		
 	}
 	
 	public void run()
