@@ -95,7 +95,7 @@ public class Window extends Application implements Observer {
 	/**
 	 * <i> <b> initSceneWindow </b> </i><br>
 	 * <br>
-	 * <code> public void initSceneWindow() </code> <br>
+	 * <code> private void initSceneWindow() </code> <br>
 	 * 
 	 * <p>
 	 * Permet d'initialiser la premi�re sc�ne en cr�ant les carte de la vue et
@@ -117,7 +117,7 @@ public class Window extends Application implements Observer {
 	/**
 	 * <i> <b> LoadMenu </b> </i><br>
 	 * <br>
-	 * <code> public void LoadMenu() </code> <br>
+	 * <code> private void LoadMenu() </code> <br>
 	 * 
 	 * <p>
 	 * Permet cr�er le menu du projet.
@@ -139,7 +139,7 @@ public class Window extends Application implements Observer {
 	/**
 	 * <i> <b> addButtonToMenu </b> </i><br>
 	 * <br>
-	 * <code> public void addButtonToMenu() </code> <br>
+	 * <code> private void addButtonToMenu() </code> <br>
 	 * 
 	 * <p>
 	 * Permet d'ajouter le bouton Quit et le bouton Play au menu.
@@ -163,7 +163,7 @@ public class Window extends Application implements Observer {
 	/**
 	 * <i> <b> StartGame </b> </i><br>
 	 * <br>
-	 * <code> public void StartGame() </code> <br>
+	 * <code> private void StartGame() </code> <br>
 	 * 
 	 * <p>
 	 * Permet de d�marrer le jeu et de s'occuper du traitement de toute les
@@ -202,7 +202,7 @@ public class Window extends Application implements Observer {
 	/**
 	 * <i> <b> distribCard </b> </i><br>
 	 * <br>
-	 * <code> public void distribCard() </code> <br>
+	 * <code> private void distribCard() </code> <br>
 	 * 
 	 * <p>
 	 * Permet de lancer l'animation de la distribution des cartes et de tester
@@ -230,7 +230,7 @@ public class Window extends Application implements Observer {
 	/**
 	 * <i> <b> resetGame </b> </i><br>
 	 * <br>
-	 * <code> public void resetGame() </code> <br>
+	 * <code> private void resetGame() </code> <br>
 	 * 
 	 * <p>
 	 * Permet de relancer la game lorsque le Petit est Sec.
@@ -257,7 +257,7 @@ public class Window extends Application implements Observer {
 	/**
 	 * <i> <b> addChoicesButtons </b> </i><br>
 	 * <br>
-	 * <code> public void addChoicesButtons() </code> <br>
+	 * <code> private void addChoicesButtons() </code> <br>
 	 * 
 	 * <p>
 	 * Permet d'ajouter les boutons pour le choix de la mise.<br>
@@ -321,11 +321,11 @@ public class Window extends Application implements Observer {
 	/**
 	 * <i> <b> priseAndGuardAction </b> </i><br>
 	 * <br>
-	 * <code> public void priseAndGuardAction() </code> <br>
+	 * <code> private void priseAndGuardAction() </code> <br>
 	 * 
 	 * <p>
-	 * Permet de g�rer le changement d'�cran lors de la prise et de la garde
-	 * afin de pouvoir constituer l'�cart.
+	 * Permet de gerer le changement d'ecran lors de la prise et de la garde
+	 * afin de pouvoir constituer l'ecart.
 	 * </p>
 	 */
 	private void priseAndGuardAction() {
@@ -344,7 +344,7 @@ public class Window extends Application implements Observer {
 	/**
 	 * <i> <b> comeBack </b> </i><br>
 	 * <br>
-	 * <code> public void comeBack() </code> <br>
+	 * <code> private void comeBack() </code> <br>
 	 * 
 	 * <p>
 	 * Permet de faire revenir les cartes a leur point central apr�s l'animation
@@ -366,7 +366,7 @@ public class Window extends Application implements Observer {
 	/**
 	 * <i> <b> goAway </b> </i><br>
 	 * <br>
-	 * <code> public void goAway() </code> <br>
+	 * <code> private void goAway() </code> <br>
 	 * 
 	 * <p>
 	 * Permet de faire faire partir les cartes a une position al�atoire pour
@@ -387,7 +387,7 @@ public class Window extends Application implements Observer {
 	/**
 	 * <i> <b> animeDistrib </b> </i><br>
 	 * <br>
-	 * <code> public SequentialTransition animeDistrib() </code> <br>
+	 * <code> private SequentialTransition animeDistrib() </code> <br>
 	 * 
 	 * <p>
 	 * Permet de r�cup�erer l'animation s�quentiel de la distribution qui envoie les carte a chaque joueur 3 par 3. 
@@ -441,7 +441,7 @@ public class Window extends Application implements Observer {
 	/**
 	 * <i> <b> moveCardsToObjSeq </b> </i><br>
 	 * <br>
-	 * <code> public void moveCardsToObjSeq()long halfDuration </code> <br>
+	 * <code> private void moveCardsToObjSeq()long halfDuration </code> <br>
 	 * 
 	 * <p>
 	 * Permet de r�cup�rer l'animation s�quentielle de mouvement des cartes vers un objectif.
@@ -450,7 +450,7 @@ public class Window extends Application implements Observer {
 	 * @param halfDuration : Correspond � la dur�e d'un mouvement de carte.
 	 * @return {@link SequentialTransition} de l'animation.
 	 */
-	public SequentialTransition moveCardsToObjSeq(long halfDuration) {
+	private SequentialTransition moveCardsToObjSeq(long halfDuration) {
 		SequentialTransition master = new SequentialTransition();
 		int i = 0;
 		while (i < allCards.size()) {
@@ -472,7 +472,7 @@ public class Window extends Application implements Observer {
 	/**
 	 * <i> <b> moveCardsToObjParal </b> </i><br>
 	 * <br>
-	 * <code> public void moveCardsToObjParal(long halfDuration) </code> <br>
+	 * <code> private void moveCardsToObjParal(long halfDuration) </code> <br>
 	 * 
 	 * <p>
 	 * Permet de r�cup�rer l'animation parallele du mouvement des cartes vers un objectif.
@@ -481,7 +481,7 @@ public class Window extends Application implements Observer {
 	 * @param halfDuration : Correspond � la dur�e de l'animation.
 	 * @return {@link ParallelTransition} de l'animation.
 	 */
-	public ParallelTransition moveCardsToObjParal(long halfDuration) {
+	private ParallelTransition moveCardsToObjParal(long halfDuration) {
 		ParallelTransition master = new ParallelTransition();
 		for (Card_View cV : allCards) {
 			master.getChildren().add(cV.moveAnimation(halfDuration));
@@ -492,7 +492,7 @@ public class Window extends Application implements Observer {
 	/**
 	 * <i> <b> lookCard </b> </i><br>
 	 * <br>
-	 * <code> public void lookCard(ArrayList cards) </code> <br>
+	 * <code> private SequentialTransition lookCard(ArrayList cards) </code> <br>
 	 * 
 	 * <p>
 	 * Permet de r�cup�rer la transition séquentielle du retournement une liste de carte afin d'afficher la carte de devant.
@@ -501,7 +501,7 @@ public class Window extends Application implements Observer {
 	 * @param cards : Liste des cartes a retourner.
 	 * @return {@link SequentialTransition} de l'animation.
 	 */
-	protected SequentialTransition lookCard(ArrayList<Card_View> cards) {
+	private SequentialTransition lookCard(ArrayList<Card_View> cards) {
 		SequentialTransition master = new SequentialTransition();
 		for (Card_View cV : cards) {
 			Transition flipCard = cV.flipToFront();
@@ -598,7 +598,7 @@ public class Window extends Application implements Observer {
 		return 6 - AuthorizedCards;
 	}
 
-	public void constituteShift() {
+	private void constituteShift() {
 		root.getChildren().clear();
 
 		dropTarget = new Rectangle(850, 200, 300, 300);

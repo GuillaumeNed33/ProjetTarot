@@ -30,7 +30,7 @@ public class Data {
 	/**
 	 * <i> <b> take_info </b> </i><br>
 	 * <br>
-	 * <code> public void take_info() </code> <br>
+	 * <code> private void take_info() </code> <br>
 	 * 
 	 * <p>
 	 * Récupère les chemin d'accès des images en fonction de leur identifiants contenu dans le ficheir link.csv.
@@ -38,7 +38,7 @@ public class Data {
 	 * 
 	 * 
 	 */
-	public void take_info() {
+	private void take_info() {
 		try {
 			InputStream ips = new FileInputStream(FILE);
 			InputStreamReader ipsr = new InputStreamReader(ips);
