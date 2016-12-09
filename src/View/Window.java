@@ -384,6 +384,17 @@ public class Window extends Application implements Observer {
 		return moveCardsToObjParal(HALF_DURATION_SHUFFLE);
 	}
 
+	/**
+	 * <i> <b> animeDistrib </b> </i><br>
+	 * <br>
+	 * <code> public SequentialTransition animeDistrib() </code> <br>
+	 * 
+	 * <p>
+	 * Permet de récupéerer l'animation séquentiel de la distribution qui envoie les carte a chaque joueur 3 par 3. 
+	 * </p>
+	 * 
+	 * @return {@link SequentialTransition} de l'animation.
+	 */
 	private SequentialTransition animeDistrib() {
 		int nb_carte = 0;
 		int nbChienCards = 0;
@@ -427,6 +438,18 @@ public class Window extends Application implements Observer {
 		return moveCardsToObjSeq(HALF_DURATION_MOVE);
 	}
 
+	/**
+	 * <i> <b> moveCardsToObjSeq </b> </i><br>
+	 * <br>
+	 * <code> public void moveCardsToObjSeq()long halfDuration </code> <br>
+	 * 
+	 * <p>
+	 * Permet de récupérer l'animation séquentielle de mouvement des cartes vers un objectif.
+	 * </p>
+	 * 
+	 * @param halfDuration : Correspond à la durée d'un mouvement de carte.
+	 * @return {@link SequentialTransition} de l'animation.
+	 */
 	public SequentialTransition moveCardsToObjSeq(long halfDuration) {
 		SequentialTransition master = new SequentialTransition();
 		int i = 0;
@@ -446,6 +469,18 @@ public class Window extends Application implements Observer {
 		return master;
 	}
 
+	/**
+	 * <i> <b> moveCardsToObjParal </b> </i><br>
+	 * <br>
+	 * <code> public void moveCardsToObjParal(long halfDuration) </code> <br>
+	 * 
+	 * <p>
+	 * Permet de récupérer l'animation parallele du mouvement des cartes vers un objectif.
+	 * </p>
+	 * 
+	 * @param halfDuration : Correspond à la durée de l'animation.
+	 * @return {@link ParallelTransition} de l'animation.
+	 */
 	public ParallelTransition moveCardsToObjParal(long halfDuration) {
 		ParallelTransition master = new ParallelTransition();
 		for (Card_View cV : allCards) {
@@ -454,6 +489,18 @@ public class Window extends Application implements Observer {
 		return master;
 	}
 
+	/**
+	 * <i> <b> lookCard </b> </i><br>
+	 * <br>
+	 * <code> public void lookCard(ArrayList cards) </code> <br>
+	 * 
+	 * <p>
+	 * Permet de récupérer la transition séquentielle du retournement une liste de carte afin d'afficher la carte de devant.
+	 * </p>
+	 * 
+	 * @param cards : Liste des cartes a retourner.
+	 * @return {@link SequentialTransition} de l'animation.
+	 */
 	protected SequentialTransition lookCard(ArrayList<Card_View> cards) {
 		SequentialTransition master = new SequentialTransition();
 		for (Card_View cV : cards) {

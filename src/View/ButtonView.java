@@ -14,6 +14,12 @@ public class ButtonView extends Button {
 		this.setText(text);
 		this.setTextAlignment(TextAlignment.CENTER);
 		this.setFont(Font.loadFont(FONT_BUTTON_TEXT,size));
+		this.setOnMouseEntered(event -> {
+			
+		});
+		this.setOnMouseExited(event -> {
+			
+		});
 		
 	}
 	
