@@ -17,6 +17,7 @@ import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -26,6 +27,11 @@ import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 import javafx.util.Pair;
 
+/**
+ *  <i> <b> Card_View </b> </i><br>
+ *  
+ * Classe représentant une carte graphique. Hérite de l'interface {@link Observer} 
+ */
 public class Card_View implements Observer {
 	/// Constantes
 	final static int H_CARD = 112;
@@ -117,7 +123,7 @@ public class Card_View implements Observer {
 	 * Retourne l'ensemble des Node de Card_View
 	 * </p>
 	 * 
-	 * @return Collection de Node.
+	 * @return {@link Collection} de {@link Node}.
 	 */
 	public Collection<Node> getNodes() {
 		ArrayList<Node> al = new ArrayList<>();
@@ -136,7 +142,7 @@ public class Card_View implements Observer {
 	 * Retourne la Node correspondant à la carte arrière.
 	 * </p>
 	 * 
-	 * @return Node de la carte arrière.
+	 * @return {@link Node} de la carte arrière.
 	 */
 	public Node getBackCard() {
 		return card_back;
@@ -151,7 +157,7 @@ public class Card_View implements Observer {
 	 * Retourne la Node correspondant à la carte avant.
 	 * </p>
 	 * 
-	 * @return Node de la carte avant.
+	 * @return {@link Node} de la carte avant.
 	 */
 	public Node getFrontCard() {
 		return card_front;
@@ -167,7 +173,7 @@ public class Card_View implements Observer {
 	 * passe de la carte avant à la carte arrière
 	 * </p>
 	 * 
-	 * @return La transition du retournement.
+	 * @return La {@link Transition} du retournement.
 	 */
 	public Transition flipToFront() {
 		final RotateTransition rotateOutBack = new RotateTransition(Duration.millis(HALF_FLIP_DURATION), card_back);
@@ -195,7 +201,7 @@ public class Card_View implements Observer {
 	 * passe de la carte arrière à la carte avant
 	 * </p>
 	 * 
-	 * @return La transition du retournement.
+	 * @return La {@link Transition} du retournement.
 	 */
 	public Transition flipToBack() {
 		final RotateTransition rotateOutBack = new RotateTransition(Duration.millis(HALF_FLIP_DURATION), card_front);
@@ -225,10 +231,10 @@ public class Card_View implements Observer {
 	 * </p>
 	 * 
 	 * @param iV
-	 *            : ImageView à déplacer
+	 *            : {@link ImageView} à déplacer
 	 * @param halfDurationMove
 	 *            : Durée de l'animation
-	 * @return La transition du déplacement vers l'objectif.
+	 * @return La {@link TranslateTransition} du déplacement vers l'objectif.
 	 */
 	public TranslateTransition createMoveAnimation(ImageView iV, long halfDurationMove) {
 		final TranslateTransition move = new TranslateTransition(Duration.millis(halfDurationMove), iV);
@@ -250,7 +256,7 @@ public class Card_View implements Observer {
 	 * 
 	 * @param halfDurationMove
 	 *            : Durée de l'animation
-	 * @return La ParallelTransition de tout les éléments de la Card_View.
+	 * @return La {@link ParallelTransition}  de tout les éléments de la Card_View.
 	 */
 	public ParallelTransition moveAnimation(long halfDurationMove) {
 
@@ -360,7 +366,7 @@ public class Card_View implements Observer {
 	 * </p>
 	 * 
 	 * @param objectve
-	 *            : Pair de Double correspondant aux coordonnée de l'objectif
+	 *            : {@link Pair} de Double correspondant aux coordonnée de l'objectif
 	 *            (X,Y).
 	 */
 	public void setObjective(Pair<Double, Double> objective) {
@@ -399,7 +405,7 @@ public class Card_View implements Observer {
 	 * </p>
 	 * 
 	 * @param isAllowed
-	 *            : Boolean Si vrai : accepte le zoom. Si faux : refuse le zoom.
+	 *            : {@link Boolean} Si vrai : accepte le zoom. Si faux : refuse le zoom.
 	 */
 	public void allowZoom(boolean isAllowed) {
 		card_shape.setVisible(isAllowed);
@@ -421,11 +427,11 @@ public class Card_View implements Observer {
 	 * </p>
 	 * 
 	 * @param dropTarget
-	 *            : Rectangle de la cible du Drag'n Drop.
+	 *            : {@link Rectangle} de la cible du Drag'n Drop.
 	 * @param new_chien
-	 *            : La liste des carte du nouveau chien.
+	 *            : {@link ArrayList} des carte du nouveau chien.
 	 * @param playersCards
-	 *            : Liste des carte du joueur.
+	 *            : {@link ArrayList} des carte du joueur.
 	 */
 	public void openDragAndDrop(Rectangle dropTarget, ArrayList<Card_View> new_Chien,
 			ArrayList<Card_View> playerCards) {
@@ -496,7 +502,7 @@ public class Card_View implements Observer {
 	 * </p>
 	 * 
 	 * @param NoAuthorize
-	 *            : Liste des identifiants des atouts du jeu (sans les bous).
+	 *            : {@link ArrayList} des identifiants des atouts du jeu (sans les bous).
 	 * @return true si l'id n'est pas un atout, sinon false.
 	 * 
 	 */

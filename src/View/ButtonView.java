@@ -4,6 +4,11 @@ import javafx.scene.control.Button;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
+/**
+ *  <i> <b> ButtonView </b> </i><br>
+ *  
+ * Classe permettant la construction d'un bouton. Hérite de la classe {@link Button} de JavaFX.
+ */
 public class ButtonView extends Button {
 
 	final static String FONT_BUTTON_TEXT = "file:./ressources/font/Steampunk.otf";

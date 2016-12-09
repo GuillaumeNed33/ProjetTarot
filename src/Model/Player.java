@@ -1,5 +1,12 @@
 package Model;
 
+/**
+ * <i> <b> Game </b> </i><br>
+ * 
+ * Classe correspondant a un joueur. Un joueur est composé d'une {@link Hand} et
+ * d'un id.
+ *
+ */
 public class Player {
 	private int id;
 	private Hand handGame;
@@ -30,7 +37,7 @@ public class Player {
 	 * Retourne la main du joueur.
 	 * </p>
 	 * 
-	 * @return Hand du Player.
+	 * @return {@link Hand} du Player.
 	 */
 	public Hand getHand() {
 		return handGame;

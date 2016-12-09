@@ -2,6 +2,14 @@ package Model;
 
 import java.util.Observable;
 
+/**
+ * <i> <b> Card </b> </i><br>
+ * 
+ * Classe correspondant a une carte. Possède un ID, un type et une valeur. <br>
+ * 
+ * Hérite de la classe {@link Observable}
+ *
+ */
 public class Card extends Observable {
 	private int id;
 	private CardType type;
@@ -31,7 +39,7 @@ public class Card extends Observable {
 	 * </p>
 	 * 
 	 * @param type
-	 *            : Type de la carte.
+	 *            : {@link CardType} de la carte.
 	 * @param val
 	 *            : Valeur de la carte.
 	 * @param id
@@ -55,7 +63,7 @@ public class Card extends Observable {
 	 * </p>
 	 * 
 	 * @param type
-	 *            : Type de la carte.
+	 *            : {@link CardType} de la carte.
 	 * @param val
 	 *            : Valeur de la carte.
 	 * @param id
@@ -78,7 +86,7 @@ public class Card extends Observable {
 	 * Retourne le type de la carte.
 	 * </p>
 	 * 
-	 * @return CardType de Card
+	 * @return {@link CardType} de {@link Card}
 	 */
 	public CardType getType() {
 		return this.type;

@@ -5,14 +5,17 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Observable;
+import java.util.Observer;
 
 import Model.CardType;
 import View.Card_View;
 
 /**
+ * <i> <b> Game </b> </i><br>
  * 
  * Class correspondant au Model. Permet de gérer toute les actions sur les carte et sur les joueur. <br>
- * Notamment La distribution et Test du PetitSec. 
+ * Notamment La distribution et le Test du PetitSec. <br>
+ * Hérite de la classe {@link Observable}.
  *
  */
 public class Game extends Observable {
@@ -175,12 +178,12 @@ public class Game extends Observable {
 	/**
 	 * <i> <b> addCardObserver </b> </i><br>
 	 * <br>
-	 * <code> public void addCardObserver(ArrayList<Card_View> cards_view) </code> <br>
+	 * <code> public void addCardObserver(ArrayList cards_view) </code> <br>
 	 * 
 	 * <p> Ajoute à chaque Carte de la classe Model un observer de la Classe Vue.
 	 * </p>
 	 * 
-	 * @param Correspond à la liste des observers à ajouter.
+	 * @param Correspond à la liste des {@link Observer} à ajouter.
 	 * 
 	 */
 	public void addCardObserver(ArrayList<Card_View> cards_view) {
@@ -194,11 +197,11 @@ public class Game extends Observable {
 	/**
 	 * <i> <b> getCards </b> </i><br>
 	 * <br>
-	 * <code> public List<Card> getCards() </code> <br>
+	 * <code> public List getCards() </code> <br>
 	 * 
 	 * <p> Récupères la liste des cartes.
 	 * </p>
-	 * @return List de Card.
+	 * @return List de {@link Card}
 	 * 
 	 */
 	public List<Card> getCards()
@@ -213,7 +216,7 @@ public class Game extends Observable {
 	 * 
 	 * <p> Récupères la liste des joueurs.
 	 * </p>
-	 * @return List de Player.
+	 * @return {@link List} de Player.
 	 * 
 	 */
 	public List<Player> getPlayers()
@@ -230,7 +233,7 @@ public class Game extends Observable {
 	 * Récupères le chien du model.
 	 * </p>
 	 * 
-	 * @return Chien.
+	 * @return {@link Chien}
 	 * 
 	 */
 	public Chien getChien()

@@ -2,6 +2,11 @@ package Model;
 
 import java.util.ArrayList;
 
+/**
+ * <i> <b> Chien </b> </i><br>
+ * Classe correspondant aux Chien et contient une liste de {@link Card} lui appartenant.
+ *
+ */
 public class Chien {
 	private ArrayList<Card> cards;
 
@@ -29,7 +34,7 @@ public class Chien {
 	 * </p>
 	 * 
 	 * @param c
-	 *            : Card à ajouter.
+	 *            : {@link Card} à ajouter.
 	 * 
 	 */
 	public void addCard(Card c) {
@@ -61,7 +66,7 @@ public class Chien {
 	 * Retourne la liste de carte du chien
 	 * </p>
 	 * 
-	 * @return ArrayList de Card.
+	 * @return ArrayList de {@link Card}.
 	 * 
 	 */
 	public ArrayList<Card> getCards() {

@@ -58,7 +58,6 @@ public class Window extends Application implements Observer {
 
 	private Group root;
 	private Scene scene;
-
 	private ImageView background = new ImageView();
 	private ArrayList<Integer> NoAuthorize;
 
@@ -128,6 +127,7 @@ public class Window extends Application implements Observer {
 	private void LoadMenu() {
 		root.getChildren().clear();
 		background.setImage(new Image(IMAGE_MENU));
+
 		root.getChildren().add(background);
 
 		Text mainTitle = new Text(220, 220, "SteamPunk Tarot");

@@ -2,6 +2,11 @@ package Model;
 
 import java.util.ArrayList;
 
+/**
+ *  <i> <b> Hand </b> </i><br>
+ * 
+ * Classe correspondant a la main d'un joueur. Cette classe contient une {@link ArrayList} de {@link Card}
+ */
 public class Hand {
 	private ArrayList<Card> playerGame;
 	
