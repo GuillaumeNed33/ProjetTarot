@@ -6,6 +6,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 
+import javafx.scene.control.Button;
+
+/**
+ *  <i> <b> ButtonView </b> </i><br>
+ *  
+ * Classe permettant la récupération du chemin d'accès des images grace au fichier link.csv
+ */
 public class Data {
 	final String FILE = "./ressources/link.csv";
 	final int MAX_ATOUT = 23;

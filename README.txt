@@ -1,9 +1,9 @@
 Projet réalisé par NEDELEC Guillaume et NORMAND Benjamin S3C.
 
-Les codes sources sont situés dans le dossier ProjetPOOJava/src/
-Les ressources graphiques (Cartes, Background, fichier externes...) sont disponibles dans le répertoire ProjetPOOJava/ressources
+Les codes sources sont situés dans le dossier Projet_Eclipse/ProjetPOOJava/src/
+Les ressources graphiques (Cartes, Background, fichier externes...) sont disponibles dans le répertoire Projet_Eclipse/ProjetPOOJava/ressources
 Un diagramme de classe du projet est disponible au format PNG dans cette archive.
-Une archive executable est fourni sous le nom de TAROT_NEDELEC_NORMAND_S3C.jar
+Une archive executable est fourni sous le nom de Executable/TAROT_NEDELEC_NORMAND_S3C.jar
 
 Ressources graphiques : 
 Cartes : inspiration du jeu Steampunk Pirates Bicycle de Nat Iwata.

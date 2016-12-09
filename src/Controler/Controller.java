@@ -5,7 +5,13 @@ import java.util.ArrayList;
 import Model.Game;
 import View.Card_View;
 import View.Window;
+import javafx.scene.control.Button;
 
+/**
+ *  <i> <b> Controller </b> </i><br>
+ *  
+ * Classe correspondant au controleur de l'application.
+ */
 public class Controller {
 	private Game game;
 	private Window win;

@@ -16,6 +16,7 @@ import javafx.concurrent.Task;
 import javafx.scene.Group;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -28,7 +29,10 @@ import javafx.stage.Stage;
 import javafx.util.Pair;
 
 /**
- * 
+ *  <i> <b> ButtonView </b> </i><br>
+ *  
+ * Classe permettant la gestion de toute la partie visuelle de l'application. <br>
+ * Hérite de l'interface {@link Observer} et de la classe {@link Application} .
  */
 public class Window extends Application implements Observer {
 
