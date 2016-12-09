@@ -64,20 +64,11 @@ public class Card_View implements Observer {
 		this.setX(START_X);
 		this.setY(START_Y);
 
-		card_shape.setOnMouseEntered(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				event.consume();
-				transformeToBig();
-			}
+		card_shape.setOnMouseEntered(event -> {
+			transformeToBig();
 		});
-		card_shape.setOnMouseExited(new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent event) {
-				event.consume();
-				restoreByDefault();
-			}
+		card_shape.setOnMouseExited(event -> {
+			restoreByDefault();
 		});
 	}
 
@@ -172,7 +163,8 @@ public class Card_View implements Observer {
 	 * <code> public Transition flipToFront() </code> <br>
 	 * 
 	 * <p>
-	 * Retourne une transition permettant de retourner la carte. La transition passe de la carte avant à la carte arrière
+	 * Retourne une transition permettant de retourner la carte. La transition
+	 * passe de la carte avant à la carte arrière
 	 * </p>
 	 * 
 	 * @return La transition du retournement.
@@ -199,7 +191,8 @@ public class Card_View implements Observer {
 	 * <code> public Transition flipToBack() </code> <br>
 	 * 
 	 * <p>
-	 * Retourne une transition permettant de retourner la carte. La transition passe de la carte arrière à la carte avant
+	 * Retourne une transition permettant de retourner la carte. La transition
+	 * passe de la carte arrière à la carte avant
 	 * </p>
 	 * 
 	 * @return La transition du retournement.
@@ -223,13 +216,18 @@ public class Card_View implements Observer {
 	/**
 	 * <i> <b> createMoveAnimation </b> </i><br>
 	 * <br>
-	 * <code> public TranslateTransition createMoveAnimation(ImageView iV, long halfDurationMove) </code> <br>
+	 * <code> public TranslateTransition createMoveAnimation(ImageView iV, long halfDurationMove) </code>
+	 * <br>
 	 * 
 	 * <p>
-	 * Permet de créer une Transition de déplacement pour déplacer une image vers son objectif.
+	 * Permet de créer une Transition de déplacement pour déplacer une image
+	 * vers son objectif.
 	 * </p>
-	 * @param iV : ImageView à déplacer
-	 * @param halfDurationMove : Durée de l'animation
+	 * 
+	 * @param iV
+	 *            : ImageView à déplacer
+	 * @param halfDurationMove
+	 *            : Durée de l'animation
 	 * @return La transition du déplacement vers l'objectif.
 	 */
 	public TranslateTransition createMoveAnimation(ImageView iV, long halfDurationMove) {
@@ -242,13 +240,16 @@ public class Card_View implements Observer {
 	/**
 	 * <i> <b> moveAnimation </b> </i><br>
 	 * <br>
-	 * <code> public ParallelTransition moveAnimation(long halfDurationMove) </code> <br>
+	 * <code> public ParallelTransition moveAnimation(long halfDurationMove) </code>
+	 * <br>
 	 * 
 	 * <p>
-	 * Permet de créer une Transition parallèle composé du mouvement de tout les éléments de la carte vers l'objectif.
+	 * Permet de créer une Transition parallèle composé du mouvement de tout les
+	 * éléments de la carte vers l'objectif.
 	 * </p>
 	 * 
-	 * @param halfDurationMove : Durée de l'animation
+	 * @param halfDurationMove
+	 *            : Durée de l'animation
 	 * @return La ParallelTransition de tout les éléments de la Card_View.
 	 */
 	public ParallelTransition moveAnimation(long halfDurationMove) {
@@ -285,14 +286,14 @@ public class Card_View implements Observer {
 		}
 	}
 
-
 	/**
 	 * <i> <b> getIdOwner </b> </i><br>
 	 * <br>
 	 * <code> public int getIdOwner() </code> <br>
 	 * 
 	 * <p>
-	 * Permet de récupérer l'identifiant correspondant au joueur (ou Chien) possédant la carte.
+	 * Permet de récupérer l'identifiant correspondant au joueur (ou Chien)
+	 * possédant la carte.
 	 * </p>
 	 * 
 	 * @return l'ID du possésseur de la Card_View.
@@ -309,7 +310,8 @@ public class Card_View implements Observer {
 	 * <code> private void transformeToBig() </code> <br>
 	 * 
 	 * <p>
-	 * Permet de faire l'animation du zoom sur la carte afin d'avoir une meilleur vision de la carte. <br>
+	 * Permet de faire l'animation du zoom sur la carte afin d'avoir une
+	 * meilleur vision de la carte. <br>
 	 * Cette animation la déplace également vers une position prédéfini.
 	 * </p>
 	 * 
@@ -354,10 +356,12 @@ public class Card_View implements Observer {
 	 * 
 	 * <p>
 	 * Permet de mettre a jour la valeur de l'objectif de la carte.<br>
-	 *  Cette objectif est utilisé pour faire le déplacement de la carte.
+	 * Cette objectif est utilisé pour faire le déplacement de la carte.
 	 * </p>
 	 * 
-	 * @param objectve : Pair de Double correspondant aux coordonnée de l'objectif (X,Y).
+	 * @param objectve
+	 *            : Pair de Double correspondant aux coordonnée de l'objectif
+	 *            (X,Y).
 	 */
 	public void setObjective(Pair<Double, Double> objective) {
 		objX = objective.getKey();
@@ -365,7 +369,7 @@ public class Card_View implements Observer {
 		card_shape.setX(objX);
 		card_shape.setY(objY);
 	}
-	
+
 	/**
 	 * <i> <b> setToFrontCard </b> </i><br>
 	 * <br>
@@ -394,7 +398,8 @@ public class Card_View implements Observer {
 	 * Permet d'accepter le zoom sur la carte en fonction du paramètre.
 	 * </p>
 	 * 
-	 * @param isAllowed : Boolean Si vrai : accepte le zoom. Si faux : refuse le zoom.
+	 * @param isAllowed
+	 *            : Boolean Si vrai : accepte le zoom. Si faux : refuse le zoom.
 	 */
 	public void allowZoom(boolean isAllowed) {
 		card_shape.setVisible(isAllowed);
@@ -408,64 +413,56 @@ public class Card_View implements Observer {
 	/**
 	 * <i> <b> openDragAndDrop </b> </i><br>
 	 * <br>
-	 * <code> public void openDragAndDrop(Rectangle dropTarget, ArrayList new_Chien,ArrayList playerCards) </code> <br>
+	 * <code> public void openDragAndDrop(Rectangle dropTarget, ArrayList new_Chien,ArrayList playerCards) </code>
+	 * <br>
 	 * 
 	 * <p>
-	 * Permet d'implementer les actions de drag and drop sur la carte. 
+	 * Permet d'implementer les actions de drag and drop sur la carte.
 	 * </p>
 	 * 
-	 * @param dropTarget : Rectangle de la cible du Drag'n Drop.
-	 * @param new_chien : La liste des carte du nouveau chien.
-	 * @param playersCards : Liste des carte du joueur.
+	 * @param dropTarget
+	 *            : Rectangle de la cible du Drag'n Drop.
+	 * @param new_chien
+	 *            : La liste des carte du nouveau chien.
+	 * @param playersCards
+	 *            : Liste des carte du joueur.
 	 */
 	public void openDragAndDrop(Rectangle dropTarget, ArrayList<Card_View> new_Chien,
 			ArrayList<Card_View> playerCards) {
 		originX = card_front.getBoundsInParent().getMinX();
 		originY = card_front.getBoundsInParent().getMinY();
-		card_front.setOnMousePressed(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent me) {
-				if (me.isPrimaryButtonDown()) {
-					if (!dropTarget.contains(me.getSceneX(), me.getSceneY())) {
-						Double shiftX = me.getSceneX() - originX;
-						Double shiftY = me.getSceneY() - originY;
-						card_front.setOnMouseDragged((new EventHandler<MouseEvent>() {
-							@Override
-							public void handle(MouseEvent me) {
-								objX = me.getSceneX() - shiftX;
-								objY = me.getSceneY() - shiftY;
-								moveAnimation(1).play();
-								me.consume();
-							}
-						}));
-					} else {
-						card_front.setOnMouseDragged(null);
-					}
-					me.consume();
+		card_front.setOnMousePressed(event -> {
+			if (event.isPrimaryButtonDown()) {
+				if (!dropTarget.contains(event.getSceneX(), event.getSceneY())) {
+					Double shiftX = event.getSceneX() - originX;
+					Double shiftY = event.getSceneY() - originY;
+					card_front.setOnMouseDragged(event2 -> {
+						objX = event2.getSceneX() - shiftX;
+						objY = event2.getSceneY() - shiftY;
+						moveAnimation(1).play();
+					});
+				} else {
+					card_front.setOnMouseDragged(null);
 				}
 			}
 		});
 
-		card_front.setOnMouseReleased(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				Point2D mousePos = new Point2D(event.getSceneX(), event.getSceneY());
-				if (card_front.getOnMouseDragged() != null) {
-					if (dropTarget.contains(mousePos) && new_Chien.size() < 6) {
-						objX = dropTarget.getX() + 30 + ((new_Chien.size() % 3) * W_CARD);
-						objY = dropTarget.getY() + 30 + ((new_Chien.size() / 3) * H_CARD);
-						moveAnimation(350).play();
-						new_Chien.add(Card_View.this);
-						playerCards.remove(Card_View.this);
+		card_front.setOnMouseReleased(event -> {
+			Point2D mousePos = new Point2D(event.getSceneX(), event.getSceneY());
+			if (card_front.getOnMouseDragged() != null) {
+				if (dropTarget.contains(mousePos) && new_Chien.size() < 6) {
+					objX = dropTarget.getX() + 30 + ((new_Chien.size() % 3) * W_CARD);
+					objY = dropTarget.getY() + 30 + ((new_Chien.size() / 3) * H_CARD);
+					moveAnimation(350).play();
+					new_Chien.add(Card_View.this);
+					playerCards.remove(Card_View.this);
 
-					} else {
-						objX = originX;
-						objY = originY;
-						moveAnimation(100).play();
-					}
-					card_front.setOnMouseDragged(null);
+				} else {
+					objX = originX;
+					objY = originY;
+					moveAnimation(100).play();
 				}
-				event.consume();
+				card_front.setOnMouseDragged(null);
 			}
 		});
 	}
@@ -477,7 +474,7 @@ public class Card_View implements Observer {
 	 * 
 	 * <p>
 	 * Deplace la carte a sa position d'origine (dans le jeu du joueur)
-	 * </p> 
+	 * </p>
 	 */
 	public void cancelCardShift() {
 		objX = originX;
@@ -489,16 +486,19 @@ public class Card_View implements Observer {
 	 * 
 	 * <i> <b> AuthorizedToChien </b> </i><br>
 	 * <br>
-	 * <code> public void AuthorizedToChien(ArrayList<Integer> NoAuthorize) </code> <br>
+	 * <code> public void AuthorizedToChien(ArrayList<Integer> NoAuthorize) </code>
+	 * <br>
 	 * 
 	 * <p>
-	 * Retourne Si l'id de la carte est autorisé à être mis dans le chien (ce n'est pas un atout)
+	 * Retourne Si l'id de la carte est autorisé à être mis dans le chien (ce
+	 * n'est pas un atout)
 	 * </p>
 	 * 
-	 * @param NoAuthorize : Liste des identifiants des atouts du jeu (sans les bous).
+	 * @param NoAuthorize
+	 *            : Liste des identifiants des atouts du jeu (sans les bous).
 	 * @return true si l'id n'est pas un atout, sinon false.
 	 * 
-	 */ 
+	 */
 	public boolean AuthorizedToChien(ArrayList<Integer> NoAuthorize) {
 
 		return !NoAuthorize.contains(id);

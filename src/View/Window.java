@@ -13,8 +13,6 @@ import javafx.animation.Transition;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -37,7 +35,7 @@ public class Window extends Application implements Observer {
 	private final static Double HEIGHT = 720.;
 	private static final long HALF_DURATION_MOVE = 400;
 	private static final long HALF_DURATION_SHUFFLE = 1000;
- 
+
 	private String title;
 	private static Controller c;
 	private ArrayList<Card_View> allCards;
@@ -70,8 +68,8 @@ public class Window extends Application implements Observer {
 		player_place4 = new Pair<Double, Double>(1400., 300.);
 		chien_place = new Pair<Double, Double>(675., 100.);
 		chien_player_place = new Pair<Double, Double>(1100., 500.);
-		background.setFitHeight(HEIGHT+10);
-		background.setFitWidth(WIDTH+10);
+		background.setFitHeight(HEIGHT + 10);
+		background.setFitWidth(WIDTH + 10);
 
 		NoAuthorize = new ArrayList<Integer>();// Tableau des Id non autorisés à
 		// mettre dans le chien
@@ -81,7 +79,6 @@ public class Window extends Application implements Observer {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-
 
 		root = new Group();
 		scene = new Scene(root, WIDTH, HEIGHT, null);
@@ -93,15 +90,16 @@ public class Window extends Application implements Observer {
 		primaryStage.setResizable(false);
 		primaryStage.show();
 	}
-	
+
 	/**
 	 * <i> <b> initSceneWindow </b> </i><br>
 	 * <br>
 	 * <code> public void initSceneWindow() </code> <br>
 	 * 
 	 * <p>
-	 * Permet d'initialiser la première scène en créant les carte de la vue et en les asscociant aux model.
-	 * </p> 
+	 * Permet d'initialiser la première scène en créant les carte de la vue et
+	 * en les asscociant aux model.
+	 * </p>
 	 */
 	private void initSceneWindow() {
 		allCards = new ArrayList<Card_View>();
@@ -122,7 +120,7 @@ public class Window extends Application implements Observer {
 	 * 
 	 * <p>
 	 * Permet créer le menu du projet.
-	 * </p> 
+	 * </p>
 	 */
 	private void LoadMenu() {
 		root.getChildren().clear();
@@ -143,25 +141,19 @@ public class Window extends Application implements Observer {
 	 * 
 	 * <p>
 	 * Permet d'ajouter le bouton Quit et le bouton Play au menu.
-	 * </p> 
+	 * </p>
 	 */
 	private void addButtonToMenu() {
-		ButtonView btn = new ButtonView(500.,350.,100.,300.,"Let s Play Tarot",30.);
-		
-		btn.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent event) {
-				StartGame();
-				event.consume();
-			}
+		ButtonView btn = new ButtonView(500., 350., 100., 300., "Let s Play Tarot", 30.);
+
+		btn.setOnAction(event -> {
+			StartGame();
 		});
 		root.getChildren().add(btn);
 
-		ButtonView btnQuit = new ButtonView(500.,500.,50.,300.,"Quit",30.);
-		btnQuit.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent event) {
-				event.consume();
-				System.exit(0);
-			}
+		ButtonView btnQuit = new ButtonView(500., 500., 50., 300., "Quit", 30.);
+		btnQuit.setOnAction(event -> {
+			System.exit(0);
 		});
 		root.getChildren().add(btnQuit);
 	}
@@ -172,8 +164,9 @@ public class Window extends Application implements Observer {
 	 * <code> public void StartGame() </code> <br>
 	 * 
 	 * <p>
-	 * Permet de démarrer le jeu et de s'occuper du traitement de toute les animation.
-	 * </p> 
+	 * Permet de démarrer le jeu et de s'occuper du traitement de toute les
+	 * animation.
+	 * </p>
 	 */
 	private void StartGame() {
 		root.getChildren().clear();
@@ -181,18 +174,12 @@ public class Window extends Application implements Observer {
 		root.getChildren().add(background);
 
 		ParallelTransition shuffle = goAway();
-		shuffle.setOnFinished(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent arg0) {
-				ParallelTransition back = comeBack();
-				back.setOnFinished(new EventHandler<ActionEvent>() {
-					@Override
-					public void handle(ActionEvent arg0) {
-						distribCard();
-					}
-				});
-				back.play();
-			}
+		shuffle.setOnFinished(event -> {
+			ParallelTransition back = comeBack();
+			back.setOnFinished(back_event -> {
+				distribCard();
+			});
+			back.play();
 		});
 		Platform.runLater(new Runnable() {
 			@Override
@@ -216,24 +203,22 @@ public class Window extends Application implements Observer {
 	 * <code> public void distribCard() </code> <br>
 	 * 
 	 * <p>
-	 * Permet de lancer l'animation de la distribution des cartes et de tester si le Petit est Sec.
-	 * </p> 
+	 * Permet de lancer l'animation de la distribution des cartes et de tester
+	 * si le Petit est Sec.
+	 * </p>
 	 */
 	private void distribCard() {
 		SequentialTransition masterDistrib = new SequentialTransition();
 		masterDistrib.getChildren().addAll(animeDistrib(), lookCard(playerCards));
-		masterDistrib.setOnFinished(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent arg0) {
-				c.triCards();
-				triCardsView().play();
+		masterDistrib.setOnFinished(event -> {
+			c.triCards();
+			triCardsView().play();
 
-				if (c.testPetitSec()) {
-					resetGame();
-				} else {
-					for (ButtonView b : choices) {
-						b.setVisible(true);
-					}
+			if (c.testPetitSec()) {
+				resetGame();
+			} else {
+				for (ButtonView b : choices) {
+					b.setVisible(true);
 				}
 			}
 		});
@@ -247,25 +232,21 @@ public class Window extends Application implements Observer {
 	 * 
 	 * <p>
 	 * Permet de relancer la game lorsque le Petit est Sec.
-	 * </p> 
+	 * </p>
 	 */
 	private void resetGame() {
 		Text info = new Text(400, 475, "Le Petit est sec !");
 		info.setFont(Font.loadFont("file:./ressources/font/Steampunk.otf", 75.));
 		root.getChildren().add(info);
 
-		for(Card_View cV : playerCards) {
+		for (Card_View cV : playerCards) {
 			cV.flipToBack().play();
 		}
 		c.resetGame();
 		ParallelTransition goToInitialPos = comeBack();
-		goToInitialPos.setOnFinished(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent arg0) {
-				arg0.consume();
-				initSceneWindow();
-				StartGame();
-			}
+		goToInitialPos.setOnFinished(event -> {
+			initSceneWindow();
+			StartGame();
 		});
 		goToInitialPos.play();
 	}
@@ -277,8 +258,8 @@ public class Window extends Application implements Observer {
 	 * 
 	 * <p>
 	 * Permet d'ajouter les boutons pour le choix de la mise.<br>
-	 *  (Prise / Garde / Garde sans le chien / Garde contre le chien / Passe)
-	 * </p> 
+	 * (Prise / Garde / Garde sans le chien / Garde contre le chien / Passe)
+	 * </p>
 	 */
 	private void addChoicesButtons() {
 		choices = new Vector<ButtonView>();
@@ -286,58 +267,43 @@ public class Window extends Application implements Observer {
 			ButtonView btn = null;
 			switch (i) {
 			case 0:
-				btn = new ButtonView(300*i+100.,15.,30.,150.,"La prise",30.);
-				btn.setOnAction(new EventHandler<ActionEvent>() {
-					@Override
-					public void handle(ActionEvent event) {
-						event.consume();
-						disabledButton();
-						priseAndGuardAction();
-					}
+				btn = new ButtonView(300 * i + 100., 15., 30., 150., "La prise", 30.);
+				btn.setOnAction(event -> {
+					disabledButton();
+					priseAndGuardAction();
 				});
 				break;
 			case 1:
-				btn = new ButtonView(250*i+100.,15.,40.,150.,"La Garde",30.);
-				btn.setOnAction(new EventHandler<ActionEvent>() {
-					public void handle(ActionEvent event) {
-						event.consume();
-						disabledButton();
-						priseAndGuardAction();
-					}
+				btn = new ButtonView(250 * i + 100., 15., 40., 150., "La Garde", 30.);
+				btn.setOnAction(event -> {
+					disabledButton();
+					priseAndGuardAction();
 				});
 				break;
 			case 2:
-				btn = new ButtonView(250*i+100.,10.,60.,150.,"La garde\nsans le chien",20.);
-				btn.setOnAction(new EventHandler<ActionEvent>() {
-					public void handle(ActionEvent event) {
-						event.consume();
-						disabledButton();
-						gardAgainstChien().play();
-						ending();
-					}
+				btn = new ButtonView(250 * i + 100., 10., 60., 150., "La garde\nsans le chien", 20.);
+				btn.setOnAction(event -> {
+					disabledButton();
+					gardAgainstChien().play();
+					ending();
 
 				});
 				break;
 			case 3:
-				btn = new ButtonView(250*i+100.,10.,60.,150.,"La garde \ncontre le chien",20.);
-				btn.setOnAction(new EventHandler<ActionEvent>() {
-					public void handle(ActionEvent event) {
-						event.consume();
-						disabledButton();
-						goToEnemyAnim().play();
-						ending();
-					}
+				btn = new ButtonView(250 * i + 100., 10., 60., 150., "La garde \ncontre le chien", 20.);
+				btn.setOnAction(event -> {
+					disabledButton();
+					goToEnemyAnim().play();
+					ending();
 
 				});
 				break;
 			case 4:
-				btn = new ButtonView(250*i+100.,15.,35.,150.,"Passe",30.);
-				btn.setOnAction(new EventHandler<ActionEvent>() {
-					public void handle(ActionEvent event) {
-						disabledButton();
-						lookCard(chienCards).play();
-						ending();
-					}
+				btn = new ButtonView(250 * i + 100., 15., 35., 150., "Passe", 30.);
+				btn.setOnAction(event -> {
+					disabledButton();
+					lookCard(chienCards).play();
+					ending();
 				});
 				break;
 			}
@@ -355,25 +321,19 @@ public class Window extends Application implements Observer {
 	 * <code> public void priseAndGuardAction() </code> <br>
 	 * 
 	 * <p>
-	 * Permet de gérer le changement d'écran lors de la prise et de la garde afin de pouvoir constituer l'écart.
-	 * </p> 
+	 * Permet de gérer le changement d'écran lors de la prise et de la garde
+	 * afin de pouvoir constituer l'écart.
+	 * </p>
 	 */
 	private void priseAndGuardAction() {
 		SequentialTransition look = lookCard(chienCards);
-		look.setOnFinished(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				SequentialTransition master = new SequentialTransition();
-				master.getChildren().addAll(goToMyHand(), triCardsView());
-				master.play();
-				master.setOnFinished(new EventHandler<ActionEvent>() {
-					@Override
-					public void handle(ActionEvent event) {
-						event.consume();
-						constituteShift();
-					}
-				});
-			}
+		look.setOnFinished(event -> {
+			SequentialTransition master = new SequentialTransition();
+			master.getChildren().addAll(goToMyHand(), triCardsView());
+			master.play();
+			master.setOnFinished(event2 -> {
+				constituteShift();
+			});
 		});
 		look.play();
 	}
@@ -384,8 +344,9 @@ public class Window extends Application implements Observer {
 	 * <code> public void comeBack() </code> <br>
 	 * 
 	 * <p>
-	 * Permet de faire revenir les cartes a leur point central après l'animation du mélange.
-	 * </p> 
+	 * Permet de faire revenir les cartes a leur point central après l'animation
+	 * du mélange.
+	 * </p>
 	 * 
 	 * @return {@link ParallelTransition} de l'animation.
 	 */
@@ -405,8 +366,10 @@ public class Window extends Application implements Observer {
 	 * <code> public void goAway() </code> <br>
 	 * 
 	 * <p>
-	 * Permet de faire faire partir les cartes a une position aléatoire pour simuler un mélange.
-	 * </p> 
+	 * Permet de faire faire partir les cartes a une position aléatoire pour
+	 * simuler un mélange.
+	 * </p>
+	 * 
 	 * @return {@link ParallelTransition} de l'animation.
 	 */
 	private ParallelTransition goAway() {
@@ -559,19 +522,16 @@ public class Window extends Application implements Observer {
 	}
 
 	private void allowDragAndDrop() {
-		int nbAtoutAcceptOnShift =  allowAtoutToBeDrag();
+		int nbAtoutAcceptOnShift = allowAtoutToBeDrag();
 		for (Card_View cV : playerCards) {
-			if (!(cV.getId() == 13 || cV.getId() == 27 || cV.getId() == 28 || cV.getId() == 29
-					|| cV.getId() == 49 || cV.getId() == 63 || cV.getId() == 77)) {
-				if(NoAuthorize.contains(cV.getId()) && nbAtoutAcceptOnShift > 0)
-				{
+			if (!(cV.getId() == 13 || cV.getId() == 27 || cV.getId() == 28 || cV.getId() == 29 || cV.getId() == 49
+					|| cV.getId() == 63 || cV.getId() == 77)) {
+				if (NoAuthorize.contains(cV.getId()) && nbAtoutAcceptOnShift > 0) {
+					cV.openDragAndDrop(dropTarget, chienCards, playerCards);
+				} else if (!NoAuthorize.contains(cV.getId())) {
 					cV.openDragAndDrop(dropTarget, chienCards, playerCards);
 				}
-				else if(!NoAuthorize.contains(cV.getId()))
-				{
-					cV.openDragAndDrop(dropTarget, chienCards, playerCards);
-				}
-			}			
+			}
 			cV.allowZoom(false);
 		}
 	}
@@ -601,12 +561,8 @@ public class Window extends Application implements Observer {
 
 		initSceneToConstituteShift();
 		ParallelTransition move = setPosCardsForShift();
-		move.setOnFinished(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				event.consume();
-				allowDragAndDrop();
-			}
+		move.setOnFinished(event -> {
+			allowDragAndDrop();
 		});
 		move.play();
 	}
@@ -626,30 +582,22 @@ public class Window extends Application implements Observer {
 		Text title = new Text(150., 100., "Constitute the shift.");
 		title.setFont(Font.loadFont("file:./ressources/font/Steampunk.otf", 55.));
 
-		ButtonView btnCancel = new ButtonView(1050.,600.,50.,200.,"Cancel",30.);
-		btnCancel.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				event.consume();
-				if(chienCards.size() >0) {
-					chienCards.get(chienCards.size()-1).cancelCardShift();
-					playerCards.add(chienCards.get(chienCards.size()-1));
-					chienCards.remove(chienCards.size()-1);
-				}
+		ButtonView btnCancel = new ButtonView(1050., 600., 50., 200., "Cancel", 30.);
+		btnCancel.setOnAction(event -> {
+			if (chienCards.size() > 0) {
+				chienCards.get(chienCards.size() - 1).cancelCardShift();
+				playerCards.add(chienCards.get(chienCards.size() - 1));
+				chienCards.remove(chienCards.size() - 1);
 			}
 		});
 
-		ButtonView btnConfirm = new ButtonView(750.,600.,50.,200.,"Confirm",30.);
-		btnConfirm.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				event.consume();
-				lockChien();
-				if(chienCards.size() == 6) {
-					root.getChildren().remove(title);
-					root.getChildren().remove(btnConfirm);
-					root.getChildren().remove(btnCancel);
-				}
+		ButtonView btnConfirm = new ButtonView(750., 600., 50., 200., "Confirm", 30.);
+		btnConfirm.setOnAction(event -> {
+			lockChien();
+			if (chienCards.size() == 6) {
+				root.getChildren().remove(title);
+				root.getChildren().remove(btnConfirm);
+				root.getChildren().remove(btnCancel);
 			}
 		});
 
@@ -675,13 +623,11 @@ public class Window extends Application implements Observer {
 			}
 		};
 
-		if (chienCards.size()<6) {
+		if (chienCards.size() < 6) {
 			info.setVisible(true);
 			new Thread(task).start();
 
-		} 
-		else
-		{
+		} else {
 			info.setVisible(false);
 			restoreView();
 		}
@@ -691,8 +637,7 @@ public class Window extends Application implements Observer {
 
 	private void restoreView() {
 		int nb_carte = 0;
-		for(Card_View c : playerCards)		
-		{
+		for (Card_View c : playerCards) {
 			Double X = 0.;
 			Double Y = 0.;
 			X = player_place.getKey() + (nb_carte * (Card_View.W_CARD / 2));
@@ -700,7 +645,7 @@ public class Window extends Application implements Observer {
 			c.setObjective(new Pair<Double, Double>(X, Y));
 			nb_carte++;
 		}
-		for(Card_View cV : chienCards) {
+		for (Card_View cV : chienCards) {
 			cV.flipToBack().play();
 		}
 
@@ -711,31 +656,25 @@ public class Window extends Application implements Observer {
 	}
 
 	private void disabledButton() {
-		for(ButtonView b : choices)
-		{
+		for (ButtonView b : choices) {
 			b.setVisible(false);
 		}
 		choices.clear();
 	}
 
-	private void ending()
-	{
+	private void ending() {
 		Text end = new Text(175., 300., "Let s start the Game !");
 		end.setFont(Font.loadFont("file:./ressources/font/Steampunk.otf", 120.));
 		root.getChildren().add(end);
 
-		ButtonView btn = new ButtonView(500.,15.,50.,300.,"Back to Menu",30.);
-		btn.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				for(Card_View c : allCards)
-					c.flipToBack().play();
+		ButtonView btn = new ButtonView(500., 15., 50., 300., "Back to Menu", 30.);
+		btn.setOnAction(event -> {
+			for (Card_View c : allCards)
+				c.flipToBack().play();
 
-				c.resetGame();
-				initSceneWindow();
-				event.consume();
-			}
+			c.resetGame();
+			initSceneWindow();
 		});
 		root.getChildren().add(btn);
 	}
-} 
+}
